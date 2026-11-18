@@ -1,0 +1,1251 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Cook & Create </title>
+<link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#d9ecf8;--paper:#f3f9fe;--ink:#3a3a4a;--soft:#6f8499;--hl:#c6e0f2;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);color-scheme:light}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#2b2519;--paper:#352e20;--ink:#f1e6c8;--soft:#b3a283;--hl:#4a4030;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#2b2519;--paper:#352e20;--ink:#f1e6c8;--soft:#b3a283;--hl:#4a4030;color-scheme:dark}
+*{box-sizing:border-box}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Mali","Sarabun","Noto Sans Thai",sans-serif;line-height:1.6}
+main{max-width:1020px;margin:0 auto;padding:16px 16px 40px}
+h1{font-size:1.6rem;margin:0 0 4px}
+.sub{margin:0 0 14px;color:var(--soft)}
+
+/* Auth Header Bar */
+.auth-bar{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px;padding:8px 12px;border:2px solid var(--ink);border-radius:14px;background:var(--paper);flex-wrap:wrap}
+.user-profile{display:flex;align-items:center;gap:10px}
+.user-avatar{width:34px;height:34px;border-radius:50%;border:1.5px solid var(--ink);object-fit:cover;background:var(--hl)}
+.user-info{display:flex;flex-direction:column;font-size:0.82rem;line-height:1.2}
+.user-status{font-size:0.75rem;color:var(--soft)}
+.btn-google{display:inline-flex;align-items:center;gap:8px;background:var(--paper);color:var(--ink);border:2px solid var(--ink);border-radius:12px;padding:6px 14px;font-weight:600;cursor:pointer;transition:background 0.2s}
+.btn-google:hover{background:var(--hl)}
+.btn-google svg{width:18px;height:18px}
+
+.layout{display:grid;grid-template-columns:1.15fr 1fr;gap:22px;align-items:start}
+@media (max-width:760px){.layout{grid-template-columns:1fr}}
+.fridge{position:relative;padding:22px 40px 18px 18px}
+.fridge>svg.frame{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;overflow:visible}
+.frame *{fill:none;stroke:var(--ink);stroke-width:2.4;vector-effect:non-scaling-stroke;stroke-linecap:round}
+.frame .bg{fill:var(--paper);stroke:none}
+.shelf{position:relative;padding:4px 0 14px;margin-bottom:6px}
+.shelf h2{font-size:.95rem;margin:0 0 4px;font-weight:600;color:var(--soft)}
+.row{display:flex;flex-wrap:wrap;gap:4px}
+.shelf svg.ln{position:absolute;left:0;right:0;bottom:0;width:100%;height:8px;overflow:visible}
+.ln path{fill:none;stroke:var(--ink);stroke-width:2.2;vector-effect:non-scaling-stroke;stroke-linecap:round}
+button{font:inherit;color:inherit;cursor:pointer}
+.it{width:76px;background:none;border:0;padding:4px 2px;border-radius:12px;display:flex;flex-direction:column;align-items:center;gap:0;font-size:.78rem;line-height:1.25;text-align:center}
+.it:hover{background:var(--hl)}
+.it:focus-visible,.chip:focus-visible,.btn:focus-visible{outline:2px dashed var(--ink);outline-offset:2px}
+.it.out{opacity:.35}
+.it.out .ic{visibility:hidden}
+.it.out span{border-bottom:1.5px dashed var(--soft)}
+.ic{width:46px;height:46px;stroke:var(--ink);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;filter:url(#rs)}
+.panel{background:var(--paper);padding:16px;position:relative;filter:none}
+.panel svg.bd{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;overflow:visible}
+.bd rect{fill:none;stroke:var(--ink);stroke-width:2.2;vector-effect:non-scaling-stroke}
+.panel h2{font-size:1.05rem;margin:0 0 8px}
+.tray{display:flex;flex-wrap:wrap;gap:6px;min-height:64px;align-items:flex-start}
+.empty{margin:0;color:var(--soft);font-size:.9rem}
+.chip{background:var(--hl);border:1.5px solid var(--ink);border-radius:14px 10px 15px 9px;display:flex;align-items:center;gap:2px;padding:2px 10px 2px 2px;font-size:.85rem;animation:pop .35s ease-out}
+.chip .ic{width:32px;height:32px}
+.tray.mix .chip{animation:shake .6s ease-in-out}
+.acts{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}
+.btn{background:var(--ink);color:var(--bg);border:2px solid var(--ink);border-radius:16px 10px 14px 10px;padding:8px 18px;font-weight:600}
+.btn.ghost{background:none;color:var(--ink)}
+.btn:disabled{opacity:.4;cursor:not-allowed}
+.menu{margin-top:18px;animation:pop .5s ease-out}
+.menu[hidden]{display:none}
+.menu .plate{width:210px;max-width:60%;display:block;margin:0 auto 6px}
+.menu h3{font-size:1.3rem;margin:0 0 2px;text-align:center}
+.menu p{margin:0 0 8px}
+.menu ol{margin:0 0 8px;padding-left:20px}
+.note{color:var(--soft);font-size:.88rem}
+.plate *{stroke:var(--ink);fill:none;stroke-width:2.2;stroke-linecap:round}
+.plate .ic{stroke-width:2}
+.fridge{perspective:1400px}
+.lcol{min-width:0}
+.fbar{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:10px}
+.pal{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:10px}
+.pal[hidden]{display:none}
+#pals{display:flex;flex-wrap:wrap;gap:6px}
+.ps{width:46px;height:46px;background:var(--paper);border:1.5px solid var(--ink);border-radius:50%;padding:4px}
+.ps:hover{background:var(--hl)}
+.ps .ic{width:100%;height:100%}
+.ic.sk{fill:var(--f)}
+.door{position:absolute;inset:0;z-index:5;transform-origin:left center;transition:transform .8s cubic-bezier(.5,0,.2,1);backface-visibility:hidden;-webkit-backface-visibility:hidden}
+.door.open{transform:rotateY(-112deg);pointer-events:none}
+.door>svg.frame{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;overflow:visible}
+.door .bg{fill:var(--hl)}
+.stkl{position:absolute;inset:1%}
+.stk{position:absolute;width:var(--z,56px);height:var(--z,56px);transform:rotate(var(--r,0deg));cursor:grab;touch-action:none;user-select:none;-webkit-user-select:none}
+.stk:active{cursor:grabbing}
+.stk .ic{width:100%;height:100%;filter:url(#rs) drop-shadow(1px 2px 0 rgba(0,0,0,.2));pointer-events:none}
+.stk.sel{outline:2px dashed var(--ink);outline-offset:3px;border-radius:12px;z-index:2}
+.stk .x{display:none;position:absolute;top:-12px;right:-12px;width:24px;height:24px;border-radius:50%;border:1.5px solid var(--ink);background:var(--paper);padding:0;font-size:11px;line-height:1;align-items:center;justify-content:center}
+.stk.sel .x{display:flex}
+.stk .rot,.stk .rsz{display:none;position:absolute;background:var(--paper);border:1.5px solid var(--ink);touch-action:none}
+.stk.sel .rot,.stk.sel .rsz{display:block}
+.stk .rot{width:24px;height:24px;border-radius:50%;left:calc(50% - 12px);top:-42px;cursor:grab}
+.stk .rot::after{content:"";position:absolute;left:50%;top:100%;height:14px;border-left:1.5px solid var(--ink)}
+.stk .rsz{width:22px;height:22px;border-radius:6px;right:-14px;bottom:-14px;cursor:nwse-resize}
+.hdl{position:absolute;right:5%;top:36%;width:18px;height:26%;border:2.4px solid var(--ink);border-radius:10px 12px 10px 11px;background:var(--paper);padding:0;z-index:3}
+.hdl:hover{background:var(--bg)}
+.hdl:focus-visible{outline:2px dashed var(--ink);outline-offset:3px}
+@media (prefers-reduced-motion:reduce){.door{transition:none}}
+.rec{display:flex;align-items:center;gap:10px;margin:0 0 16px;padding:8px 10px;border:2px solid var(--ink);border-radius:16px 12px 15px 11px;background:var(--paper)}
+.rtl{font-weight:600;white-space:nowrap}
+.recl{display:flex;gap:6px;overflow-x:auto;padding:2px;min-width:0;scrollbar-width:thin}
+.rc{flex:none;display:flex;align-items:center;gap:2px;background:var(--hl);border:1.5px solid var(--ink);border-radius:14px 10px 15px 9px;padding:2px 10px 2px 4px;font-size:.85rem;white-space:nowrap}
+.rc:hover{background:var(--bg)}
+.rc:focus-visible,.sw:focus-visible{outline:2px dashed var(--ink);outline-offset:2px}
+.rc .ic{width:24px;height:24px}
+.rc small{color:var(--soft);margin-left:4px}
+.ctray{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:10px;padding:6px 10px;border:2px solid var(--ink);border-radius:14px 10px 13px 11px;background:var(--paper)}
+#sws{display:flex;gap:6px;flex-wrap:wrap}
+.sw{width:30px;height:30px;border-radius:50%;border:2px solid var(--ink);background:var(--c);padding:0}
+.sw[aria-pressed="true"]{outline:2px dashed var(--ink);outline-offset:2px}
+.fridge{--fd:var(--hl);--fi:var(--paper)}
+.fridge.tint{--fd:color-mix(in srgb,var(--sw) 55%,var(--paper));--fi:color-mix(in srgb,var(--sw) 22%,var(--paper))}
+.fridge>svg.frame .bg{fill:var(--fi)}
+.fridge .door .bg{fill:var(--fd)}
+.tadd{display:flex;gap:6px;flex-wrap:wrap}
+.tadd input{font:inherit;color:var(--ink);background:var(--paper);border:1.5px solid var(--ink);border-radius:10px;padding:6px 10px;min-width:0;width:200px}
+.stk.t{width:max-content;height:auto;max-width:85%}
+.stk .tx{display:block;font-size:calc(var(--z,56px)*.3);line-height:1.25;padding:.35em .7em;background:var(--b,#fbe08a);color:#4a3b2a;border:2px solid #4a3b2a;border-radius:10px 14px 9px 13px;font-weight:600;white-space:pre-wrap;text-align:center;box-shadow:1px 2px 0 rgba(0,0,0,.2);pointer-events:none}
+.it{transition:opacity .25s,transform .15s,background .15s}
+.it:hover .ic{animation:wig .5s}
+.it:active{transform:scale(.88)}
+.ps{transition:transform .15s,background .15s}
+.ps:hover{transform:scale(1.15) rotate(-6deg)}
+.ps:active{transform:scale(.88)}
+.chip{animation:none}
+.chip.new{animation:pop .35s ease-out}
+.stk.new{animation:stkin .55s cubic-bezier(.3,1.5,.5,1)}
+.stk.bye{animation:stkout .23s ease-in forwards;pointer-events:none}
+@keyframes wig{0%,100%{transform:rotate(0)}25%{transform:rotate(-8deg)}75%{transform:rotate(8deg)}}
+@keyframes stkin{0%{transform:rotate(var(--r)) scale(0)}60%{transform:rotate(calc(var(--r) + 25deg)) scale(1.2)}100%{transform:rotate(var(--r)) scale(1)}}
+@keyframes stkout{to{transform:rotate(calc(var(--r) + 90deg)) scale(0);opacity:0}}
+.wallet{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:0 0 12px;padding:8px 12px;border:2px solid var(--ink);border-radius:14px 10px 13px 11px;background:var(--paper)}
+.wc{display:flex;align-items:center;gap:4px;font-weight:600}
+.wc .ic,.dcoin .ic{width:30px;height:30px;fill:#f6d860}
+.wsp{flex:1}
+#coin.bump{display:inline-block;animation:bump .5s}
+.it{position:relative}
+.bdg{position:absolute;top:0;right:4px;background:var(--hl);border:1.5px solid var(--ink);border-radius:10px;padding:0 6px;font-size:.7rem;line-height:1.35}
+.it.low .bdg{background:#f6d860;color:#4a3b2a}
+.it.none .ic{opacity:.3;filter:grayscale(1)}
+.it.none .bdg{background:transparent;border-style:dashed;color:var(--soft)}
+dialog{width:min(640px,94vw);max-height:88vh;padding:0;border:2.5px solid var(--ink);border-radius:18px 12px 16px 12px;background:var(--paper);color:var(--ink);font-family:inherit}
+dialog::backdrop{background:rgba(60,45,25,.45)}
+.dh{display:flex;align-items:center;gap:8px;padding:10px 14px;border-bottom:2px solid var(--ink);flex-wrap:wrap}
+.tabs{display:flex;gap:6px;flex:1;flex-wrap:wrap}
+.tab{background:none;border:1.5px solid var(--ink);border-radius:12px 9px 11px 9px;padding:4px 12px}
+.tab[aria-pressed="true"]{background:var(--ink);color:var(--bg)}
+.dcoin{display:flex;align-items:center;gap:4px;font-weight:600}
+.dx{background:none;border:1.5px solid var(--ink);border-radius:50%;width:30px;height:30px;padding:0}
+.dbody{padding:10px 14px 16px;overflow:auto;max-height:calc(88vh - 62px)}
+.dbody h3{font-size:.95rem;margin:12px 0 4px;color:var(--soft)}
+.row{display:flex;align-items:center;gap:8px;padding:2px 4px;border-radius:10px}
+.row.hl{background:var(--hl);animation:pop .4s}
+.row .ic{width:34px;height:34px;flex:none}
+.row .nm{flex:1;display:flex;flex-direction:column;line-height:1.2}
+.row small{color:var(--soft)}
+.pr{font-weight:600;min-width:2ch;text-align:right}
+.btn.mini{padding:2px 10px;font-size:.85rem;border-radius:12px 8px 11px 8px}
+.sum{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:8px;margin-bottom:10px}
+.sum div{border:1.5px solid var(--ink);border-radius:12px;padding:6px 8px;text-align:center;background:var(--hl)}
+.sum b{display:block;font-size:1.2rem}
+.sum small{color:var(--soft)}
+.tw{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:.85rem}
+th,td{padding:3px 6px;border-bottom:1px dashed var(--soft);text-align:center;white-space:nowrap}
+th:first-child,td:first-child{text-align:left}
+td .ic{width:22px;height:22px;vertical-align:middle}
+tr.z td{color:var(--soft)}
+tr.l td:nth-child(5){color:#c0392b;font-weight:600}
+.log{list-style:none;margin:0 0 12px;padding:0;font-size:.85rem}
+.log li{display:flex;gap:8px;padding:2px 0;border-bottom:1px dashed var(--soft)}
+.log span{color:var(--soft)}
+.log b{margin-left:auto}
+.pos{color:#2e7d4f}.neg{color:#c0392b}
+.toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translate(-50%,30px);background:var(--ink);color:var(--bg);padding:8px 16px;border-radius:14px 10px 13px 10px;opacity:0;pointer-events:none;transition:.3s;z-index:80;max-width:90vw}
+.toast.on{opacity:1;transform:translate(-50%,0)}
+.reward{display:flex;align-items:center;gap:4px;margin-top:8px;padding:6px 10px;background:var(--hl);border:1.5px solid var(--ink);border-radius:12px;font-weight:600;font-size:.9rem}
+.reward .ic{width:24px;height:24px;fill:#f6d860;flex:none}
+@keyframes bump{40%{transform:scale(1.5)}}
+@keyframes pop{from{transform:scale(.6);opacity:0}to{transform:scale(1);opacity:1}}
+@keyframes shake{0%,100%{transform:rotate(0)}20%{transform:rotate(-6deg) translateY(-3px)}50%{transform:rotate(6deg) translateY(-5px)}80%{transform:rotate(-3deg)}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important}}
+
+/* pastel blue theme + tidy tables */
+dialog::backdrop{background:rgba(40,60,85,.45)}
+.tw{overflow:auto;max-height:52vh;border:2px solid var(--ink);border-radius:12px}
+table{min-width:580px;border-collapse:separate;border-spacing:0;font-size:.9rem;border:0}
+thead th{position:sticky;top:0;z-index:1;background:var(--ink);color:var(--bg);font-weight:600;padding:8px 10px;white-space:nowrap;border-bottom:0;text-align:center}
+thead th:first-child{text-align:left}
+td{padding:7px 10px;vertical-align:middle;border-bottom:1px solid var(--hl);font-variant-numeric:tabular-nums}
+tbody tr:nth-child(even) td{background:color-mix(in srgb,var(--hl) 45%,transparent)}
+tbody tr:last-child td{border-bottom:0}
+td:first-child{white-space:nowrap}
+td .ic{width:26px;height:26px;margin-right:8px;vertical-align:middle;display:inline-block}
+td:nth-child(5){white-space:nowrap;font-weight:600;color:#2e7d4f}
+td .btn.mini{white-space:nowrap}
+.dbody h3{font-size:1.1rem;color:var(--ink);margin:16px 0 8px;padding-bottom:4px;border-bottom:2px solid var(--ink)}
+
+/* clear grid lines for stock and shop tables */
+.dbody td{border-bottom:1px solid var(--soft)}
+.dbody td+td{border-left:1px solid var(--soft)}
+.dbody th+th{border-left:1px solid rgba(255,255,255,.35)}
+.shop table{min-width:430px}
+.shop tbody tr:nth-child(even) td{background:transparent}
+.shop td:nth-child(2),.shop td:nth-child(3){text-align:center;font-weight:600}
+.shop td.buy{white-space:nowrap;text-align:center}
+.shop tr.cat td{background:var(--hl);font-weight:600;font-size:1rem;border-left:0;border-bottom:2px solid var(--ink)}
+.shop tr.hl td{background:#fff3b0;color:#3a3a4a}
+
+/* brown wicker basket with red gingham cloth */
+.tray{position:relative;margin-top:46px;min-height:120px;padding:12px;border:12px solid transparent;border-radius:10px 10px 30px 30px;
+ background-image:linear-gradient(90deg,rgba(205,40,40,.62) 50%,transparent 50%),linear-gradient(rgba(205,40,40,.62) 50%,transparent 50%),linear-gradient(#fff,#fff),repeating-linear-gradient(45deg,#9a6a35 0 6px,#7b4f26 6px 12px);
+ background-size:28px 28px,28px 28px,auto,auto;background-clip:padding-box,padding-box,padding-box,border-box;background-origin:padding-box,padding-box,padding-box,border-box;
+ box-shadow:0 5px 0 #5e3a18}
+.tray::before{content:"";position:absolute;left:14%;right:14%;top:-58px;height:46px;border:9px solid #7b4f26;border-bottom:0;border-radius:70px 70px 0 0}
+.tray .empty{display:inline-block;background:rgba(255,255,255,.9);color:#3a3a4a;padding:3px 10px;border-radius:10px}
+
+/* vertical expanding tab bar (transparent) */
+dialog{width:min(720px,96vw);max-height:none;border:0;background:transparent;overflow:visible}
+dialog[open]{display:block}
+.dwrap{display:flex;gap:8px;align-items:flex-start}
+.vt{position:relative;z-index:2;flex:none;width:46px;display:flex;flex-direction:column;gap:8px;padding-top:6px;background:transparent}
+.tab{display:flex;align-items:center;width:max-content;height:46px;min-width:46px;padding:0 10px;gap:0;overflow:hidden;background:var(--paper);color:var(--ink);border:2px solid var(--ink);border-radius:23px;transition:background .2s,color .2s}
+.tab .ic{width:24px;height:24px;flex:none;stroke:currentColor;filter:none}
+.tab .lb{max-width:0;opacity:0;overflow:hidden;white-space:nowrap;font-weight:600;transition:max-width .3s ease,opacity .2s,margin .3s}
+.tab:hover .lb,.tab:focus-visible .lb,.tab.peek .lb{max-width:9em;opacity:1;margin:0 6px 0 8px}
+.tab[aria-pressed="true"]{background:var(--ink);color:var(--bg)}
+.tab:focus-visible{outline:2px dashed var(--ink);outline-offset:2px}
+.dmain{flex:1;min-width:0;max-height:88vh;display:flex;flex-direction:column;overflow:hidden;border:2.5px solid var(--ink);border-radius:18px 12px 16px 12px;background:var(--paper)}
+.dh{justify-content:flex-end}
+.dbody{flex:1;max-height:none}
+@media (prefers-reduced-motion:reduce){.tab,.tab .lb{transition:none}}
+
+/* profile + frames */
+.dbody{min-height:0}
+.user-profile{cursor:pointer}
+.avwrap{--s:34px;display:inline-block;flex:none;width:var(--s);height:var(--s);border-radius:50%;line-height:0}
+.avwrap .user-avatar{width:100%;height:100%;display:block}
+#avw{--s:40px}
+.avwrap[class*="fr-"]{padding:calc(var(--s)*.1);background:var(--g)}
+.avwrap[class*="fr-"] .user-avatar{border:2px solid var(--paper)}
+.fr-mint{--g:#7cc6a0}
+.fr-dot{--g:repeating-conic-gradient(#f28bb0 0 12deg,#fff 12deg 24deg)}
+.fr-gold{--g:conic-gradient(#f6d860,#b98a14,#fff3b0,#b98a14,#f6d860)}
+.fr-rb{--g:conic-gradient(#f66,#fa5,#fe5,#7d7,#5cf,#76f,#f6c,#f66)}
+.pf{display:flex;gap:12px;align-items:center;flex-wrap:nowrap;margin-top:6px;padding:10px 12px;border:2px solid var(--ink);border-radius:16px 12px 15px 11px;background:var(--hl)}
+.pfc{display:flex;flex-direction:column;gap:8px;min-width:0;flex:1}
+.pfc .tadd{align-items:center}
+.pfc .tadd input{width:auto;flex:1 1 90px;min-width:0}
+.pfc .tadd .btn{padding:6px 12px}
+.vh{position:absolute;width:1px;height:1px;opacity:0;overflow:hidden}
+label.btn{display:inline-block;cursor:pointer}
+label.btn:focus-within{outline:2px dashed var(--ink);outline-offset:2px}
+.frow{display:flex;align-items:center;gap:10px;padding:8px 4px;border-bottom:1px dashed var(--soft)}
+.frow .fn{flex:1;display:flex;flex-direction:column;line-height:1.25}
+.frow small{color:var(--soft)}
+.user-profile{cursor:default}
+#avw{cursor:pointer}
+.uname-in{font:inherit;font-weight:600;font-size:.9rem;color:var(--ink);background:var(--paper);border:2px solid var(--ink);border-radius:6px;padding:1px 8px;width:auto;max-width:100%;min-width:64px}
+.uname-in:focus-visible{outline:2px dashed var(--ink);outline-offset:2px}
+/* auth bar: keep name/status on one horizontal line */
+.user-profile{flex:1 1 auto;min-width:0}
+.user-info{min-width:0}
+.user-info strong,.user-status{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+/* old brown recipe book */
+.bkroot{padding:4px 0}
+.cover{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;text-align:center;width:100%;max-width:280px;aspect-ratio:3/4;margin:8px auto;padding:24px 24px 24px 34px;border:0;border-radius:6px 16px 16px 6px;color:#e8cf8f;font:inherit;cursor:pointer;
+ background:radial-gradient(circle at 30% 20%,rgba(255,255,255,.14),transparent 55%),repeating-linear-gradient(35deg,rgba(0,0,0,.07) 0 2px,transparent 2px 5px),linear-gradient(135deg,#7a4a26,#5a3318 60%,#3f230f);
+ box-shadow:inset 0 0 0 3px #3a210e,inset 12px 0 16px rgba(0,0,0,.35),4px 6px 0 #2b1709,0 8px 18px rgba(0,0,0,.3)}
+.cover::before{content:"";position:absolute;inset:14px 14px 14px 30px;border:2px dashed #c9a45c;border-radius:4px 10px 10px 4px;opacity:.8;pointer-events:none}
+.cover::after{content:"";position:absolute;left:0;top:0;bottom:0;width:18px;border-radius:6px 0 0 6px;background:linear-gradient(90deg,#2d1809,#5a3318)}
+.cover .ic{width:64px;height:64px;stroke:#e8cf8f;filter:none}
+.cover .ct{font-size:1.5rem;font-weight:600;text-shadow:0 2px 0 #2b1709}
+.cover .cs{font-size:.85rem;opacity:.85}
+.cover:focus-visible{outline:2px dashed #e8cf8f;outline-offset:-8px}
+.bkopen{max-width:460px;margin:6px auto}
+.bkbody{position:relative;padding:10px 10px 10px 20px;border-radius:6px 14px 14px 6px;background:linear-gradient(135deg,#7a4a26,#4d2b13);box-shadow:inset 0 0 0 3px #3a210e,4px 6px 0 #2b1709}
+.bkbody .cover.cvo{position:absolute;inset:0;z-index:5;max-width:none;width:auto;margin:0;aspect-ratio:auto;pointer-events:none;transform-origin:left center;animation:cvo .95s ease-in-out forwards}
+.bkp{position:relative;min-height:320px;overflow:hidden;border-radius:3px 8px 8px 3px;background:#f1e2c0;touch-action:pan-y;box-shadow:3px 0 0 #e3cf9f,5px 0 0 #cdb680}
+.pg{padding:16px 16px 14px 24px;color:#4a3520;font-size:.92rem;line-height:1.6;background:linear-gradient(90deg,rgba(100,65,25,.28),transparent 10%),radial-gradient(ellipse at 85% 95%,rgba(150,100,40,.22),transparent 55%),radial-gradient(ellipse at 10% 5%,rgba(150,100,40,.15),transparent 45%),#f1e2c0}
+.pg h4{margin:0 0 8px;font-size:1.25rem;color:#5a3318;border-bottom:3px double #a07a45;padding-bottom:4px}
+.pg .note{color:#8a6a45}
+.pg p{margin:6px 0}
+.pg ol,.pg ul{margin:4px 0 6px;padding-left:20px}
+.pg li{margin:3px 0}
+.pg li.lock{color:#8a6a45}
+.pg .pic{display:flex;gap:2px;flex-wrap:wrap;margin:2px 0 4px}
+.pg .ic{width:30px;height:30px;stroke:#5a3318}
+.pg .lk{display:flex;align-items:center;gap:8px;padding:4px 8px;margin:6px 0;border:1.5px dashed #a07a45;border-radius:10px;color:#8a6a45}
+.pg .lk .ic{width:24px;height:24px;opacity:.55}
+.pg .rt{text-align:right;font-size:.85rem}
+.pg.fl{position:absolute;inset:0;z-index:3;pointer-events:none;box-shadow:-8px 0 16px rgba(60,35,10,.35)}
+.pg.fl.fn{transform-origin:left center;animation:pgn .6s ease-in forwards}
+.pg.fl.fp{transform-origin:right center;animation:pgp .6s ease-in forwards}
+.bkn{display:flex;align-items:center;justify-content:center;gap:10px;margin-top:10px;flex-wrap:wrap}
+@keyframes pgn{to{transform:perspective(1200px) rotateY(-100deg);opacity:0}}
+@keyframes pgp{to{transform:perspective(1200px) rotateY(100deg);opacity:0}}
+@keyframes cvo{0%{transform:none;opacity:1}65%{opacity:1}100%{transform:perspective(1400px) rotateY(-165deg);opacity:0}}
+/* custom ingredient images + owner tab */
+img.ic{object-fit:contain;border-radius:8px}
+.tab[hidden]{display:none}
+.frow .ic{width:40px;height:40px;flex:none}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+<defs>
+<filter id="r" x="-5%" y="-5%" width="110%" height="110%"><feTurbulence type="fractalNoise" baseFrequency="0.02" numOctaves="2" seed="4" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="5"/></filter>
+<filter id="rs" x="-10%" y="-10%" width="120%" height="120%"><feTurbulence type="fractalNoise" baseFrequency="0.05" numOctaves="2" seed="2" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="2.2"/></filter>
+<symbol id="i-tomato" viewBox="0 0 48 48"><circle cx="24" cy="28" r="14"/><path d="M24 14l-6-4M24 14l6-4M24 14v-6M17 15q7 4 14 0"/></symbol>
+<symbol id="i-carrot" viewBox="0 0 48 48"><path d="M14 16Q34 10 36 22L10 42Q4 24 14 16Z"/><path d="M34 14l3-8M37 17l7-3M20 22l5 2M16 30l5 2"/></symbol>
+<symbol id="i-onion" viewBox="0 0 48 48"><path d="M24 10Q6 24 14 36q10 8 20 0Q42 24 24 10z"/><path d="M24 10q-7 14 0 28M24 10q7 14 0 28M24 10V4"/></symbol>
+<symbol id="i-garlic" viewBox="0 0 48 48"><path d="M24 12Q10 18 12 32q4 8 12 8t12-8Q38 18 24 12z"/><path d="M24 12V5M24 14q-5 12 0 25M24 14q5 12 0 25"/></symbol>
+<symbol id="i-chili" viewBox="0 0 48 48"><path d="M14 14Q32 12 36 28q2 8-4 14-2-14-20-20-2-6 2-8z"/><path d="M14 14l-3-6"/></symbol>
+<symbol id="i-cabbage" viewBox="0 0 48 48"><circle cx="24" cy="26" r="15"/><path d="M24 11q-8 15 0 30M24 11q8 15 0 30M10 24q14 6 28 0"/></symbol>
+<symbol id="i-scallion" viewBox="0 0 48 48"><path d="M24 44V22M20 44l-3-22M28 44l3-22M24 22Q22 10 18 5M17 22Q13 14 9 12M31 22q4-10 8-12"/></symbol>
+<symbol id="i-mushroom" viewBox="0 0 48 48"><path d="M7 28Q24 4 41 28z"/><path d="M19 28v12q5 3 10 0V28M16 20h1M24 15h1M31 21h1"/></symbol>
+<symbol id="i-mince" viewBox="0 0 48 48"><path d="M7 32Q24 8 41 32q-4 9-17 9T7 32z"/><path d="M15 30q3-4 6 0M24 26q3-4 6 0M19 35q3-3 6 0M28 34q3-3 6 0"/></symbol>
+<symbol id="i-belly" viewBox="0 0 48 48"><path d="M7 14q17-5 34 0l-2 22q-15 4-30 0z"/><path d="M8 22q16 4 32 0M9 29q15-4 30 0"/></symbol>
+<symbol id="i-chop" viewBox="0 0 48 48"><path d="M8 22Q12 9 28 11q13 2 11 15-2 13-17 11Q6 35 8 22z"/><circle cx="22" cy="24" r="4"/></symbol>
+<symbol id="i-egg" viewBox="0 0 48 48"><path d="M24 7Q9 18 12 33q2 9 12 9t12-9Q39 18 24 7z"/><path d="M17 30q2 5 7 6"/></symbol>
+<symbol id="i-fish" viewBox="0 0 48 48"><path d="M20 5h8v9l5 6v23H15V20l5-6z"/><path d="M15 28h18M15 36h18M21 5h6"/></symbol>
+<symbol id="i-oyster" viewBox="0 0 48 48"><path d="M11 14h26V7H11zM12 14v28h24V14"/><path d="M17 23h14v11H17zM20 28h8"/></symbol>
+<symbol id="i-soy" viewBox="0 0 48 48"><path d="M21 4h6v8M17 12h14q4 7 4 15v15H13V27q0-8 4-15z"/><path d="M15 29q9 5 18 0"/></symbol>
+<symbol id="i-sugar" viewBox="0 0 48 48"><path d="M11 12h26l2 30H9z"/><path d="M15 21h18M20 31h1M27 33h1M23 27h1M18 37h1M30 38h1"/></symbol>
+<symbol id="i-salt" viewBox="0 0 48 48"><path d="M16 15h16l2 27H14zM16 15q8-11 16 0"/><path d="M21 25h1M27 25h1M24 31h1M21 37h1M27 37h1"/></symbol>
+<symbol id="i-oil" viewBox="0 0 48 48"><path d="M20 4h8v6M18 10h12q5 4 5 11v21H13V21q0-7 5-11z"/><path d="M13 27h22M13 37h22M24 29q-3 4 0 5t0-5"/></symbol>
+<symbol id="i-coconut" viewBox="0 0 48 48"><circle cx="24" cy="26" r="15"/><path d="M10 28q14 9 28 0M18 18h1M24 15h1M30 18h1M24 11q4-4 9-3"/></symbol>
+<symbol id="i-plara" viewBox="0 0 48 48"><path d="M16 9h16M14 12q-5 8-2 16 2 10 12 13 10-3 12-13 3-8-2-16M13 20q11 5 22 0"/><path d="M17 9q7 5 14 0"/></symbol>
+<symbol id="i-chicken" viewBox="0 0 48 48"><path d="M27 7q14-1 14 13 0 10-12 12l-8-6q-3-14 6-19z"/><path d="M21 26l-10 10M11 36l-4-2M11 36l-2 5M11 36l5 3"/></symbol>
+<symbol id="i-shrimp" viewBox="0 0 48 48"><path d="M9 30q2-16 19-18 12 0 12 11 0 11-11 11"/><path d="M18 14l4 11M25 13l3 11M32 15l2 9M11 32l-6 6 7 1zM34 19h1"/></symbol>
+<symbol id="i-rice" viewBox="0 0 48 48"><path d="M7 25h34q0 16-17 16T7 25z"/><path d="M11 25q13-19 26 0M20 18h2M27 16h2M24 22h2"/></symbol>
+<symbol id="i-coriander" viewBox="0 0 48 48"><path d="M24 44V22M24 22q-12 0-12-8 6-2 12 4M24 22q12 0 12-8-6-2-12 4M24 18q-6-4-2-12 8 4 2 12"/></symbol>
+<symbol id="i-galangal" viewBox="0 0 48 48"><path d="M7 30q2-10 12-8 4-8 14-4 8 4 6 12-2 8-10 6-6 6-14 2-8 0-8-8z"/><path d="M16 27v7M26 24v9M35 24v6"/></symbol>
+<symbol id="i-lemongrass" viewBox="0 0 48 48"><path d="M18 44q-2-10 2-16h8q4 6 2 16zM20 34h8M19 39h10"/><path d="M22 28Q20 14 12 6M24 28V4M26 28q2-12 10-20"/></symbol>
+<symbol id="i-kaffir" viewBox="0 0 48 48"><path d="M24 5q8 5 8 12-4 3-8 3t-8-3q0-7 8-12z"/><path d="M24 23q7 4 7 10-3 3-7 3t-7-3q0-6 7-10zM24 5v36"/></symbol>
+<symbol id="i-papaya" viewBox="0 0 48 48"><path d="M24 5q-14 6-14 23 0 10 8 14h12q8-4 8-14 0-17-14-23z"/><ellipse cx="24" cy="28" rx="7" ry="10"/><path d="M22 24h1M26 27h1M22 31h1M26 34h1"/></symbol>
+<symbol id="i-lime" viewBox="0 0 48 48"><circle cx="24" cy="26" r="15"/><circle cx="24" cy="26" r="11"/><path d="M24 15v22M13 26h22M16 18l16 16M32 18L16 34"/></symbol>
+<symbol id="s-star" viewBox="0 0 48 48"><path d="M24 5l5.5 12 13 1.5-9.5 9 2.5 13L24 34l-11.5 6.5L15 27.5 5.5 18.5l13-1.5z"/></symbol>
+<symbol id="s-heart" viewBox="0 0 48 48"><path d="M24 42C6 28 5 16 13 11q8-3 11 5 3-8 11-5c8 5 7 17-11 31z"/></symbol>
+<symbol id="s-flower" viewBox="0 0 48 48"><circle cx="24" cy="12" r="6"/><circle cx="35" cy="20" r="6"/><circle cx="31" cy="34" r="6"/><circle cx="17" cy="34" r="6"/><circle cx="13" cy="20" r="6"/><circle cx="24" cy="24" r="5" fill="#f2c94c"/></symbol>
+<symbol id="s-smile" viewBox="0 0 48 48"><circle cx="24" cy="24" r="18"/><path fill="none" d="M17 20v4M31 20v4M15 29q9 9 18 0"/></symbol>
+<symbol id="s-sun" viewBox="0 0 48 48"><circle cx="24" cy="24" r="9"/><path fill="none" d="M24 4v7M24 37v7M4 24h7M37 24h7M10 10l5 5M33 33l5 5M38 10l-5 5M15 33l-5 5"/></symbol>
+<symbol id="s-cat" viewBox="0 0 48 48"><path d="M10 20L12 6l9 7q3-1 6 0l9-7 2 14q3 8-1 14-4 8-15 8T9 34q-3-6 1-14z"/><path fill="none" d="M19 26h1M29 26h1M23 31h2M8 30l8 1M40 30l-8 1"/></symbol>
+<symbol id="s-fish" viewBox="0 0 48 48"><path d="M5 24q12-14 26 0-14 14-26 0zM31 24l11-8v16z"/><path fill="none" d="M13 22h1"/></symbol>
+<symbol id="s-cloud" viewBox="0 0 48 48"><path d="M14 37q-8 0-8-7t8-7q1-9 11-9 8 0 10 8 9 0 9 8t-9 7z"/></symbol>
+<symbol id="s-berry" viewBox="0 0 48 48"><path d="M24 12Q8 14 11 28q3 14 13 16 10-2 13-16 3-14-13-16z"/><path fill="none" d="M24 12l-6-6M24 12l6-6M24 12V5M18 24h1M26 22h1M22 31h1M30 30h1"/></symbol>
+<symbol id="i-basil" viewBox="0 0 48 48"><path d="M24 44V20M24 32q-10 0-12-8 8-2 12 4M24 32q10 0 12-8-8-2-12 4M24 20q-7-2-7-10 7 0 7 10zM24 20q7-2 7-10-7 0-7 10z"/></symbol>
+<symbol id="i-squid" viewBox="0 0 48 48"><path d="M24 4q10 8 8 22H16Q14 12 24 4zM13 28h22M16 28q-1 8-4 12M21 28q0 8-1 14M27 28q0 8 1 14M32 28q1 8 4 12"/><path d="M20 20h1M28 20h1"/></symbol>
+<symbol id="i-coin" viewBox="0 0 48 48"><circle cx="24" cy="24" r="17"/><circle cx="24" cy="24" r="12"/><path fill="none" d="M21 15v18M21 17h5q4 0 4 4t-4 4h-5M21 25h6q4 0 4 4t-4 4h-6"/></symbol>
+<symbol id="t-shop" viewBox="0 0 48 48"><path d="M8 18h32l-3 22H11z"/><path d="M16 18q0-10 8-10t8 10"/></symbol>
+<symbol id="t-book" viewBox="0 0 48 48"><path d="M7 9h13q4 0 4 4v27q0-4-4-4H7zM41 9H28q-4 0-4 4v27q0-4 4-4h13z"/></symbol>
+<symbol id="t-img" viewBox="0 0 48 48"><rect x="6" y="9" width="36" height="30" rx="4"/><circle cx="17" cy="20" r="4"/><path d="M8 36l11-10 8 7 6-5 9 8"/></symbol>
+<symbol id="t-prof" viewBox="0 0 48 48"><circle cx="24" cy="16" r="8"/><path d="M8 42q2-14 16-14t16 14"/></symbol>
+<symbol id="i-pepper" viewBox="0 0 48 48"><path d="M18 5h12v6H18zM16 11h16l-3 31H19z"/><path d="M21 22h6M21 30h6"/></symbol>
+</defs>
+</svg>
+
+<main>
+<div class="auth-bar">
+  <div class="user-profile" id="uprof">
+    <span id="avw" class="avwrap"><img id="uavatar" class="user-avatar" src="data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%238a7a62'%3E%3Ccircle cx='12' cy='8' r='4'/%3E%3Cpath d='M12 14c-6.1 0-8 4-8 4v2h16v-2s-1.9-4-8-4z'/%3E%3C/svg%3E" alt="ผู้ใช้"></span>
+    <div class="user-info">
+      <input id="uname" class="uname-in" maxlength="20" placeholder="ตั้งชื่อของคุณ" aria-label="ชื่อที่แสดง (แก้ไขได้)" autocomplete="off">
+      <span id="ustatus" class="user-status">ล็อกอินกูเกิลเพื่อเซฟคลาวด์อัตโนมัติ</span>
+    </div>
+  </div>
+  <button id="btnAuth" class="btn-google">
+    <svg viewBox="0 0 24 24"><path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.665-5.17 3.665-9.17z"/><path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.02c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.11-6.72-4.96H1.29v3.13C3.26 21.3 7.31 24 12 24z"/><path fill="#FBBC05" d="M5.28 14.27c-.25-.72-.38-1.49-.38-2.27s.13-1.55.38-2.27V6.6H1.29C.47 8.23 0 10.06 0 12s.47 3.77 1.29 5.4l3.99-3.13z"/><path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.31 0 3.26 2.7 1.29 6.6l3.99 3.13c.95-2.85 3.6-4.98 6.72-4.98z"/></svg>
+    <span id="authTxt">เข้าสู่ระบบด้วย Google</span>
+  </button>
+</div>
+
+<h1>Cook & Create</h1>
+<p class="sub">คลิกของในตู้เย็นเพื่อหยิบใส่ตะกร้า แล้วกดรวมเป็นเมนู</p>
+<div class="wallet"><span class="wc"><svg class="ic" viewBox="0 0 48 48" aria-hidden="true"><use href="#i-coin"/></svg><b id="coin">0</b> เหรียญ</span><span class="note" id="tot"></span><span class="wsp"></span><button class="btn" id="chk">เช็คอินวันนี้ +10</button><button class="btn ghost" id="shopb">ร้านค้า</button><button class="btn ghost" id="bookb">สมุดสูตร</button></div>
+<div class="rec" aria-label="แถบเมนูแนะนำ"><span class="rtl">เมนูแนะนำ</span><div id="recl" class="recl"></div></div>
+<div class="layout">
+  <div class="lcol">
+  <div class="fbar"><button class="btn" id="dr">ปิดตู้เย็น</button><span class="note" id="dh"></span></div>
+  <div class="ctray"><span class="note">ถาดสีตู้เย็น</span><span id="sws"></span></div>
+  <div id="pal" class="pal" hidden><span class="note">เลือกสติกเกอร์แล้วลากไปวางบนประตู คลิกที่สติกเกอร์เพื่อหมุนหรือขยาย</span><span id="pals"></span><span class="tadd"><input id="stxt" maxlength="30" placeholder="พิมพ์ข้อความ เช่น อย่าลืมซื้อไข่" aria-label="ข้อความสติกเกอร์"><button class="btn ghost" id="sadd">เพิ่มข้อความ</button></span><button class="btn ghost" id="sclr">ล้างสติกเกอร์</button></div>
+  <section class="fridge" aria-label="ตู้เย็น">
+    <svg class="frame" aria-hidden="true"><g filter="url(#r)"><rect class="bg" x="1%" y="1%" width="98%" height="98%" rx="22"/><rect x="1%" y="1%" width="98%" height="98%" rx="22"/><rect x="95%" y="9%" width="1.8%" height="22%" rx="6"/></g></svg>
+    <div id="shelves"></div>
+    <div id="door" class="door" aria-label="ประตูตู้เย็น">
+      <svg class="frame" aria-hidden="true"><g filter="url(#r)"><rect class="bg" x="1%" y="1%" width="98%" height="98%" rx="22"/><rect x="1%" y="1%" width="98%" height="98%" rx="22"/><line x1="1%" y1="30%" x2="99%" y2="30%"/></g></svg>
+      <div id="stkl" class="stkl"></div>
+      <button id="hdl" class="hdl" aria-label="เปิดตู้เย็น"></button>
+    </div>
+  </section>
+  </div>
+
+  <section class="panel" aria-live="polite">
+    <svg class="bd" aria-hidden="true"><g filter="url(#r)"><rect x="1" y="1" width="calc(100% - 2px)" height="calc(100% - 2px)" rx="16"/></g></svg>
+    <h2>ตะกร้าวัตถุดิบ <span id="cnt" class="note"></span></h2>
+    <div id="tray" class="tray"></div>
+    <div class="acts">
+      <button class="btn" id="mix" disabled>รวมเป็นเมนู</button>
+      <button class="btn ghost" id="clr" disabled>เก็บเข้าตู้เย็น</button>
+    </div>
+    <div id="menu" class="menu" hidden></div>
+  </section>
+</div>
+</main>
+<dialog id="dlg" aria-label="ร้านค้าและคลังสต็อก"><div class="dwrap">
+<nav class="vt" aria-label="เมนูร้านค้า">
+<button class="tab" data-t="shop" aria-pressed="true"><svg class="ic" viewBox="0 0 48 48" aria-hidden="true"><use href="#t-shop"/></svg><span class="lb">ร้านค้า</span></button>
+<button class="tab" data-t="book" aria-pressed="false"><svg class="ic" viewBox="0 0 48 48" aria-hidden="true"><use href="#t-book"/></svg><span class="lb">สมุดสูตร</span></button>
+<button class="tab" data-t="prof" aria-pressed="false"><svg class="ic" viewBox="0 0 48 48" aria-hidden="true"><use href="#t-prof"/></svg><span class="lb">โปรไฟล์</span></button>
+<button class="tab" data-t="own" aria-pressed="false" hidden><svg class="ic" viewBox="0 0 48 48" aria-hidden="true"><use href="#t-img"/></svg><span class="lb">จัดการรูป</span></button>
+</nav>
+<div class="dmain"><div class="dh"><span class="dcoin"><svg class="ic" viewBox="0 0 48 48" aria-hidden="true"><use href="#i-coin"/></svg><b id="dcoin"></b></span><button class="dx" id="dclose" aria-label="ปิด">✕</button></div><div id="dbody" class="dbody"></div></div>
+</div></dialog>
+<div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+<!-- Firebase SDK Imports -->
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+import { getAuth, signInWithPopup, signInWithRedirect, GoogleAuthProvider, signOut, onAuthStateChanged, signInWithCustomToken, signInAnonymously } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+import { getFirestore, doc, setDoc, getDoc, getDocs, deleteDoc, collection } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+const appId = typeof __app_id !== 'undefined' ? __app_id : 'fridge-menu-app';
+
+// ===== ใส่ค่า Firebase จริงของคุณตรงนี้ (Firebase Console > Project settings > Your apps > Web app) =====
+const MY_FIREBASE_CONFIG = {
+  apiKey: "AIzaSyD9nGkgcUtZhljbMfgalMzkzXJldpYzHV4",
+  authDomain: "cookandcreate-df3ed.firebaseapp.com",
+  projectId: "cookandcreate-df3ed",
+  storageBucket: "cookandcreate-df3ed.firebasestorage.app",
+  messagingSenderId: "562747057827",
+  appId: "1:562747057827:web:57f24370f6f9a7380f4116"
+};
+// ถ้ารันในสภาพแวดล้อมที่ให้ __firebase_config มา จะใช้ค่านั้นก่อน
+const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : MY_FIREBASE_CONFIG;
+const cloudReady = !!(firebaseConfig.apiKey && firebaseConfig.projectId);
+
+// ===== เจ้าของเว็บ: ใส่อีเมล Google ของคุณตรงนี้ เฉพาะบัญชีนี้ที่จะเห็นแท็บ "จัดการรูป" =====
+// *** ความปลอดภัยจริงอยู่ที่ Firestore Security Rules (ดูตัวอย่างด้านล่าง) ปุ่มในหน้าเว็บแค่ซ่อนจากผู้เล่นทั่วไป ***
+//
+// rules_version = '2';
+// service cloud.firestore {
+//   match /databases/{database}/documents {
+//     match /artifacts/{appId}/public/data/ingImages/{imgId} {
+//       allow read: if true;
+//       allow write: if request.auth != null
+//         && request.auth.token.email == "waranthayapn@gmail.com"
+//         && request.auth.token.email_verified == true;
+//     }
+//     match /artifacts/{appId}/users/{uid}/gameData/{docId} {
+//       allow read, write: if request.auth != null && request.auth.uid == uid;
+//     }
+//   }
+// }
+const OWNER_EMAIL = "waranthayapn@gmail.com";
+
+let auth = null, db = null, googleProvider = null;
+let isGoogleUser = false;
+let loadingCloud = false;
+window.isOwner = false;
+
+// รูปวัตถุดิบที่เจ้าของอัปโหลด: ทุกคนอ่านได้ เขียนได้เฉพาะเจ้าของ (บังคับด้วย Security Rules)
+async function loadIngImages() {
+  if (!cloudReady || !db) return;
+  try {
+    const snap = await getDocs(collection(db, 'artifacts', appId, 'public', 'data', 'ingImages'));
+    const m = {};
+    snap.forEach(d => { const v = d.data(); if (v && typeof v.img === "string") m[d.id] = v.img; });
+    window.setIngImages(m);
+  } catch (err) {
+    console.warn("Load ingredient images failed:", err);
+  }
+}
+window.saveIngImage = async (id, img) => {
+  if (!window.isOwner || !db) return false;
+  try { await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'ingImages', id), { img, updatedAt: Date.now() }); return true; }
+  catch (e) { console.error(e); return false; }
+};
+window.deleteIngImage = async (id) => {
+  if (!window.isOwner || !db) return false;
+  try { await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'ingImages', id)); return true; }
+  catch (e) { console.error(e); return false; }
+};
+
+const $u = id => document.getElementById(id);
+const toastMsg = m => window.toast && window.toast(m);
+const readLocalTs = () => { try { return Number(localStorage.getItem("fridgeUpdated") || 0); } catch (e) { return 0; } };
+const writeLocalTs = t => { try { localStorage.setItem("fridgeUpdated", String(t)); } catch (e) {} };
+
+const defaultG = () => ({ coins: 50, stock: {}, last: "", log: [], cooked: {} });
+
+// Save to Firestore Cloud
+window.saveCloudData = async function () {
+  if (!cloudReady || loadingCloud || !auth || !auth.currentUser || !isGoogleUser) return;
+  const uid = auth.currentUser.uid;
+  const docRef = doc(db, 'artifacts', appId, 'users', uid, 'gameData', 'state');
+  const ts = Date.now();
+  const payload = {
+    G: window.G || {},
+    stks: window.stks || [],
+    fridgeColor: (() => { try { return localStorage.getItem("fridgeColor") || ""; } catch (e) { return ""; } })(),
+    updatedAt: ts
+  };
+  try {
+    await setDoc(docRef, payload, { merge: true });
+    writeLocalTs(ts);
+  } catch (err) {
+    console.error("Cloud save failed:", err);
+  }
+};
+
+// Load from Firestore Cloud (เทียบ updatedAt: ใครใหม่กว่าชนะ)
+async function loadCloudData() {
+  if (!cloudReady || !auth || !auth.currentUser || !isGoogleUser) return;
+  const uid = auth.currentUser.uid;
+  const docRef = doc(db, 'artifacts', appId, 'users', uid, 'gameData', 'state');
+  try {
+    const snap = await getDoc(docRef);
+    const localTs = readLocalTs();
+    const data = snap.exists() ? snap.data() : null;
+    const cloudTs = data ? (data.updatedAt || 0) : 0;
+
+    if (data && cloudTs > localTs) {
+      loadingCloud = true;
+      try {
+        if (data.G) {
+          window.G = { ...defaultG(), ...data.G };
+          window.saveGLocally(true);
+        }
+        window.stks = Array.isArray(data.stks) ? data.stks : [];
+        window.saveStksLocally(true);
+        if (window.drawStk) window.drawStk();
+        if (data.fridgeColor !== undefined) window.setColor(data.fridgeColor, true);
+        writeLocalTs(cloudTs);
+        window.renderStock();
+        window.renderUser();
+      } finally {
+        loadingCloud = false;
+      }
+      toastMsg("โหลดข้อมูลคลาวด์สำเร็จ!");
+    } else {
+      // ในเครื่องใหม่กว่า (หรือยังไม่มีข้อมูลบนคลาวด์) -> อัปโหลดขึ้นไปแทน
+      await window.saveCloudData();
+      toastMsg(data ? "ข้อมูลในเครื่องใหม่กว่า อัปโหลดขึ้นคลาวด์แล้ว" : "สร้างเซฟบนคลาวด์แล้ว");
+    }
+  } catch (err) {
+    loadingCloud = false;
+    console.error("Cloud load failed:", err);
+  }
+}
+
+function setGuestUI(msg) {
+  window.authInfo = { google: false, name: "", photo: "", status: msg || "ล็อกอินกูเกิลเพื่อเซฟคลาวด์อัตโนมัติ" };
+  $u("authTxt").textContent = "เข้าสู่ระบบด้วย Google";
+  window.renderUser();
+}
+
+if (cloudReady) {
+  const app = initializeApp(firebaseConfig);
+  auth = getAuth(app);
+  db = getFirestore(app);
+  googleProvider = new GoogleAuthProvider();
+  loadIngImages();
+
+  (async () => {
+    try {
+      if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+        await signInWithCustomToken(auth, __initial_auth_token);
+      } else {
+        await signInAnonymously(auth);
+      }
+    } catch (err) {
+      console.warn("Auth initialization fallback:", err);
+    }
+  })();
+
+  onAuthStateChanged(auth, async (user) => {
+    isGoogleUser = !!(user && !user.isAnonymous && user.providerData.some(p => p.providerId === 'google.com'));
+    const wasOwner = window.isOwner;
+    window.isOwner = !!(isGoogleUser && OWNER_EMAIL && user.email && user.emailVerified && user.email.toLowerCase() === OWNER_EMAIL.toLowerCase());
+    window.refreshOwnerUI();
+    if (window.isOwner && !wasOwner) toastMsg("โหมดเจ้าของเว็บ: จัดการรูปวัตถุดิบได้ที่แท็บ จัดการรูป");
+    if (isGoogleUser) {
+      window.authInfo = { google: true, name: user.displayName || "", photo: user.photoURL || "", status: "เชื่อมต่อระบบเซฟคลาวด์แล้ว" };
+      $u("authTxt").textContent = "ออกจากระบบ";
+      window.renderUser();
+      await loadCloudData();
+    } else {
+      setGuestUI();
+    }
+  });
+} else {
+  setGuestUI("ยังไม่ได้ตั้งค่า Firebase เซฟในเครื่องนี้เท่านั้น");
+}
+
+// Google Login / Logout
+$u("btnAuth").addEventListener("click", async () => {
+  if (!cloudReady) {
+    toastMsg("ยังไม่ได้ใส่ค่า Firebase ในโค้ด (MY_FIREBASE_CONFIG)");
+    return;
+  }
+  if (location.protocol === "file:") {
+    toastMsg("ล็อกอินไม่ได้เมื่อเปิดเป็นไฟล์ในเครื่อง ต้องเผยแพร่เป็นเว็บ (https) ก่อน");
+    return;
+  }
+  if (isGoogleUser) {
+    try {
+      await signOut(auth);
+      toastMsg("ออกจากระบบเรียบร้อยแล้ว");
+      await signInAnonymously(auth);
+    } catch (e) {
+      console.error(e);
+    }
+    return;
+  }
+  try {
+    const res = await signInWithPopup(auth, googleProvider);
+    toastMsg("ยินดีต้อนรับ " + (res.user.displayName || ""));
+  } catch (e) {
+    console.error("Login failed:", e);
+    if (e.code === 'auth/unauthorized-domain' || e.code === 'auth/popup-blocked') {
+      try {
+        await signInWithRedirect(auth, googleProvider);
+      } catch (redirErr) {
+        console.error(redirErr);
+        toastMsg("โดเมนนี้ยังไม่ได้เปิดใช้งาน Google Auth ใน Firebase Console");
+      }
+    } else if (e.code === 'auth/operation-not-supported-in-this-environment') {
+      toastMsg("เบราว์เซอร์/สภาพแวดล้อมนี้ล็อกอิน Google ไม่ได้ ลองเปิดผ่านเว็บที่เผยแพร่แล้ว");
+    } else if (e.code !== 'auth/popup-closed-by-user' && e.code !== 'auth/cancelled-popup-request') {
+      toastMsg("เข้าสู่ระบบไม่สำเร็จ: " + (e.message || "โปรดลองใหม่อีกครั้ง"));
+    }
+  }
+});
+</script>
+
+<script>
+const touchLocal=()=>{try{localStorage.setItem("fridgeUpdated",String(Date.now()))}catch(e){}};
+const ITEMS=[
+["fish","น้ำปลา","seas"],["oyster","ซอสหอยนางรม","seas"],["soy","ซีอิ๊วขาว","seas"],["sugar","น้ำตาล","seas"],["salt","เกลือ","seas"],["pepper","พริกไทย","seas"],["oil","น้ำมันพืช","seas"],["coconut","กะทิ","seas"],["plara","น้ำปลาร้า","seas"],
+["mince","หมูสับ","meat"],["belly","หมูสามชั้น","meat"],["chop","หมูชิ้น","meat"],["egg","ไข่ไก่","meat"],["chicken","เนื้อไก่","meat"],["shrimp","กุ้ง","meat"],["squid","ปลาหมึก","meat"],["rice","ข้าวสวย","meat"],["coriander","ผักชี","herb"],["galangal","ข่า","herb"],["lemongrass","ตะไคร้","herb"],["kaffir","ใบมะกรูด","herb"],["basil","ใบกะเพรา","herb"],
+["tomato","มะเขือเทศ","veg"],["carrot","แครอท","veg"],["onion","หอมใหญ่","veg"],["garlic","กระเทียม","veg"],["chili","พริก","veg"],["cabbage","กะหล่ำปลี","veg"],["scallion","ต้นหอม","veg"],["mushroom","เห็ด","veg"],["papaya","มะละกอ","veg"],["lime","มะนาว","veg"]
+];
+const CATS=[["seas","ชั้นเครื่องปรุง"],["meat","ชั้นเนื้อสัตว์ ไข่ และข้าว"],["herb","ชั้นสมุนไพร"],["veg","ลิ้นชักผัก"]];
+const nm=id=>ITEMS.find(i=>i[0]===id)[1];
+const idx=id=>ITEMS.findIndex(i=>i[0]===id);
+const cat=id=>ITEMS[idx(id)][2],sea=id=>cat(id)==="seas";
+let IMG={};
+const IMG_RE=/^data:image\/(png|jpeg|webp);base64,[A-Za-z0-9+\/=]+$/;
+function cleanImgs(o){const r={};if(o&&typeof o==="object")for(const k of Object.keys(o)){const v=o[k];if(idx(k)>=0&&typeof v==="string"&&v.length<150000&&IMG_RE.test(v))r[k]=v}return r}
+try{IMG=cleanImgs(JSON.parse(localStorage.getItem("ingImgCache")||"{}"))}catch(e){IMG={}}
+const ic=(id,c)=>IMG[id]?`<img class="ic im ${c||""}" src="${IMG[id]}" alt="" aria-hidden="true">`:`<svg class="ic ${c||""}" viewBox="0 0 48 48" aria-hidden="true"><use href="#i-${id}"/></svg>`;
+const GEN0=["ตั้งกระทะใส่น้ำมัน เจียวกระเทียมหรือหอมให้หอม (ถ้ามี)","ใส่เนื้อสัตว์หรือไข่ลงไปผัดจนสุก","ใส่ผักตามลงไปผัดไฟแรง","ปรุงรสด้วยของที่หยิบมา ชิมแล้วตักเสิร์ฟ"];
+const R=[
+{n:"ผัดกะเพราหมูสับ",need:["mince","garlic","chili","oyster","basil"],opt:["soy","sugar","fish","onion","egg","rice"],d:"หมูสับผัดไฟแรงกับพริกและกระเทียม หอมฉุยกินกับข้าวสวยร้อนๆ",s:["โขลกกระเทียมกับพริก","ผัดให้หอม ใส่หมูสับผัดจนสุก","ปรุงด้วยซอสหอยนางรม ซีอิ๊ว และน้ำตาลเล็กน้อย","ใส่ใบกะเพรา ผัดเร็วๆ ให้หอม","ตักเสิร์ฟ"]},
+{n:"หมูกระเทียมพริกไทย",need:["chop","garlic","pepper"],opt:["fish","soy","salt","scallion","chili"],d:"หมูชิ้นนุ่มหอมกระเทียมพริกไทย ทอดหรือผัดก็อร่อย",s:["โขลกกระเทียมกับพริกไทย คลุกหมูพักไว้","ตั้งกระทะน้ำมัน ผัดหมูจนสุกเหลือง","ปรุงด้วยน้ำปลาหรือซีอิ๊วเล็กน้อย","โรยพริกไทยเพิ่ม ตักเสิร์ฟ"]},
+{n:"ไข่เจียวหมูสับ",need:["egg","mince"],opt:["scallion","fish","pepper","onion","chili","tomato"],d:"ไข่เจียวฟูกรอบนอกนุ่มใน สอดไส้หมูสับ",s:["ตอกไข่ใส่หมูสับและน้ำปลา ตีให้เข้ากัน","ตั้งน้ำมันให้ร้อนจัด เทไข่ลงไป","ทอดจนเหลืองทั้งสองด้าน","ตักขึ้นโรยต้นหอม"]},
+{n:"ต้มจืดกะหล่ำปลีหมูสับ",need:["mince","cabbage"],opt:["scallion","soy","pepper","garlic","mushroom","carrot","fish","egg","coriander"],d:"ซุปใสหวานจากผัก หมูสับก้อนนุ่ม กินแล้วสบายท้อง",s:["ต้มน้ำให้เดือด ปั้นหมูสับเป็นก้อนหยอดลงไป","ใส่กะหล่ำปลีและผักอื่นๆ ต้มจนนุ่ม","ปรุงด้วยซีอิ๊วขาวและพริกไทย","โรยต้นหอมก่อนยกลง"]},
+{n:"หมูผัดเปรี้ยวหวาน",need:["chop","tomato","onion","sugar"],opt:["carrot","fish","chili","garlic","scallion"],d:"หมูชิ้นผัดซอสมะเขือเทศ เปรี้ยวหวานกำลังดี",s:["ผัดหมูจนสุก พักไว้","ผัดหอมใหญ่กับมะเขือเทศให้นิ่ม","ใส่หมูกลับ ปรุงน้ำตาลและน้ำปลา","ผัดให้เข้ากัน ตักเสิร์ฟ"]},
+{n:"ผัดเห็ดหมูสับ",need:["mushroom","mince"],opt:["garlic","oyster","pepper","soy","chili","scallion"],d:"เห็ดฉ่ำซอสผัดกับหมูสับ รสเข้มกินง่าย",s:["เจียวกระเทียมให้หอม","ใส่หมูสับผัดจนสุก","ใส่เห็ด ปรุงด้วยซอสหอยนางรม","โรยพริกไทย ตักเสิร์ฟ"]},
+{n:"หมูสามชั้นทอดน้ำปลา",need:["belly","fish"],opt:["garlic","pepper","sugar"],d:"หมูสามชั้นทอดกรอบนอกนุ่มใน หอมน้ำปลา",s:["หมักหมูกับน้ำปลา กระเทียม และพริกไทย","ทอดไฟกลางจนเหลืองกรอบ","สะเด็ดน้ำมัน ตักเสิร์ฟ"]},
+{n:"หมูสามชั้นผัดพริกเกลือ",need:["belly","chili","salt"],opt:["garlic","pepper","onion","scallion"],d:"หมูสามชั้นกรอบๆ คลุกพริกเกลือ เผ็ดหอมถึงใจ",s:["ทอดหมูสามชั้นให้กรอบ","ผัดพริกและกระเทียมให้หอม","ใส่หมูกลับ โรยเกลือและพริกไทย","ผัดเร็วๆ ตักเสิร์ฟ"]},
+{n:"ส้มตำปลาร้า",need:["papaya","plara","chili"],opt:["lime","garlic","tomato","sugar","fish","shrimp"],d:"ส้มตำรสเข้มจัดจ้านแบบอีสาน หอมน้ำปลาร้า",s:["โขลกกระเทียมกับพริกให้พอแหลก","ใส่น้ำปลาร้า น้ำตาล และมะเขือเทศ ตำเบาๆ","ใส่มะละกอซอย ตำให้ช้ำพอเข้ากัน","ชิมรส ตักเสิร์ฟ"]},
+{n:"ส้มตำไทย",need:["papaya","chili"],no:["plara"],opt:["lime","garlic","tomato","sugar","fish","shrimp"],d:"ส้มตำรสครบ เปรี้ยวหวานเผ็ดเค็ม",s:["โขลกกระเทียมกับพริกให้พอแหลก","ปรุงด้วยน้ำปลา น้ำตาล และบีบมะนาว","ใส่มะละกอซอยและมะเขือเทศ ตำเบาๆ ให้ช้ำ","ชิมรส ตักเสิร์ฟ"]},
+{n:"ต้มยำกุ้ง",need:["shrimp","lemongrass","galangal"],opt:["lime","kaffir","chili","mushroom","fish","coriander","tomato","onion","coconut"],d:"ซุปร้อนเปรี้ยวเผ็ดหอมสมุนไพร ใส่กะทิจะได้แบบน้ำข้น",s:["ต้มน้ำกับข่า ตะไคร้ ใบมะกรูดให้หอม","ใส่เห็ดและผักอื่นๆ ตามด้วยกุ้ง","ปรุงด้วยน้ำปลาและพริก (ใส่กะทิถ้ามี)","โรยผักชี ยกลง"]},
+{n:"ต้มข่าไก่",need:["chicken","coconut","galangal"],opt:["lime","lemongrass","kaffir","mushroom","chili","fish","coriander","sugar"],d:"ซุปกะทิหอมข่า เค็มมันนุ่มลิ้น",s:["ต้มกะทิกับข่า ตะไคร้ ใบมะกรูดให้หอม","ใส่เนื้อไก่ ต้มจนสุกนุ่ม","ปรุงด้วยน้ำปลา น้ำตาล และพริก","โรยผักชี ยกลง"]},
+{n:"ข้าวผัดกุ้ง",need:["rice","shrimp"],opt:["lime","egg","onion","carrot","tomato","garlic","soy","oyster","scallion","pepper","fish","coriander","chili"],d:"ข้าวผัดร้อนๆ หอมกระทะ ใส่กุ้งตัวโต",s:["เจียวกระเทียมให้หอม ผัดกุ้งจนสุก","ใส่ไข่และผักที่หยิบมา ผัดให้เข้ากัน","ใส่ข้าวสวย ผัดไฟแรง ปรุงด้วยซีอิ๊วและน้ำปลา","โรยพริกไทยและต้นหอม ตักเสิร์ฟ"]},
+{n:"ไก่ผัดกระเทียมพริกไทย",need:["chicken","garlic","pepper"],opt:["soy","fish","oyster","chili","scallion"],d:"ไก่ชิ้นนุ่ม หอมกระเทียมพริกไทย",s:["โขลกกระเทียมกับพริกไทย คลุกไก่พักไว้","ผัดไก่ในน้ำมันจนสุกเหลือง","ปรุงด้วยซีอิ๊วหรือน้ำปลาเล็กน้อย","ตักเสิร์ฟ"]},
+{n:"กุ้งผัดกระเทียมพริกไทย",need:["shrimp","garlic","pepper"],opt:["fish","soy","scallion","chili"],d:"กุ้งสดผัดกระเทียมเจียว หอมพริกไทย",s:["เจียวกระเทียมให้หอม","ใส่กุ้งผัดไฟแรงจนสุก","ปรุงด้วยน้ำปลาหรือซีอิ๊ว โรยพริกไทย","ตักเสิร์ฟ"]},
+{n:"กะเพราไก่",need:["chicken","garlic","chili","oyster","basil"],opt:["soy","sugar","fish","onion","egg","rice"],d:"ไก่สับผัดไฟแรงกับพริกกระเทียม กินกับข้าวสวยร้อนๆ ใส่ใบกะเพรา",s:["โขลกกระเทียมกับพริก ผัดให้หอม","ใส่ไก่ผัดจนสุก ปรุงด้วยซอสหอยนางรม ซีอิ๊วขาว น้ำตาลเล็กน้อย","ใส่ใบกะเพรา ผัดเร็วๆ","ตักเสิร์ฟ"]},
+{n:"ไข่เจียว",need:["egg"],opt:["fish","onion","chili","tomato","scallion","pepper","mince"],d:"ไข่เจียวฟูกรอบนอกนุ่มใน เมนูคู่ข้าวสวยของคนไทย",s:["ตอกไข่ใส่น้ำปลาเล็กน้อย ตีให้ขึ้นฟู","ตั้งน้ำมันให้ร้อนจัด เทไข่ลงทอด","พลิกให้เหลืองสองด้าน ตักเสิร์ฟ"]},
+{n:"ข้าวไข่เจียว",need:["rice","egg"],opt:["fish","chili","onion","scallion","tomato","mince"],d:"ข้าวสวยร้อนๆ ราดไข่เจียวฟู กินกับพริกน้ำปลา",s:["ตีไข่กับน้ำปลา ทอดในน้ำมันร้อนจัดจนฟู","ตักข้าวสวยใส่จาน วางไข่เจียวทับ","เสิร์ฟกับพริกน้ำปลาหรือซอสพริก"]},
+{n:"ข้าวผัดหมู",need:["rice"],any:["mince","chop","belly"],anyName:"หมู",opt:["egg","onion","carrot","tomato","garlic","soy","oyster","scallion","pepper","fish","coriander","lime","chili"],d:"ข้าวผัดหมูหอมกระทะ เสิร์ฟกับพริกน้ำปลาและมะนาว",s:["เจียวกระเทียมให้หอม ผัดหมูจนสุก","ตอกไข่ลงไปผัด ใส่ข้าวสวย ปรุงด้วยซีอิ๊วขาวและน้ำปลา ผัดไฟแรง","โรยต้นหอม เสิร์ฟกับมะนาวและพริกน้ำปลา"]},
+{n:"ต้มยำไก่",need:["chicken","lemongrass","galangal"],opt:["kaffir","chili","mushroom","fish","lime","coriander","tomato","onion","coconut"],d:"ต้มยำน้ำใสหรือน้ำข้น เปรี้ยวเผ็ดหอมสมุนไพร",s:["ต้มน้ำกับข่า ตะไคร้ ใบมะกรูดให้หอม","ใส่ไก่และเห็ด ต้มจนสุก","ปรุงด้วยน้ำปลา พริก บีบมะนาวตอนยกลง"]},
+{n:"ลาบหมู",need:["mince","lime","chili","fish"],opt:["scallion","coriander","onion","sugar","pepper"],d:"ยำหมูสับรสจัดแบบอีสาน เปรี้ยวเค็มเผ็ด กินกับผักสด",s:["ผัดหมูสับกับน้ำเล็กน้อยจนสุก พักให้อุ่น","ปรุงด้วยน้ำปลา มะนาว พริกป่น","ใส่หอม ต้นหอม ผักชี คลุกเบาๆ ตักเสิร์ฟ"]},
+{n:"น้ำตกหมู",need:["chop","lime","chili","fish"],opt:["scallion","coriander","onion","sugar"],d:"หมูย่างหั่นชิ้นคลุกน้ำยำรสจัด เปรี้ยวเผ็ดหอม",s:["ย่างหรือทอดหมูให้สุกหอม หั่นชิ้นบาง","ปรุงน้ำยำด้วยน้ำปลา มะนาว พริกป่น น้ำตาลเล็กน้อย","คลุกหมูกับหอมและผักชี ตักเสิร์ฟ"]},
+{n:"ยำกุ้งสด",need:["shrimp","lime","chili","fish"],opt:["garlic","onion","coriander","sugar","tomato","scallion"],d:"กุ้งลวกคลุกน้ำยำเปรี้ยวเผ็ด สดชื่นกินได้ทั้งแกล้มและกับข้าว",s:["ลวกกุ้งพอสุก สะเด็ดน้ำ","ผสมน้ำปลา มะนาว พริก กระเทียมสับ น้ำตาล","คลุกกุ้งกับหอมและผักชี ตักเสิร์ฟ"]},
+{n:"ยำไข่ดาว",need:["egg","lime","chili","fish"],opt:["onion","tomato","sugar","garlic","coriander","scallion"],d:"ไข่ดาวทอดกรอบ ราดน้ำยำเปรี้ยวหวานเผ็ด",s:["ทอดไข่ดาวให้ขอบกรอบ","ผสมน้ำปลา มะนาว พริก น้ำตาล","วางไข่ใส่จาน โรยหอมและมะเขือเทศ ราดน้ำยำ"]},
+{n:"กุ้งแช่น้ำปลา",need:["shrimp","fish","lime","garlic","chili"],opt:["sugar","coriander"],d:"กุ้งสดแช่น้ำปลาเปรี้ยวหวานเผ็ดกระเทียม กินแกล้มเย็นๆ",s:["ลวกกุ้งพอสุก แช่น้ำเย็นให้เด้ง","ผสมน้ำปลา มะนาว น้ำตาล กระเทียมและพริกสับ","ราดบนกุ้ง โรยผักชี เสิร์ฟ"]},
+{n:"ปลาร้าทรงเครื่อง",need:["plara","lemongrass","chili"],opt:["onion","lime","kaffir","galangal","coriander","sugar"],d:"น้ำปลาร้าต้มสุกคลุกสมุนไพรสด กินกับผักแนม",s:["ต้มปลาร้าจนสุก หั่นสมุนไพรเป็นฝอย","คลุกปลาร้ากับตะไคร้ ใบมะกรูด หอม พริก","ปรุงด้วยมะนาวและน้ำตาลเล็กน้อย เสิร์ฟกับผักสด"]},
+{n:"กะหล่ำปลีผัดน้ำปลา",need:["cabbage","fish"],opt:["garlic","chili","egg","chop","mince","belly","carrot","oyster"],d:"กะหล่ำปลีผัดไฟแรง หอมกลิ่นกระทะ เค็มนำหวานตาม",s:["เจียวกระเทียมให้หอม","ใส่กะหล่ำปลีผัดไฟแรง","ปรุงด้วยน้ำปลา ตักเสิร์ฟ"]},
+{n:"ไข่ผัดมะเขือเทศ",need:["egg","tomato"],opt:["scallion","sugar","salt","onion"],d:"ไข่นุ่มข้นกับมะเขือเทศสุกเปรี้ยวนิดๆ",s:["ผัดมะเขือเทศให้นิ่ม","ตีไข่ใส่เกลือเล็กน้อย เทลงไป","เขี่ยให้เป็นก้อนนุ่ม โรยต้นหอม"]}
+];
+
+const M=(n,a,b,d,s,x)=>R.push({n,need:a.split(" "),opt:b.split(" "),d,s:s.split("|"),...x});
+M("กะเพรากุ้ง","shrimp basil garlic chili oyster","soy sugar fish onion egg rice","กุ้งสดผัดไฟแรงกับพริกและใบกะเพรา หอมฉุยกินกับข้าวสวย","โขลกกระเทียมกับพริก ผัดให้หอม|ใส่กุ้งผัดจนสุก ปรุงด้วยซอสหอยนางรมและซีอิ๊วขาว|ใส่ใบกะเพรา ผัดเร็วๆ ตักเสิร์ฟ");
+M("กะเพราปลาหมึก","squid basil garlic chili oyster","soy sugar fish onion egg rice","ปลาหมึกผัดใบกะเพรา เผ็ดหอม กัดกรุบกรอบ","โขลกกระเทียมกับพริก ผัดให้หอม|ใส่ปลาหมึกผัดไฟแรงจนสุกพอดี ปรุงด้วยซอสหอยนางรม|ใส่ใบกะเพรา ผัดเร็วๆ ตักเสิร์ฟ");
+M("กะเพราหมูสามชั้น","belly basil garlic chili oyster","soy sugar fish onion egg rice","หมูสามชั้นผัดใบกะเพรา มันหอมกินกับไข่ดาว","ผัดหมูสามชั้นให้เหลืองหอม|ใส่กระเทียมพริกที่โขลก ปรุงด้วยซอสหอยนางรม|ใส่ใบกะเพรา ผัดเร็วๆ ตักเสิร์ฟ");
+M("ปลาหมึกทอดกระเทียมพริกไทย","squid garlic pepper","fish soy salt scallion chili coriander","ปลาหมึกทอดกระเทียมพริกไทย หอมกรอบ","โขลกกระเทียมกับพริกไทย คลุกปลาหมึกหั่นชิ้น|ทอดในน้ำมันร้อนไฟกลางจนสุก ไม่นานเกินไปจะเหนียว|สะเด็ดน้ำมัน ตักเสิร์ฟ");
+M("ปลาหมึกผัดพริกเกลือ","squid chili salt","garlic pepper scallion onion","ปลาหมึกคลุกพริกเกลือ เค็มเผ็ดหอม กินแก้มได้","ทอดปลาหมึกให้แห้งเกรียม|ผัดพริกและกระเทียมให้หอม|ใส่ปลาหมึกคลุกเกลือและพริกไทย ตักเสิร์ฟ");
+M("ปลาหมึกย่างน้ำจิ้มซีฟู้ด","squid lime chili garlic coriander","fish sugar salt","ปลาหมึกย่างจิ้มน้ำจิ้มซีฟู้ดเปรี้ยวเผ็ดสดชื่น","ย่างปลาหมึกให้สุกหอม หั่นเป็นชิ้น|โขลกกระเทียมกับพริก ปรุงด้วยน้ำปลา มะนาว น้ำตาล|โรยผักชี เสิร์ฟคู่น้ำจิ้ม");
+M("ยำปลาหมึก","squid lime chili fish onion","garlic tomato coriander scallion sugar","ปลาหมึกลวกคลุกน้ำยำเปรี้ยวเผ็ด สดชื่นหอมสมุนไพร","ลวกปลาหมึกพอสุก สะเด็ดน้ำ|ผสมน้ำปลา มะนาว พริกสับ น้ำตาล|คลุกกับหอมและผัก ตักเสิร์ฟ");
+M("ต้มยำทะเล","shrimp squid lemongrass galangal","kaffir chili mushroom fish lime coriander tomato onion coconut","ต้มยำกุ้งใส่ปลาหมึก เปรี้ยวเผ็ดหอมสมุนไพร","ต้มน้ำกับข่า ตะไคร้ ใบมะกรูดให้หอม|ใส่เห็ด กุ้ง และปลาหมึก ต้มจนสุกพอดี|ปรุงด้วยน้ำปลา พริก บีบมะนาวตอนยกลง");
+M("ข้าวผัดทะเล","rice shrimp squid","egg onion carrot tomato garlic soy oyster scallion pepper fish coriander lime chili","ข้าวผัดใส่กุ้งและปลาหมึก หอมกระทะ","เจียวกระเทียมให้หอม ผัดกุ้งและปลาหมึกจนสุก|ใส่ไข่และผักที่หยิบมา ใส่ข้าวสวย ผัดไฟแรง|ปรุงด้วยซีอิ๊วและน้ำปลา เสิร์ฟกับมะนาว");
+M("ข้าวผัดไก่","rice chicken","egg onion carrot tomato garlic soy oyster scallion pepper fish coriander lime chili","ข้าวผัดไก่ร้อนๆ หอมกระทะ","เจียวกระเทียมให้หอม ผัดไก่จนสุก|ตอกไข่ลงไปผัด ใส่ข้าวสวย ผัดไฟแรง|ปรุงด้วยซีอิ๊วขาวและน้ำปลา เสิร์ฟกับมะนาว");
+M("ข้าวต้มหมูสับ","rice mince scallion pepper","garlic coriander soy fish egg cabbage","ข้าวต้มร้อนๆ หมูสับก้อนนุ่ม โรยพริกไทย","ต้มน้ำให้เดือด ใส่ข้าวสวยต้มจนนุ่ม|ปั้นหมูสับเป็นก้อนหยอดลงไป ปรุงด้วยซีอิ๊วขาว|โรยต้นหอม พริกไทย ตักเสิร์ฟ");
+M("ผัดผักรวมมิตร","cabbage carrot","mushroom garlic scallion tomato onion chili egg","ผักสดผัดไฟแรง กรอบหวาน กินกับข้าวสวย","เจียวกระเทียมให้หอม|ใส่แครอทก่อน ตามด้วยกะหล่ำปลีและผักอื่น|ปรุงด้วยซอสหอยนางรม ผัดให้สุกกรอบ ตักเสิร์ฟ");
+M("ผัดผักรวมหมู","cabbage carrot","mushroom garlic scallion tomato onion chili","ผักรวมผัดใส่หมู หวานกรอบ ได้ทั้งผักและโปรตีน","เจียวกระเทียมให้หอม ผัดหมูจนสุก|ใส่แครอท กะหล่ำปลี และผักอื่น ผัดไฟแรง|ปรุงด้วยซอสหอยนางรม ตักเสิร์ฟ",{any:["mince","chop","belly"],anyName:"หมู"});
+M("ไข่ตุ๋นหมูสับ","egg mince carrot","scallion mushroom soy pepper coriander","ไข่นุ่มเนียนนึ่งใส่หมูสับและแครอท","ตีไข่กับน้ำ ใส่หมูสับ แครอทสับ และซีอิ๊วขาว|เทใส่ถ้วย นึ่งไฟอ่อนจนสุก|โรยต้นหอมและพริกไทย เสิร์ฟ");
+M("ลาบไก่","chicken lime chili fish","scallion coriander onion sugar pepper","ยำไก่สับรสจัดแบบอีสาน เปรี้ยวเค็มเผ็ด","ผัดไก่สับกับน้ำเล็กน้อยจนสุก พักให้อุ่น|ปรุงด้วยน้ำปลา มะนาว พริกป่น|ใส่หอม ต้นหอม ผักชี คลุกเบาๆ ตักเสิร์ฟ");
+M("ผัดมะละกอใส่ไข่","papaya egg","garlic chili tomato scallion","มะละกอดิบผัดกับไข่ เมนูบ้านๆ กินง่าย","เจียวกระเทียมให้หอม ใส่มะละกอสับผัดให้นิ่ม|ตอกไข่ลงไปผัดให้เข้ากัน|ปรุงด้วยน้ำปลาและซีอิ๊ว ตักเสิร์ฟ");
+
+function fname(m){
+  const SH={mince:"หมูสับ",belly:"หมูสามชั้น",chop:"หมู",chicken:"ไก่",shrimp:"กุ้ง",egg:"ไข่"};
+  const mt=(m.filter(i=>SH[i]).map(i=>SH[i]))[0]||"",veg=m.filter(i=>cat(i)==="veg").map(nm);
+  if(m.includes("rice"))return"ข้าวผัด"+mt;
+  if(!mt)return veg.length>1?"ผัดผักรวมมิตร":"ผัด"+veg[0];
+  if(!veg.length)return mt+"ผัดง่ายๆ";
+  return veg.length>2?"ผัดผักรวม"+mt:mt+"ผัด"+veg.join("");
+}
+
+const sel=[];
+const $=id=>document.getElementById(id);
+const LN='<svg class="ln" viewBox="0 0 100 8" preserveAspectRatio="none" aria-hidden="true"><g filter="url(#r)"><path d="M0 4Q25 1 50 4T100 4"/></g></svg>';
+function buildShelves(){$("shelves").innerHTML=CATS.map(([k,t])=>`<div class="shelf"><h2>${t}</h2><div class="row">${ITEMS.filter(i=>i[2]===k).map(i=>`<button class="it" data-id="${i[0]}" aria-pressed="false">${ic(i[0])}<span>${i[1]}</span></button>`).join("")}</div>${LN}</div>`).join("")}
+buildShelves();
+
+function toggle(id){const i=sel.indexOf(id);i<0?sel.push(id):sel.splice(i,1);render()}
+function render(){
+  document.querySelectorAll(".it").forEach(b=>{const o=sel.includes(b.dataset.id);b.classList.toggle("out",o);b.setAttribute("aria-pressed",o)});
+  const t=$("tray");t.classList.remove("mix");
+  t.innerHTML=sel.length?sel.map(id=>`<button class="chip${PS.includes(id)?"":" new"}" data-id="${id}" title="เอาคืนเข้าตู้เย็น">${ic(id)}${nm(id)}</button>`).join(""):'<p class="empty">ตะกร้ายังว่างอยู่ ลองคลิกของในตู้เย็นดู</p>';
+  $("cnt").textContent=sel.length?`(${sel.length} อย่าง)`:"";
+  $("mix").disabled=$("clr").disabled=!sel.length;
+  $("menu").hidden=true;forceR=null;PS=sel.slice();renderStock();renderRec();
+}
+document.addEventListener("click",e=>{const b=e.target.closest(".it,.chip");if(b){fly(b);toggle(b.dataset.id)}});
+$("clr").onclick=()=>{sel.length=0;render()};
+
+$("mix").onclick=()=>{
+  const r=forceR||pick2(sel),m=$("menu");forceR=null;
+  $("tray").classList.add("mix");
+  setTimeout(()=>{
+    m.hidden=false;m.style.animation="none";m.offsetWidth;m.style.animation="";
+    if(!r){m.innerHTML=noMatch(sel);return}
+    const show=sel.filter(i=>!sea(i)).slice(0,8),n=show.length,sz=n>4?38:46;
+    const pos=show.map((id,k)=>{if(n===1)return[100-sz/2,100-sz/2,id];const a=k/n*Math.PI*2-Math.PI/2,rad=n>4?52:42;return[100+rad*Math.cos(a)-sz/2,100+rad*Math.sin(a)-sz/2,id]});
+    const plate=`<svg class="plate" viewBox="0 0 200 200" aria-hidden="true"><g filter="url(#r)"><circle cx="100" cy="100" r="92"/><circle cx="100" cy="100" r="74"/></g>${pos.map(([x,y,id])=>IMG[id]?`<image href="${IMG[id]}" x="${x}" y="${y}" width="${sz}" height="${sz}" preserveAspectRatio="xMidYMid meet"/>`:`<svg class="ic" x="${x}" y="${y}" width="${sz}" height="${sz}" viewBox="0 0 48 48"><use href="#i-${id}"/></svg>`).join("")}</svg>`;
+    const used=new Set([...r.need,...r.opt,...(r.any||[])]);
+    const extra=sel.filter(i=>!used.has(i)&&i!=="oil"&&i!=="rice").map(nm);
+    m.innerHTML=`${plate}<h3>${r.n}</h3><p style="text-align:center">${r.d}</p>${r.hint?`<p class="note" style="text-align:center">${r.hint}</p>`:""}<p class="note">วัตถุดิบ: ${sel.map(nm).join(", ")}</p><ol>${r.s.map(s=>`<li>${s}</li>`).join("")}</ol>${extra.length?`<p class="note">${extra.join(", ")} ไม่อยู่ในสูตรนี้ ใส่เพิ่มตามชอบได้</p>`:""}`;
+    m.scrollIntoView({behavior:"smooth",block:"nearest"});
+  },r?550:0);
+};
+
+const STK=[["star","ดาว","#f6d860"],["heart","หัวใจ","#f4a3a3"],["flower","ดอกไม้","#f7c9dd"],["smile","หน้ายิ้ม","#fbe08a"],["sun","พระอาทิตย์","#fbd27a"],["cat","แมว","#f2d9b8"],["fish","ปลา","#a9d6e5"],["cloud","เมฆ","#d6e6f2"],["berry","สตรอว์เบอร์รี","#f28b82"]];
+let stks=[],closed=false,selId=null,drag=null;
+try{stks=JSON.parse(localStorage.getItem("fridgeStk")||"[]")}catch(e){stks=[]}
+window.stks = stks;
+
+const door=$("door"),layer=$("stkl");
+window.saveStksLocally = (silent)=>{try{localStorage.setItem("fridgeStk",JSON.stringify(window.stks))}catch(e){}if(!silent)touchLocal()};
+const saveS=()=>{window.saveStksLocally();if(window.saveCloudData)window.saveCloudData();};
+const sk=(t,c)=>`<svg class="ic sk" viewBox="0 0 48 48" style="--f:${c}" aria-hidden="true"><use href="#s-${t}"/></svg>`;
+const sinfo=t=>STK.find(s=>s[0]===t)||STK[0];
+const esc=t=>String(t).replace(/[&<>"]/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[m]));
+$("pals").innerHTML=STK.map(([t,n,c])=>`<button class="ps" data-t="${t}" title="${n}" aria-label="เพิ่มสติกเกอร์${n}">${sk(t,c)}</button>`).join("");
+
+function drawStk(){
+  layer.innerHTML=window.stks.map(s=>{const[,n,c]=sinfo(s.t);return`<div class="stk${s.t==="text"?" t":""}${s.id===selId?" sel":""}" data-id="${s.id}" tabindex="0" role="img" aria-label="สติกเกอร์${s.t==="text"?esc(s.txt):n}" style="left:${s.x}%;top:${s.y}%;--r:${s.r}deg;--z:${s.z||56}px">${s.t==="text"?`<span class="tx" style="--b:${s.c}">${esc(s.txt)}</span>`:sk(s.t,c)}<span class="rot" title="หมุน"></span><span class="rsz" title="ขยาย/ย่อ"></span><button class="x" tabindex="-1" aria-label="เอาสติกเกอร์ออก">✕</button></div>`}).join("");
+}
+window.drawStk = drawStk;
+
+$("pals").addEventListener("click",e=>{
+  const b=e.target.closest(".ps");if(!b)return;
+  const s={id:Date.now().toString(36)+Math.random().toString(36).slice(2,5),t:b.dataset.t,x:30+Math.random()*30,y:34+Math.random()*30,r:Math.round(Math.random()*30-15)};
+  window.stks.push(s);selId=s.id;drawStk();saveS();
+});
+$("sclr").onclick=()=>{window.stks=[];selId=null;drawStk();saveS()};
+
+layer.addEventListener("pointerdown",e=>{
+  const el=e.target.closest(".stk");
+  if(!el){if(selId){selId=null;drawStk()}return}
+  if(e.target.closest(".x")){const id=el.dataset.id;el.classList.add("bye");setTimeout(()=>{window.stks=window.stks.filter(s=>s.id!==id);selId=null;drawStk();saveS()},230);return}
+  const h=e.target.closest(".rot,.rsz");
+  if(h){
+    const s=window.stks.find(s=>s.id===el.dataset.id),b=el.getBoundingClientRect(),r=layer.getBoundingClientRect(),cx=b.left+b.width/2,cy=b.top+b.height/2,z0=s.z||56;
+    selId=s.id;
+    drag={mode:h.classList.contains("rot")?"rot":"rsz",s,el,r,cx,cy,z0,r0:s.r||0,a0:Math.atan2(e.clientY-cy,e.clientX-cx),d0:Math.max(1,Math.hypot(e.clientX-cx,e.clientY-cy)),ccx:s.x/100*r.width+el.offsetWidth/2,ccy:s.y/100*r.height+el.offsetHeight/2};
+    h.setPointerCapture(e.pointerId);e.preventDefault();return;
+  }
+  selId=el.dataset.id;
+  layer.querySelectorAll(".stk").forEach(n=>n.classList.toggle("sel",n===el));
+  const s=window.stks.find(s=>s.id===selId),r=layer.getBoundingClientRect();
+  drag={s,el,r,dx:e.clientX-(r.left+s.x/100*r.width),dy:e.clientY-(r.top+s.y/100*r.height)};
+  el.setPointerCapture(e.pointerId);e.preventDefault();
+});
+
+layer.addEventListener("pointermove",e=>{
+  if(!drag)return;
+  if(drag.mode){
+    const{s,el,cx,cy,r}=drag;
+    if(drag.mode==="rot"){s.r=Math.round(drag.r0+(Math.atan2(e.clientY-cy,e.clientX-cx)-drag.a0)*180/Math.PI);el.style.setProperty("--r",s.r+"deg")}
+    else{
+      const z=Math.max(28,Math.min(180,Math.round(drag.z0*Math.hypot(e.clientX-cx,e.clientY-cy)/drag.d0)));
+      s.z=z;el.style.setProperty("--z",z+"px");s.x=(drag.ccx-el.offsetWidth/2)/r.width*100;s.y=(drag.ccy-el.offsetHeight/2)/r.height*100;
+      el.style.setProperty("--z",z+"px");el.style.left=s.x+"%";el.style.top=s.y+"%";
+    }
+    return;
+  }
+  const{s,el,r,dx,dy}=drag;
+  const mx=(r.width-el.offsetWidth)/r.width*100,my=(r.height-el.offsetHeight)/r.height*100;
+  s.x=Math.max(0,Math.min(mx,(e.clientX-dx-r.left)/r.width*100));
+  s.y=Math.max(0,Math.min(my,(e.clientY-dy-r.top)/r.height*100));
+  el.style.left=s.x+"%";el.style.top=s.y+"%";
+});
+
+const endDrag=()=>{if(drag){drag=null;saveS()}};
+layer.addEventListener("pointerup",endDrag);
+layer.addEventListener("pointercancel",endDrag);
+
+layer.addEventListener("keydown",e=>{
+  const el=e.target.closest(".stk");
+  if(el){
+    const s=window.stks.find(s=>s.id===el.dataset.id),k=e.key;
+    if(s&&(k==="["||k==="]"||k==="+"||k==="="||k==="-")){
+      if(k==="[")s.r=(s.r||0)-10;else if(k==="]")s.r=(s.r||0)+10;else s.z=Math.max(28,Math.min(180,(s.z||56)+(k==="-"?-8:8)));
+      selId=s.id;drawStk();saveS();const n=layer.querySelector(`[data-id="${s.id}"]`);if(n)n.focus();return;
+    }
+  }
+  if(el&&(e.key==="Delete"||e.key==="Backspace")){window.stks=window.stks.filter(s=>s.id!==el.dataset.id);selId=null;drawStk();saveS()}
+});
+
+function setDoor(c){
+  closed=c;
+  door.classList.toggle("open",!c);
+  door.inert=!c;
+  $("shelves").inert=c;
+  $("pal").hidden=!c;
+  if(!c&&selId){selId=null;drawStk()}
+  $("dr").textContent=c?"เปิดตู้เย็น":"ปิดตู้เย็น";
+  $("dh").textContent=c?"ลากสติกเกอร์ไปวางบนประตูได้เลย":"ปิดประตูเพื่อแต่งสติกเกอร์";
+}
+$("dr").onclick=()=>setDoor(!closed);
+$("hdl").onclick=()=>setDoor(false);
+setDoor(false);
+
+let forceR=null;
+const NC=["#fbe08a","#f7c9dd","#cfe8d5","#cfe0f5","#fcd9b6"];
+function addText(){
+  const v=$("stxt").value.trim();if(!v)return;
+  const s={id:Date.now().toString(36)+Math.random().toString(36).slice(2,5),t:"text",txt:v,c:NC[Math.floor(Math.random()*NC.length)],x:15+Math.random()*20,y:34+Math.random()*30,r:Math.round(Math.random()*16-8),z:56};
+  window.stks.push(s);selId=s.id;drawStk();saveS();$("stxt").value="";
+}
+$("sadd").onclick=addText;
+$("stxt").addEventListener("keydown",e=>{if(e.key==="Enter")addText()});
+
+const SWC=[["","ค่าเริ่มต้น"],["#9bd3ae","มิ้นต์"],["#f4b6c2","ชมพู"],["#a9d0ee","ฟ้า"],["#f6dc7a","เหลืองเนย"],["#cdb8ee","ม่วงลาเวนเดอร์"],["#f8bf9a","พีช"]];
+const fr=document.querySelector(".fridge");
+function setColor(c,silent){
+  fr.style.setProperty("--sw",c||"transparent");fr.classList.toggle("tint",!!c);
+  document.querySelectorAll(".sw").forEach(b=>b.setAttribute("aria-pressed",b.dataset.c===c));
+  try{localStorage.setItem("fridgeColor",c)}catch(e){}
+  if(silent)return;
+  touchLocal();
+  if(window.saveCloudData) window.saveCloudData();
+}
+window.setColor = setColor;
+
+$("sws").innerHTML=SWC.map(([c,n])=>`<button class="sw" data-c="${c}" title="${n}" aria-label="สี${n}" aria-pressed="false" style="--c:${c||"var(--hl)"}"></button>`).join("");
+$("sws").addEventListener("click",e=>{const b=e.target.closest(".sw");if(b)setColor(b.dataset.c)});
+let c0="";try{c0=localStorage.getItem("fridgeColor")||""}catch(e){}
+setColor(c0,true);
+
+const UNIV=new Set(["rice","oil","salt","sugar","pepper","fish","soy","oyster"]);
+function fit(r,S){
+  const al=new Set([...r.need,...r.opt,...(r.any||[])]);
+  const miss=r.need.filter(x=>!S.has(x)).map(nm);
+  if(r.any&&!r.any.some(x=>S.has(x)))miss.push(r.anyName||"เนื้อสัตว์");
+  const stray=[...S].filter(i=>!UNIV.has(i)&&!al.has(i)).map(nm);
+  const hit=r.need.filter(x=>S.has(x)).length+(r.any&&r.any.some(x=>S.has(x))?1:0);
+  return{r,miss,stray,hit,ok:!miss.length&&!stray.length};
+}
+function sugg(S){
+  return R.map(r=>fit(r,S)).filter(o=>o.hit>0).sort((a,b)=>(a.miss.length+a.stray.length)-(b.miss.length+b.stray.length)||b.hit-a.hit).map(o=>({...o,
+    tip:[o.miss.length?"เพิ่ม "+o.miss.join(", "):"",o.stray.length?"เอาออก "+o.stray.join(", "):""].filter(Boolean).join(" และ "),
+    tag:[o.miss.length?"ขาด"+o.miss.slice(0,2).join(","):"",o.stray.length?"เกิน"+o.stray.slice(0,2).join(","):""].filter(Boolean).join(" ")||"ครบแล้ว"}));
+}
+function pick2(sel){
+  const S=new Set(sel);let best=null,bs=-1;
+  for(const r of R){if(!fit(r,S).ok)continue;const s=r.need.length*3+(r.any?3:0)+r.opt.filter(o=>S.has(o)).length;if(s>bs){bs=s;best=r}}
+  return best;
+}
+function noMatch(sel){
+  const S=new Set(sel);
+  if(![...S].some(i=>!UNIV.has(i)))return"<p>ยังเลือกไม่พอสำหรับทำเมนู ลองหยิบเนื้อสัตว์ ไข่ อาหารทะเล หรือผักเพิ่ม</p>";
+  const L=sugg(S).slice(0,3);
+  return"<p><b>ของชุดนี้ยังไม่ตรงกับเมนูไทยที่รู้จัก</b> จึงไม่รวมให้เป็นเมนูแปลกๆ</p>"+(L.length?`<p class="note">เมนูที่ใกล้เคียง</p><ul>${L.map(o=>`<li>${o.r.n} <span class="note">(${o.tip})</span></li>`).join("")}</ul>`:"");
+}
+function renderRec(){
+  const S=new Set(sel),d=new Date().getDate();
+  let L;
+  if(!sel.length)L=R.map((r,i)=>({r,k:(i*7+d*13)%53})).sort((a,b)=>a.k-b.k).slice(0,8).map(o=>({r:o.r,tag:""}));
+  else L=sugg(S).slice(0,8).map(o=>({r:o.r,tag:o.tag}));
+  $("recl").innerHTML=L.length?L.map(({r,tag})=>`<button class="rc" data-n="${R.indexOf(r)}" title="${r.d}">${r.need.slice(0,3).map(i=>ic(i)).join("")}${r.n}${tag?`<small>${tag}</small>`:""}</button>`).join(""):'<span class="empty">ลองหยิบวัตถุดิบเพิ่ม เดี๋ยวแนะนำเมนูให้</span>';
+}
+$("recl").addEventListener("click",e=>{
+  const b=e.target.closest(".rc");if(!b)return;
+  const r=R[+b.dataset.n],S=new Set(sel),ids=[...r.need];
+  if(r.any)ids.push(r.any.find(x=>S.has(x))||r.any[0]);
+  if(closed)setDoor(false);
+  sel.length=0;ids.forEach(i=>sel.push(i));render();
+  forceR=r;$("mix").click();
+});
+
+function fly(b){
+  if(matchMedia("(prefers-reduced-motion:reduce)").matches)return;
+  const src=b.querySelector(".ic");if(!src)return;
+  const a=src.getBoundingClientRect(),toTray=b.classList.contains("it");
+  let t;
+  if(toTray)t=$("tray").getBoundingClientRect();
+  else{const it=document.querySelector(`.it[data-id="${b.dataset.id}"] .ic`);if(!it||$("shelves").inert)return;t=it.getBoundingClientRect()}
+  const c=src.cloneNode(true);
+  Object.assign(c.style,{position:"fixed",left:a.left+"px",top:a.top+"px",width:a.width+"px",height:a.height+"px",zIndex:60,pointerEvents:"none"});
+  document.body.appendChild(c);
+  const dx=t.left+(toTray?24:0)-a.left,dy=t.top+(toTray?20:0)-a.top;
+  c.animate([{transform:"translate(0,0) scale(1) rotate(0deg)",opacity:1},{transform:`translate(${dx*.5}px,${dy*.5-40}px) scale(1.3) rotate(160deg)`,opacity:1,offset:.5},{transform:`translate(${dx}px,${dy}px) scale(.7) rotate(360deg)`,opacity:.2}],{duration:550,easing:"cubic-bezier(.4,0,.2,1)"}).onfinish=()=>c.remove();
+}
+
+const PRICE={fish:2,oyster:2,soy:2,sugar:2,salt:2,pepper:2,oil:2,coconut:3,plara:2,mince:3,belly:3,chop:3,egg:2,chicken:3,shrimp:3,squid:3,rice:2,coriander:2,galangal:2,lemongrass:2,kaffir:2,basil:2,tomato:2,carrot:2,onion:2,garlic:2,chili:2,cabbage:2,scallion:2,mushroom:3,papaya:2,lime:2};
+const todayStr=()=>new Date().toLocaleDateString("sv-SE");
+const coinIc='<svg class="ic" viewBox="0 0 48 48" aria-hidden="true"><use href="#i-coin"/></svg>';
+
+let G={coins:50,stock:{},last:"",log:[],cooked:{}},fresh=true,tab="shop",hlIds=[],rstArm=false,cooking=false;
+window.G = G;
+
+window.saveGLocally = (silent)=>{try{localStorage.setItem("fridgeSave",JSON.stringify(window.G))}catch(e){}if(!silent)touchLocal()};
+function saveG(){
+  window.saveGLocally();
+  if(window.saveCloudData) window.saveCloudData();
+}
+
+try{const s=JSON.parse(localStorage.getItem("fridgeSave")||"null");if(s&&typeof s.coins==="number"){window.G={...G,...s};fresh=false}}catch(e){}
+if(fresh){window.G.log=[{t:Date.now(),d:"โบนัสเริ่มต้นผู้ใช้ใหม่",c:50}]}
+if(!window.G.starter){ITEMS.forEach(i=>{window.G.stock[i[0]]=Math.min(99,(window.G.stock[i[0]]||0)+1)});window.G.starter=true;addLog("รับวัตถุดิบเริ่มต้น อย่างละ 1 ชิ้น",0);window.saveGLocally(true);if(!fresh)setTimeout(()=>toast("ได้รับวัตถุดิบเริ่มต้น อย่างละ 1 ชิ้น"),500)}
+
+const st=id=>window.G.stock[id]||0;
+function addLog(d,c){window.G.log.unshift({t:Date.now(),d,c});if(window.G.log.length>60)window.G.log.length=60}
+function toast(m){const t=$("toast");t.textContent=m;t.classList.add("on");clearTimeout(toast.k);toast.k=setTimeout(()=>t.classList.remove("on"),2600)}
+window.toast = toast;
+
+function renderWallet(bump){
+  const c=$("coin");c.textContent=window.G.coins;
+  if(bump){c.classList.remove("bump");void c.offsetWidth;c.classList.add("bump")}
+  const done=window.G.last===todayStr();
+  $("chk").disabled=done;$("chk").textContent=done?"เช็คอินแล้ววันนี้":"เช็คอินวันนี้ +10";
+  $("tot").textContent="ของในตู้ "+Object.values(window.G.stock).reduce((a,b)=>a+b,0)+" ชิ้น";
+}
+
+function renderStock(){
+  document.querySelectorAll(".it").forEach(b=>{
+    const id=b.dataset.id,inT=sel.includes(id),n=st(id)-(inT?1:0);
+    let g=b.querySelector(".bdg");if(!g){g=document.createElement("b");g.className="bdg";b.appendChild(g)}
+    g.textContent=n>0?"×"+n:"หมด";
+    b.classList.toggle("none",n<=0&&!inT);b.classList.toggle("low",n===1);
+  });
+  renderWallet();
+}
+window.renderStock = renderStock;
+
+function checkIn(){
+  if(window.G.last===todayStr())return;
+  window.G.last=todayStr();window.G.coins+=10;addLog("เช็คอินรายวัน",10);saveG();renderWallet(true);
+  if($("dlg").open)drawDlg();
+  toast("เช็คอินสำเร็จ +10 เหรียญ");
+}
+
+function shopHtml(){
+  const c=window.G.coins;
+  const rows=CATS.map(([k,t])=>`<tr class="cat"><td colspan="4">${t}</td></tr>`+ITEMS.filter(i=>i[2]===k).map(([id,n])=>{
+    const p=PRICE[id];
+    return`<tr${hlIds.includes(id)?' class="hl"':''}><td>${ic(id)}${n}</td><td>${st(id)}</td><td>${p}</td><td class="buy"><button class="btn mini" data-buy="${id}" data-q="1"${c<p?" disabled":""}>+1</button> <button class="btn mini ghost" data-buy="${id}" data-q="5"${c<p*5?" disabled":""}>+5</button></td></tr>`;
+  }).join("")).join("");
+  return`<div class="tw shop"><table><thead><tr><th>วัตถุดิบ</th><th>มีอยู่ (ชิ้น)</th><th>ราคา (เหรียญ)</th><th>ซื้อ</th></tr></thead><tbody>${rows}</tbody></table></div>`;
+}
+
+function backHtml(){
+  const ids=ITEMS.map(i=>i[0]),have=ids.filter(i=>st(i)>0).length,cnt=ids.reduce((a,i)=>a+st(i),0),val=ids.reduce((a,i)=>a+st(i)*PRICE[i],0);
+  const rows=ITEMS.map(([id,n])=>{const q=st(id);return`<tr class="${q===0?"z":q===1?"l":""}"><td>${ic(id)} ${n}</td><td>${q}</td><td>${PRICE[id]}</td><td>${q*PRICE[id]}</td><td>${q===0?"หมด":q===1?"ใกล้หมด":"ปกติ"}</td><td><button class="btn mini" data-buy="${id}" data-q="1"${window.G.coins<PRICE[id]?" disabled":""}>เติม +1</button></td></tr>`}).join("");
+  const log=window.G.log.slice(0,15).map(l=>`<li><span>${new Date(l.t).toLocaleString("th-TH",{dateStyle:"short",timeStyle:"short"})}</span> ${esc(l.d)} <b class="${l.c<0?"neg":"pos"}">${l.c>0?"+":""}${l.c}</b></li>`).join("")||"<li>ยังไม่มีรายการ</li>";
+  return`<div class="sum"><div><b>${have}/${ids.length}</b><small>ชนิดที่มีของ</small></div><div><b>${cnt}</b><small>ชิ้นรวม</small></div><div><b>${val}</b><small>มูลค่าสต็อก (เหรียญ)</small></div><div><b>${Object.keys(window.G.cooked||{}).length}/${R.length}</b><small>เมนูที่เคยทำ</small></div></div><div class="tw"><table><thead><tr><th>วัตถุดิบ</th><th>ในตู้</th><th>ราคา/ชิ้น</th><th>มูลค่า</th><th>สถานะ</th><th></th></tr></thead><tbody>${rows}</tbody></table></div><h3>ประวัติเหรียญ</h3><ul class="log">${log}</ul><button class="btn ghost" id="rst">รีเซ็ตข้อมูลทั้งหมด</button>`;
+}
+
+function drawDlg(){
+  rstArm=false;$("dcoin").textContent=window.G.coins;
+  document.querySelectorAll(".tab").forEach(b=>b.setAttribute("aria-pressed",b.dataset.t===tab));
+  $("dbody").innerHTML=tab==="prof"?profHtml():tab==="own"?ownHtml():tab==="book"?bookHtml():"<h3>ซื้อวัตถุดิบ</h3>"+shopHtml()+"<h3>คลังสต็อก</h3>"+backHtml();
+}
+
+function openDlg(t,hl){
+  if(t==="book"&&(tab!=="book"||!$("dlg").open)){bookOpen=false;bookPg=0}tab=t;hlIds=hl||[];drawDlg();
+  const d=$("dlg");if(!d.open)d.showModal();peek(d.querySelector(`.tab[data-t="${tab}"]`));
+  const h=d.querySelector(".hl");if(h)h.scrollIntoView({block:"center"});
+}
+
+const peek=b=>{if(!b)return;b.classList.add("peek");clearTimeout(b.pk);b.pk=setTimeout(()=>b.classList.remove("peek"),1600)};
+document.querySelectorAll(".tab").forEach(b=>b.onclick=()=>{const pt=tab;tab=b.dataset.t;if(tab==="book"&&pt!=="book"){bookOpen=false;bookPg=0}hlIds=[];drawDlg();peek(b)});
+$("dclose").onclick=()=>$("dlg").close();
+$("dlg").addEventListener("click",e=>{if(!e.composedPath().some(n=>n.classList&&(n.classList.contains("dmain")||n.classList.contains("tab"))))$("dlg").close()});
+$("dlg").addEventListener("close",()=>renderStock());
+
+$("dbody").addEventListener("click",e=>{
+  const b=e.target.closest("[data-buy]");
+  if(b){
+    const id=b.dataset.buy,q=+b.dataset.q;
+    const add=Math.min(q,99-st(id));
+    if(add<=0){toast("ตู้เย็นเก็บ"+nm(id)+"ได้สูงสุด 99 ชิ้น");return}
+    const cost=PRICE[id]*add;if(window.G.coins<cost)return;
+    window.G.coins-=cost;window.G.stock[id]=st(id)+add;addLog("ซื้อ "+nm(id)+" ×"+add,-cost);saveG();
+    drawDlg();renderStock();return;
+  }
+  if(e.target.id==="rst"){
+    if(!rstArm){rstArm=true;e.target.textContent="กดอีกครั้งเพื่อยืนยันการรีเซ็ต";return}
+    const s0={};ITEMS.forEach(i=>{s0[i[0]]=1});
+    window.G={coins:50,stock:s0,last:"",log:[{t:Date.now(),d:"เริ่มใหม่ โบนัสเริ่มต้น",c:50},{t:Date.now(),d:"รับวัตถุดิบเริ่มต้น อย่างละ 1 ชิ้น",c:0}],cooked:{},starter:true};
+    saveG();sel.length=0;render();drawDlg();renderUser();
+  }
+});
+
+$("chk").onclick=checkIn;
+$("shopb").onclick=()=>openDlg("shop");
+$("bookb").onclick=()=>openDlg("book");
+
+document.addEventListener("click",e=>{
+  const b=e.target.closest(".it");if(!b||sel.includes(b.dataset.id))return;
+  if(st(b.dataset.id)<=0){e.stopImmediatePropagation();toast(nm(b.dataset.id)+" หมด ไปซื้อที่ร้านค้าได้เลย");openDlg("shop",[b.dataset.id])}
+},true);
+
+$("recl").addEventListener("click",e=>{
+  const b=e.target.closest(".rc");if(!b)return;
+  const r=R[+b.dataset.n],S=new Set(sel),miss=r.need.filter(i=>st(i)<=0);
+  if(r.any){
+    const a=r.any.find(x=>S.has(x)&&st(x)>0)||r.any.find(x=>st(x)>0);
+    if(a){if(!S.has(a))sel.push(a)}else miss.push(r.any[0]);
+  }
+  if(miss.length){e.stopImmediatePropagation();toast("ขาด "+miss.map(nm).join(", ")+" ในตู้เย็น");openDlg("shop",miss)}
+},true);
+
+let PS=[];
+const oldMix=$("mix").onclick;
+$("mix").onclick=()=>{
+  if(cooking)return;
+  const S=[...sel],rr=forceR||pick2(S);
+  oldMix();
+  if(!rr)return;
+  cooking=true;
+  setTimeout(()=>{cookDone(rr,S);cooking=false},620);
+};
+
+function cookDone(r,S){
+  if(!window.G.cooked) window.G.cooked = {};
+  const first=!window.G.cooked[r.n],tot=Math.min(10,3*S.length+(first?5:0));
+  S.forEach(i=>{window.G.stock[i]=Math.max(0,st(i)-1)});
+  window.G.cooked[r.n]=(window.G.cooked[r.n]||0)+1;window.G.coins+=tot;addLog("ทำ "+r.n,tot);saveG();
+  sel.length=0;render();
+  const m=$("menu");m.hidden=false;
+  m.insertAdjacentHTML("beforeend",`<p class="reward">${coinIc} ได้รับ +${tot} เหรียญ (${S.length} วัตถุดิบ × 3${first?" + เมนูใหม่ 5":""} สูงสุด 10)${first?" เพิ่มสูตรลงสมุดแล้ว":""} ใช้วัตถุดิบไปอย่างละ 1</p>`);
+  renderWallet(true);
+  toast("ทำ "+r.n+" สำเร็จ +"+tot+" เหรียญ"+(first?" เพิ่มสูตรลงสมุดแล้ว":""));
+}
+
+if(fresh)setTimeout(()=>{toast("ยินดีต้อนรับ! ได้ 50 เหรียญ และวัตถุดิบอย่างละ 1 ชิ้น")},500);
+
+/* ===== profile ===== */
+window.authInfo={google:false,name:"",photo:"",status:"ล็อกอินกูเกิลเพื่อเซฟคลาวด์อัตโนมัติ"};
+const DEF_AV="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%238a7a62'><circle cx='12' cy='8' r='4'/><path d='M12 14c-6.1 0-8 4-8 4v2h16v-2s-1.9-4-8-4z'/></svg>";
+const FR=[["mint","กรอบมินต์",70],["dot","กรอบลูกไม้ชมพู",90],["gold","กรอบทอง",120],["rb","กรอบรุ้ง",160]];
+function prof(){const g=window.G;if(!g.profile)g.profile={name:"",avatar:"",frames:[],frame:""};const p=g.profile;if(!Array.isArray(p.frames))p.frames=[];return p}
+const avSrc=()=>{const p=prof(),a=window.authInfo||{};return p.avatar||(a.google&&a.photo)||DEF_AV};
+function fitName(){
+  const u=$("uname"),cs=getComputedStyle(u),m=document.createElement("span");
+  m.style.cssText="position:absolute;visibility:hidden;white-space:pre;font-style:"+cs.fontStyle+";font-weight:"+cs.fontWeight+";font-size:"+cs.fontSize+";font-family:"+cs.fontFamily+";letter-spacing:"+cs.letterSpacing;
+  m.textContent=u.value||u.placeholder;document.body.appendChild(m);
+  u.style.width=Math.ceil(m.getBoundingClientRect().width)+30+"px";m.remove();
+}
+const defName=()=>{const a=window.authInfo||{};return a.google?(a.name||"ผู้ใช้ Google"):"ผู้เยี่ยมชม"};
+function renderUser(){
+  const p=prof(),a=window.authInfo||{};
+  {const u=$("uname");if(document.activeElement!==u)u.value=p.name||defName();fitName()}
+  $("uavatar").src=avSrc();
+  $("ustatus").textContent=a.status||"";
+  $("avw").className="avwrap"+(p.frame?" fr-"+p.frame:"");
+}
+window.renderUser=renderUser;
+
+function profHtml(){
+  const p=prof(),c=window.G.coins,src=esc(avSrc());
+  const frs=FR.map(([id,n,pr])=>{
+    const own=p.frames.includes(id),on=p.frame===id;
+    return`<div class="frow"><span class="avwrap fr-${id}" style="--s:48px"><img class="user-avatar" src="${src}" alt=""></span><span class="fn">${n}<small>${own?"เป็นเจ้าของแล้ว":pr+" เหรียญ"}</small></span>${own?`<button class="btn mini${on?" ghost":""}" data-feq="${id}">${on?"ถอดกรอบ":"ใช้กรอบนี้"}</button>`:`<button class="btn mini" data-fbuy="${id}"${c<pr?" disabled":""}>ซื้อ ${pr}</button>`}</div>`;
+  }).join("");
+  return`<div class="pf"><span class="avwrap${p.frame?" fr-"+p.frame:""}" style="--s:76px"><img class="user-avatar" src="${src}" alt="รูปโปรไฟล์"></span><div class="pfc"><span class="note">แก้ชื่อได้ที่แถบด้านบน</span><div class="tadd"><label class="btn ghost" for="pimg">เปลี่ยนรูปโปรไฟล์<input type="file" id="pimg" class="vh" accept="image/*"></label><button class="btn ghost" id="pimgdel"${p.avatar?"":" disabled"}>ลบรูป</button></div></div></div><h3>กรอบรูป (ราคาเริ่มต้น 70 เหรียญ)</h3>${frs}`;
+}
+
+$("dbody").addEventListener("click",e=>{
+  const t=e.target,p=prof(),fb=t.closest("[data-fbuy]"),fe=t.closest("[data-feq]");
+  if(fb){
+    const f=FR.find(x=>x[0]===fb.dataset.fbuy);
+    if(!f||p.frames.includes(f[0]))return;
+    if(window.G.coins<f[2]){toast("เหรียญไม่พอ");return}
+    window.G.coins-=f[2];p.frames.push(f[0]);p.frame=f[0];addLog("ซื้อ"+f[1],-f[2]);saveG();
+    renderWallet(true);renderUser();drawDlg();toast("ซื้อ"+f[1]+"แล้ว ใส่ให้เลย");return;
+  }
+  if(fe){p.frame=p.frame===fe.dataset.feq?"":fe.dataset.feq;saveG();renderUser();drawDlg();return}
+  if(t.id==="pimgdel"){p.avatar="";saveG();renderUser();drawDlg()}
+});
+$("dbody").addEventListener("change",e=>{
+  if(e.target.id!=="pimg")return;
+  const f=e.target.files&&e.target.files[0];if(!f)return;
+  if(!f.type.startsWith("image/")){toast("เลือกไฟล์รูปภาพเท่านั้น");return}
+  const url=URL.createObjectURL(f),im=new Image();
+  im.onload=()=>{
+    const S=160,cv=document.createElement("canvas");cv.width=cv.height=S;
+    const x=cv.getContext("2d"),m=Math.min(im.width,im.height);
+    x.fillStyle="#fff";x.fillRect(0,0,S,S);
+    x.drawImage(im,(im.width-m)/2,(im.height-m)/2,m,m,0,0,S,S);
+    URL.revokeObjectURL(url);
+    prof().avatar=cv.toDataURL("image/jpeg",.85);saveG();renderUser();drawDlg();toast("เปลี่ยนรูปโปรไฟล์แล้ว");
+  };
+  im.onerror=()=>{URL.revokeObjectURL(url);toast("เปิดรูปนี้ไม่ได้ ลองไฟล์อื่น")};
+  im.src=url;
+});
+const av=$("avw");av.setAttribute("tabindex","0");av.setAttribute("role","button");av.setAttribute("title","เปิดโปรไฟล์");
+av.onclick=()=>openDlg("prof");
+av.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();openDlg("prof")}});
+$("uname").addEventListener("input",fitName);
+if(document.fonts&&document.fonts.ready)document.fonts.ready.then(fitName);
+$("uname").addEventListener("keydown",e=>{if(e.key==="Enter")e.target.blur()});
+$("uname").addEventListener("change",e=>{
+  const v=e.target.value.trim().slice(0,20),p=prof();
+  p.name=(v===defName())?"":v;saveG();renderUser();toast(p.name?"บันทึกชื่อแล้ว":"ใช้ชื่อเดิม");
+});
+
+/* ===== recipe book ===== */
+const TIPS=[
+[0,"คลิกของในตู้เย็นเพื่อหยิบใส่ตะกร้า คลิกอีกครั้งเพื่อเอาคืน"],
+[0,"กด “รวมเป็นเมนู” ระบบจะดูว่าของในตะกร้าเข้ากับเมนูไทยอะไร และใช้วัตถุดิบไปอย่างละ 1"],
+[0,"ของหมดแล้วไปซื้อเพิ่มที่ร้านค้าได้ด้วยเหรียญ"],
+[1,"ทำอาหารได้ 3 เหรียญต่อวัตถุดิบ รวมไม่เกิน 10 เหรียญต่อเมนู ทำเมนูใหม่ครั้งแรกได้โบนัส +5"],
+[1,"เช็คอินทุกวันได้ +10 เหรียญ"],
+[2,"แถบเมนูแนะนำบอกว่าขาดหรือเกินอะไร กดแล้วระบบหยิบของให้ถ้ามีในตู้"],
+[3,"ปิดตู้เย็นเพื่อแต่งประตู ลาก หมุน ขยายสติกเกอร์ เพิ่มข้อความ และเปลี่ยนสีตู้ได้"],
+[5,"แท็บโปรไฟล์มีกรอบรูปให้ซื้อด้วยเหรียญ แตะรูปโปรไฟล์ด้านบนเพื่อเปิด"],
+[8,"ล็อกอิน Google เพื่อเซฟความคืบหน้าและสูตรในสมุดขึ้นคลาวด์"]
+];
+let bookOpen=false,bookPg=0;
+function coverInner(){
+  const n=R.filter(r=>(window.G.cooked||{})[r.n]).length;
+  return`<svg class="ic" viewBox="0 0 48 48" aria-hidden="true"><use href="#i-rice"/></svg><span class="ct">สมุดสูตรอาหาร</span><span class="cs">เขียนแล้ว ${n}/${R.length} เมนู</span><span class="cs">แตะเพื่อเปิดสมุด</span>`;
+}
+function bookPages(){
+  const ck=window.G.cooked||{},done=R.filter(r=>ck[r.n]),lock=R.filter(r=>!ck[r.n]),n=done.length,P=[];
+  P.push(`<div class="pg"><h4>วิธีเล่น</h4><ul>${TIPS.map(([k,t])=>n>=k?`<li>${t}</li>`:`<li class="lock">ล็อก ทำเมนูให้ครบ ${k} เมนูเพื่อปลดล็อกคำแนะนำนี้</li>`).join("")}</ul></div>`);
+  done.forEach(r=>{
+    const need=r.need.map(nm).join(", ")+(r.any?", "+(r.anyName||"เนื้อสัตว์")+" ("+r.any.map(nm).join("/")+")":"");
+    P.push(`<div class="pg"><h4>${r.n}</h4><div class="pic">${r.need.slice(0,4).map(i=>ic(i)).join("")}</div><p>${r.d}</p><p class="note">วัตถุดิบหลัก: ${need}</p>${r.opt&&r.opt.length?`<p class="note">ใส่เพิ่มได้: ${r.opt.map(nm).join(", ")}</p>`:""}<ol>${r.s.map(x=>`<li>${x}</li>`).join("")}</ol><p class="note rt">ทำแล้ว ${ck[r.n]} ครั้ง</p></div>`);
+  });
+  const hints=lock.slice(0,8).map(r=>`<div class="lk">${ic(r.need[0])}<span>??? <small>ใบ้: ใช้${nm(r.need[0])}</small></span></div>`).join("");
+  P.push(`<div class="pg"><h4>${lock.length?"เมนูที่ยังไม่ปลดล็อก":"สมุดเล่มนี้เต็มแล้ว"}</h4>${n===0?'<p class="note">ยังไม่มีสูตรในสมุด ลองทำเมนูแรกดู สูตรจะถูกเขียนลงหน้าถัดไป</p>':""}${hints}${lock.length>8?`<p class="note">และอีก ${lock.length-8} เมนูที่ยังไม่ปลดล็อก</p>`:""}</div>`);
+  return P;
+}
+function bookInner(){
+  if(!bookOpen)return`<button class="cover" data-bk="open" aria-label="เปิดสมุดสูตรอาหาร">${coverInner()}</button>`;
+  const P=bookPages();bookPg=Math.min(bookPg,P.length-1);
+  return`<div class="bkopen"><div class="bkbody"><div class="bkp" id="bkp" aria-live="polite">${P[bookPg]}</div></div><div class="bkn"><button class="btn mini ghost" id="bkprev" data-bk="prev"${bookPg===0?" disabled":""}>ก่อนหน้า</button><span id="bkind" class="note">หน้า ${bookPg+1}/${P.length}</span><button class="btn mini" id="bknext" data-bk="next"${bookPg===P.length-1?" disabled":""}>ถัดไป</button></div><div class="bkn"><button class="btn mini ghost" data-bk="close">ปิดสมุด</button></div></div>`;
+}
+function bookHtml(){return`<div class="bkroot">${bookInner()}</div>`}
+function bookGo(d){
+  const P=bookPages(),n=Math.max(0,Math.min(P.length-1,bookPg+d)),bp=$("bkp");
+  if(n===bookPg||!bp)return;
+  const old=bp.querySelector(".pg"),ov=old.cloneNode(true);
+  ov.classList.add("fl",d>0?"fn":"fp");
+  bookPg=n;bp.innerHTML=P[n];bp.appendChild(ov);
+  const rm=()=>ov.remove();ov.addEventListener("animationend",rm);setTimeout(rm,750);
+  $("bkprev").disabled=n===0;$("bknext").disabled=n===P.length-1;$("bkind").textContent="หน้า "+(n+1)+"/"+P.length;
+}
+function bookOpenIt(){
+  bookOpen=true;bookPg=0;drawDlg();
+  const bb=document.querySelector("#dbody .bkbody");if(!bb)return;
+  const cv=document.createElement("div");cv.className="cover cvo";cv.innerHTML=coverInner();bb.appendChild(cv);
+  const rm=()=>cv.remove();cv.addEventListener("animationend",rm);setTimeout(rm,1100);
+}
+$("dbody").addEventListener("click",e=>{
+  const b=e.target.closest("[data-bk]");if(!b)return;
+  const a=b.dataset.bk;
+  if(a==="open")bookOpenIt();else if(a==="close"){bookOpen=false;bookPg=0;drawDlg()}else bookGo(a==="next"?1:-1);
+});
+let bsx=null;
+$("dbody").addEventListener("pointerdown",e=>{bsx=e.target.closest(".bkp")?e.clientX:null});
+$("dbody").addEventListener("pointerup",e=>{if(bsx===null)return;const dx=e.clientX-bsx;bsx=null;if(Math.abs(dx)>50)bookGo(dx<0?1:-1)});
+$("dlg").addEventListener("keydown",e=>{
+  if(tab!=="book"||!bookOpen||e.target.tagName==="INPUT")return;
+  if(e.key==="ArrowRight")bookGo(1);else if(e.key==="ArrowLeft")bookGo(-1);
+});
+
+/* ===== custom ingredient images (owner only) ===== */
+window.setIngImages=m=>{
+  const n=cleanImgs(m);
+  if(JSON.stringify(n)===JSON.stringify(IMG))return;
+  IMG=n;try{localStorage.setItem("ingImgCache",JSON.stringify(IMG))}catch(e){}
+  buildShelves();render();if($("dlg").open)drawDlg();
+};
+window.refreshOwnerUI=()=>{
+  const t=document.querySelector('.tab[data-t="own"]');if(t)t.hidden=!window.isOwner;
+  if(!window.isOwner&&tab==="own"){tab="shop";if($("dlg").open)drawDlg()}
+};
+function ownHtml(){
+  if(!window.isOwner)return'<p class="empty">เฉพาะเจ้าของเว็บเท่านั้น</p>';
+  const rows=ITEMS.map(([id,n])=>`<div class="frow">${ic(id)}<span class="fn">${n}<small>${IMG[id]?"ใช้รูปที่อัปโหลด":"ใช้ไอคอนเดิม"}</small></span><label class="btn mini ghost">เลือกรูป<input type="file" class="vh" accept="image/*" data-ing="${id}"></label>${IMG[id]?`<button class="btn mini ghost" data-ingdel="${id}">ลบรูป</button>`:""}</div>`).join("");
+  return`<p class="note">รูปที่อัปโหลดจะแสดงกับผู้เล่นทุกคน (ย่อเป็น 112×112 อัตโนมัติ)</p>${rows}`;
+}
+function shrinkImg(f){
+  return new Promise((ok,no)=>{
+    const url=URL.createObjectURL(f),im=new Image();
+    im.onload=()=>{
+      const S=112,cv=document.createElement("canvas");cv.width=cv.height=S;
+      const x=cv.getContext("2d"),k=Math.min(S/im.width,S/im.height),w=im.width*k,h=im.height*k;
+      x.drawImage(im,(S-w)/2,(S-h)/2,w,h);URL.revokeObjectURL(url);
+      ok(cv.toDataURL("image/webp",.85));
+    };
+    im.onerror=()=>{URL.revokeObjectURL(url);no(new Error("bad image"))};
+    im.src=url;
+  });
+}
+$("dbody").addEventListener("change",async e=>{
+  const id=e.target.dataset&&e.target.dataset.ing;if(!id)return;
+  if(!window.isOwner){toast("เฉพาะเจ้าของเว็บเท่านั้น");return}
+  const f=e.target.files&&e.target.files[0];if(!f)return;
+  if(!f.type.startsWith("image/")){toast("เลือกไฟล์รูปภาพเท่านั้น");return}
+  try{
+    const url=await shrinkImg(f);
+    if(!IMG_RE.test(url)||url.length>=150000){toast("รูปใหญ่เกินไป ลองรูปที่เรียบง่ายกว่านี้");return}
+    if(await window.saveIngImage(id,url)){window.setIngImages({...IMG,[id]:url});toast("อัปโหลดรูป"+nm(id)+"แล้ว")}
+    else toast("บันทึกไม่สำเร็จ ตรวจสอบ Firestore Rules และอีเมลเจ้าของ");
+  }catch(err){toast("เปิดรูปนี้ไม่ได้ ลองไฟล์อื่น")}
+});
+$("dbody").addEventListener("click",async e=>{
+  const b=e.target.closest("[data-ingdel]");if(!b)return;
+  if(!window.isOwner){toast("เฉพาะเจ้าของเว็บเท่านั้น");return}
+  const id=b.dataset.ingdel;
+  if(await window.deleteIngImage(id)){const m={...IMG};delete m[id];window.setIngImages(m);toast("ลบรูป"+nm(id)+"แล้ว กลับไปใช้ไอคอนเดิม")}
+  else toast("ลบไม่สำเร็จ ตรวจสอบ Firestore Rules");
+});
+drawStk();
+render();
+renderUser();
+</script>
+</body>
+</html>
