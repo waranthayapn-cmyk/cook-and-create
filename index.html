@@ -299,6 +299,7 @@ label.btn:focus-within{outline:2px dashed var(--ink);outline-offset:2px}
 @keyframes pgp{to{transform:perspective(1200px) rotateY(100deg);opacity:0}}
 @keyframes cvo{0%{transform:none;opacity:1}65%{opacity:1}100%{transform:perspective(1400px) rotateY(-165deg);opacity:0}}
 /* custom ingredient images + owner tab */
+.uid{user-select:all;-webkit-user-select:all;word-break:break-all;font-family:monospace}
 img.ic{object-fit:cover;border-radius:12px;filter:none}
 .shelf .row .ic{width:76px;height:76px}
 .tab[hidden]{display:none}
@@ -420,12 +421,12 @@ img.ic{object-fit:cover;border-radius:12px;filter:none}
 <!-- Firebase SDK Imports -->
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-import { getAuth, signInWithPopup, signInWithRedirect, GoogleAuthProvider, signOut, onAuthStateChanged, signInWithCustomToken, signInAnonymously } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-import { getFirestore, doc, setDoc, getDoc, getDocs, deleteDoc, collection } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+import { getAuth, signInWithPopup, signInWithRedirect, GoogleAuthProvider, signOut, onAuthStateChanged, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+import { getFirestore, doc, setDoc, getDoc, getDocs, deleteDoc, collection, query, where } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
 const appId = typeof __app_id !== 'undefined' ? __app_id : 'fridge-menu-app';
 
-// ===== ใส่ค่า Firebase จริงของคุณตรงนี้ (Firebase Console > Project settings > Your apps > Web app) =====
+// ===== ค่า Firebase ของโปรเจกต์ (ค่านี้เปิดเผยได้ ความปลอดภัยอยู่ที่ Security Rules) =====
 const MY_FIREBASE_CONFIG = {
   apiKey: "AIzaSyD9nGkgcUtZhljbMfgalMzkzXJldpYzHV4",
   authDomain: "cookandcreate-df3ed.firebaseapp.com",
@@ -434,27 +435,14 @@ const MY_FIREBASE_CONFIG = {
   messagingSenderId: "562747057827",
   appId: "1:562747057827:web:57f24370f6f9a7380f4116"
 };
-// ถ้ารันในสภาพแวดล้อมที่ให้ __firebase_config มา จะใช้ค่านั้นก่อน
 const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : MY_FIREBASE_CONFIG;
 const cloudReady = !!(firebaseConfig.apiKey && firebaseConfig.projectId);
 
-// ===== เจ้าของเว็บ: ใส่อีเมล Google ของคุณตรงนี้ เฉพาะบัญชีนี้ที่จะเห็นแท็บ "จัดการรูป" =====
-// *** ความปลอดภัยจริงอยู่ที่ Firestore Security Rules (ดูตัวอย่างด้านล่าง) ปุ่มในหน้าเว็บแค่ซ่อนจากผู้เล่นทั่วไป ***
-//
-// rules_version = '2';
-// service cloud.firestore {
-//   match /databases/{database}/documents {
-//     match /artifacts/{appId}/public/data/ingImages/{imgId} {
-//       allow read: if true;
-//       allow write: if request.auth != null
-//         && request.auth.token.email == "waranthayapn@gmail.com"
-//         && request.auth.token.email_verified == true;
-//     }
-//     match /artifacts/{appId}/users/{uid}/gameData/{docId} {
-//       allow read, write: if request.auth != null && request.auth.uid == uid;
-//     }
-//   }
-// }
+// ===== เจ้าของเว็บ =====
+// แนะนำให้ใส่ UID (ล็อกอินแล้วดูได้ที่แท็บโปรไฟล์ > ข้อมูลส่วนตัว) แล้วลบอีเมลออกจากโค้ด
+// ถ้า OWNER_UID ว่าง ระบบจะใช้อีเมลแทน
+// *** ความปลอดภัยจริงอยู่ที่ Firestore Security Rules ดูไฟล์ firestore.rules ***
+const OWNER_UID = "";
 const OWNER_EMAIL = "waranthayapn@gmail.com";
 
 let auth = null, db = null, googleProvider = null;
@@ -462,14 +450,103 @@ let isGoogleUser = false;
 let loadingCloud = false;
 window.isOwner = false;
 
-// รูปวัตถุดิบที่เจ้าของอัปโหลด: ทุกคนอ่านได้ เขียนได้เฉพาะเจ้าของ (บังคับด้วย Security Rules)
+const $u = id => document.getElementById(id);
+const toastMsg = m => window.toast && window.toast(m);
+const readLocalTs = () => { try { return Number(localStorage.getItem("fridgeUpdated") || 0); } catch (e) { return 0; } };
+const writeLocalTs = t => { try { localStorage.setItem("fridgeUpdated", String(t)); } catch (e) {} };
+const defaultG = () => ({ coins: 50, stock: {}, last: "", log: [], cooked: {} });
+const userDoc = () => doc(db, 'artifacts', appId, 'users', auth.currentUser.uid, 'gameData', 'state');
+
+// ---------- เซฟคลาวด์: หน่วง 2.5 วินาที รวมการเขียน และเขียนทีละคิว ----------
+let saveTimer = null, chain = Promise.resolve(), dirty = false, lastErrToast = 0;
+async function realSave() {
+  if (!cloudReady || loadingCloud || !auth || !auth.currentUser || !isGoogleUser) return;
+  const ts = Date.now();
+  const payload = {
+    G: window.G || {},
+    stks: window.stks || [],
+    fridgeColor: (() => { try { return localStorage.getItem("fridgeColor") || ""; } catch (e) { return ""; } })(),
+    updatedAt: ts
+  };
+  try {
+    await setDoc(userDoc(), payload);   // เขียนทับทั้งเอกสาร (ไม่ merge) เพื่อให้รีเซ็ตลบข้อมูลเก่าจริง
+    writeLocalTs(ts);
+  } catch (err) {
+    console.error("Cloud save failed:", err);
+    dirty = true;
+    if (Date.now() - lastErrToast > 30000) { lastErrToast = Date.now(); toastMsg("เซฟขึ้นคลาวด์ไม่สำเร็จ ข้อมูลยังอยู่ในเครื่อง"); }
+  }
+}
+function flushSave() {
+  clearTimeout(saveTimer); saveTimer = null;
+  if (!dirty) return chain;
+  dirty = false;
+  chain = chain.then(realSave);
+  return chain;
+}
+window.saveCloudData = () => { dirty = true; clearTimeout(saveTimer); saveTimer = setTimeout(flushSave, 2500); };
+document.addEventListener("visibilitychange", () => { if (document.visibilityState === "hidden") flushSave(); });
+window.addEventListener("pagehide", flushSave);
+
+// ---------- โหลดเซฟ: เทียบ updatedAt และถามก่อนทับข้อมูลในเครื่อง ----------
+async function loadCloudData() {
+  if (!cloudReady || !auth || !auth.currentUser || !isGoogleUser) return;
+  try {
+    const snap = await getDoc(userDoc());
+    const localTs = readLocalTs();
+    const data = snap.exists() ? snap.data() : null;
+    const cloudTs = data ? (data.updatedAt || 0) : 0;
+    const useCloud = !!data && cloudTs > localTs &&
+      (localTs === 0 || confirm("พบข้อมูลบนคลาวด์ที่ใหม่กว่าข้อมูลในเครื่องนี้\n\nกด ตกลง = ใช้ข้อมูลจากคลาวด์ (ทับข้อมูลในเครื่อง)\nกด ยกเลิก = ใช้ข้อมูลในเครื่อง (ทับข้อมูลบนคลาวด์)"));
+    if (useCloud) {
+      loadingCloud = true;
+      try {
+        if (data.G) {
+          window.G = window.sanitizeG({ ...defaultG(), ...data.G });
+          window.saveGLocally(true);
+        }
+        window.stks = window.sanitizeStks(data.stks);
+        window.saveStksLocally(true);
+        if (window.drawStk) window.drawStk();
+        if (data.fridgeColor !== undefined) window.setColor(window.safeColor(data.fridgeColor || ""), true);
+        writeLocalTs(cloudTs);
+        window.renderStock();
+        window.renderUser();
+      } finally {
+        loadingCloud = false;
+      }
+      toastMsg("โหลดข้อมูลคลาวด์สำเร็จ!");
+    } else {
+      dirty = true;
+      await flushSave();
+      toastMsg(data ? "ใช้ข้อมูลในเครื่อง อัปโหลดขึ้นคลาวด์แล้ว" : "สร้างเซฟบนคลาวด์แล้ว");
+    }
+  } catch (err) {
+    loadingCloud = false;
+    console.error("Cloud load failed:", err);
+  }
+}
+
+// ---------- รูปวัตถุดิบ: ทุกคนอ่านได้ เขียนได้เฉพาะเจ้าของ (บังคับด้วย Rules) ----------
+const imgCol = () => collection(db, 'artifacts', appId, 'public', 'data', 'ingImages');
 async function loadIngImages() {
   if (!cloudReady || !db) return;
   try {
-    const snap = await getDocs(collection(db, 'artifacts', appId, 'public', 'data', 'ingImages'));
-    const m = {};
-    snap.forEach(d => { const v = d.data(); if (v && typeof v.img === "string") m[d.id] = v.img; });
+    let last = 0;
+    try { last = Number(localStorage.getItem("ingImgTs") || 0); } catch (e) {}
+    const cur = window.getIngImages();
+    if (!Object.keys(cur).length) last = 0;   // แคชว่าง = ดึงใหม่ทั้งหมด
+    const snap = await getDocs(query(imgCol(), where("updatedAt", ">", last)));  // ดึงเฉพาะที่เปลี่ยนหลังจากครั้งก่อน
+    if (snap.empty) return;
+    const m = { ...cur };
+    let mx = last;
+    snap.forEach(d => {
+      const v = d.data(); if (!v) return;
+      mx = Math.max(mx, Number(v.updatedAt) || 0);
+      if (typeof v.img === "string" && v.img) m[d.id] = v.img; else delete m[d.id];
+    });
     window.setIngImages(m);
+    try { localStorage.setItem("ingImgTs", String(mx)); } catch (e) {}
   } catch (err) {
     console.warn("Load ingredient images failed:", err);
   }
@@ -479,81 +556,22 @@ window.saveIngImage = async (id, img) => {
   try { await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'ingImages', id), { img, updatedAt: Date.now() }); return true; }
   catch (e) { console.error(e); return false; }
 };
-window.deleteIngImage = async (id) => {
+window.deleteIngImage = async (id) => {   // เก็บเป็นเอกสารว่าง (tombstone) เพื่อให้เครื่องอื่นรู้ว่าถูกลบ
   if (!window.isOwner || !db) return false;
-  try { await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'ingImages', id)); return true; }
+  try { await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'ingImages', id), { img: "", updatedAt: Date.now() }); return true; }
   catch (e) { console.error(e); return false; }
 };
 
-const $u = id => document.getElementById(id);
-const toastMsg = m => window.toast && window.toast(m);
-const readLocalTs = () => { try { return Number(localStorage.getItem("fridgeUpdated") || 0); } catch (e) { return 0; } };
-const writeLocalTs = t => { try { localStorage.setItem("fridgeUpdated", String(t)); } catch (e) {} };
-
-const defaultG = () => ({ coins: 50, stock: {}, last: "", log: [], cooked: {} });
-
-// Save to Firestore Cloud
-window.saveCloudData = async function () {
-  if (!cloudReady || loadingCloud || !auth || !auth.currentUser || !isGoogleUser) return;
-  const uid = auth.currentUser.uid;
-  const docRef = doc(db, 'artifacts', appId, 'users', uid, 'gameData', 'state');
-  const ts = Date.now();
-  const payload = {
-    G: window.G || {},
-    stks: window.stks || [],
-    fridgeColor: (() => { try { return localStorage.getItem("fridgeColor") || ""; } catch (e) { return ""; } })(),
-    updatedAt: ts
-  };
-  try {
-    await setDoc(docRef, payload, { merge: true });
-    writeLocalTs(ts);
-  } catch (err) {
-    console.error("Cloud save failed:", err);
-  }
+// ---------- ลบข้อมูลของฉัน (คลาวด์) ----------
+window.deleteCloudData = async () => {
+  if (!cloudReady || !auth || !auth.currentUser || !isGoogleUser) return true;
+  clearTimeout(saveTimer); dirty = false;
+  try { await chain; await deleteDoc(userDoc()); await signOut(auth); return true; }
+  catch (e) { console.error(e); return false; }
 };
 
-// Load from Firestore Cloud (เทียบ updatedAt: ใครใหม่กว่าชนะ)
-async function loadCloudData() {
-  if (!cloudReady || !auth || !auth.currentUser || !isGoogleUser) return;
-  const uid = auth.currentUser.uid;
-  const docRef = doc(db, 'artifacts', appId, 'users', uid, 'gameData', 'state');
-  try {
-    const snap = await getDoc(docRef);
-    const localTs = readLocalTs();
-    const data = snap.exists() ? snap.data() : null;
-    const cloudTs = data ? (data.updatedAt || 0) : 0;
-
-    if (data && cloudTs > localTs) {
-      loadingCloud = true;
-      try {
-        if (data.G) {
-          window.G = { ...defaultG(), ...data.G };
-          window.saveGLocally(true);
-        }
-        window.stks = Array.isArray(data.stks) ? data.stks : [];
-        window.saveStksLocally(true);
-        if (window.drawStk) window.drawStk();
-        if (data.fridgeColor !== undefined) window.setColor(data.fridgeColor, true);
-        writeLocalTs(cloudTs);
-        window.renderStock();
-        window.renderUser();
-      } finally {
-        loadingCloud = false;
-      }
-      toastMsg("โหลดข้อมูลคลาวด์สำเร็จ!");
-    } else {
-      // ในเครื่องใหม่กว่า (หรือยังไม่มีข้อมูลบนคลาวด์) -> อัปโหลดขึ้นไปแทน
-      await window.saveCloudData();
-      toastMsg(data ? "ข้อมูลในเครื่องใหม่กว่า อัปโหลดขึ้นคลาวด์แล้ว" : "สร้างเซฟบนคลาวด์แล้ว");
-    }
-  } catch (err) {
-    loadingCloud = false;
-    console.error("Cloud load failed:", err);
-  }
-}
-
 function setGuestUI(msg) {
-  window.authInfo = { google: false, name: "", photo: "", status: msg || "ล็อกอินกูเกิลเพื่อเซฟคลาวด์อัตโนมัติ" };
+  window.authInfo = { google: false, name: "", photo: "", uid: "", status: msg || "ล็อกอินกูเกิลเพื่อเซฟคลาวด์อัตโนมัติ" };
   $u("authTxt").textContent = "เข้าสู่ระบบด้วย Google";
   window.renderUser();
 }
@@ -565,12 +583,11 @@ if (cloudReady) {
   googleProvider = new GoogleAuthProvider();
   loadIngImages();
 
+  // ไม่ใช้ Anonymous login แล้ว (เกมไม่จำเป็นต้องใช้ และกันการสร้างบัญชีเปล่าจำนวนมาก)
   (async () => {
     try {
       if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
         await signInWithCustomToken(auth, __initial_auth_token);
-      } else {
-        await signInAnonymously(auth);
       }
     } catch (err) {
       console.warn("Auth initialization fallback:", err);
@@ -580,11 +597,13 @@ if (cloudReady) {
   onAuthStateChanged(auth, async (user) => {
     isGoogleUser = !!(user && !user.isAnonymous && user.providerData.some(p => p.providerId === 'google.com'));
     const wasOwner = window.isOwner;
-    window.isOwner = !!(isGoogleUser && OWNER_EMAIL && user.email && user.emailVerified && user.email.toLowerCase() === OWNER_EMAIL.toLowerCase());
+    const byUid = !!(OWNER_UID && user && user.uid === OWNER_UID);
+    const byEmail = !!(!OWNER_UID && OWNER_EMAIL && user && user.email && user.emailVerified && user.email.toLowerCase() === OWNER_EMAIL.toLowerCase());
+    window.isOwner = isGoogleUser && (byUid || byEmail);
     window.refreshOwnerUI();
     if (window.isOwner && !wasOwner) toastMsg("โหมดเจ้าของเว็บ: จัดการรูปวัตถุดิบได้ที่แท็บ จัดการรูป");
     if (isGoogleUser) {
-      window.authInfo = { google: true, name: user.displayName || "", photo: user.photoURL || "", status: "เชื่อมต่อระบบเซฟคลาวด์แล้ว" };
+      window.authInfo = { google: true, name: user.displayName || "", photo: user.photoURL || "", uid: user.uid, status: "เชื่อมต่อระบบเซฟคลาวด์แล้ว" };
       $u("authTxt").textContent = "ออกจากระบบ";
       window.renderUser();
       await loadCloudData();
@@ -596,7 +615,7 @@ if (cloudReady) {
   setGuestUI("ยังไม่ได้ตั้งค่า Firebase เซฟในเครื่องนี้เท่านั้น");
 }
 
-// Google Login / Logout
+// ---------- ปุ่มเข้าสู่ระบบ / ออกจากระบบ ----------
 $u("btnAuth").addEventListener("click", async () => {
   if (!cloudReady) {
     toastMsg("ยังไม่ได้ใส่ค่า Firebase ในโค้ด (MY_FIREBASE_CONFIG)");
@@ -608,9 +627,9 @@ $u("btnAuth").addEventListener("click", async () => {
   }
   if (isGoogleUser) {
     try {
+      await flushSave();
       await signOut(auth);
       toastMsg("ออกจากระบบเรียบร้อยแล้ว");
-      await signInAnonymously(auth);
     } catch (e) {
       console.error(e);
     }
@@ -653,6 +672,32 @@ const IMG_RE=/^data:image\/(png|jpeg|webp);base64,[A-Za-z0-9+\/=]+$/;
 function cleanImgs(o){const r={};if(o&&typeof o==="object")for(const k of Object.keys(o)){const v=o[k];if(idx(k)>=0&&typeof v==="string"&&v.length<150000&&IMG_RE.test(v))r[k]=v}return r}
 try{IMG=cleanImgs(JSON.parse(localStorage.getItem("ingImgCache")||"{}"))}catch(e){IMG={}}
 const ic=(id,c)=>IMG[id]?`<img class="ic im ${c||""}" src="${IMG[id]}" alt="" aria-hidden="true">`:`<svg class="ic ${c||""}" viewBox="0 0 48 48" aria-hidden="true"><use href="#i-${id}"/></svg>`;
+const FR=[["mint","กรอบมินต์",70],["dot","กรอบลูกไม้ชมพู",90],["gold","กรอบทอง",120],["rb","กรอบรุ้ง",160]];
+const NCL=["#fbe08a","#f7c9dd","#cfe8d5","#cfe0f5","#fcd9b6"];
+const num=(v,lo,hi,d)=>{v=Number(v);return Number.isFinite(v)?Math.min(hi,Math.max(lo,v)):d};
+function sanitizeStks(a){
+  if(!Array.isArray(a))return[];
+  const ok=new Set(STK.map(x=>x[0]));
+  return a.slice(0,60).filter(s=>s&&typeof s==="object"&&(s.t==="text"||ok.has(s.t))).map(s=>{
+    const o={id:String(s.id||"").replace(/[^a-z0-9]/gi,"").slice(0,16)||Math.random().toString(36).slice(2,9),t:s.t,x:num(s.x,0,100,40),y:num(s.y,0,100,40),r:num(s.r,-720,720,0),z:num(s.z,28,180,56)};
+    if(s.t==="text"){o.txt=String(s.txt||"").slice(0,30);o.c=NCL.includes(s.c)?s.c:NCL[0]}
+    return o;
+  });
+}
+function sanitizeG(g){
+  const o={coins:50,stock:{},last:"",log:[],cooked:{}};
+  if(!g||typeof g!=="object")return o;
+  o.coins=Math.floor(num(g.coins,0,1000000,50));
+  ITEMS.forEach(([id])=>{const v=g.stock&&g.stock[id];if(v!==undefined)o.stock[id]=Math.floor(num(v,0,99,0))});
+  o.last=typeof g.last==="string"&&/^\d{4}-\d{2}-\d{2}$/.test(g.last)?g.last:"";
+  o.log=(Array.isArray(g.log)?g.log:[]).slice(0,60).map(l=>({t:num(l&&l.t,0,9e15,0),d:String(l&&l.d||"").slice(0,80),c:Math.floor(num(l&&l.c,-100000,100000,0))}));
+  if(g.cooked&&typeof g.cooked==="object")R.forEach(r=>{const v=g.cooked[r.n];if(v)o.cooked[r.n]=Math.floor(num(v,1,100000,1))});
+  o.starter=!!g.starter;
+  const p=g.profile&&typeof g.profile==="object"?g.profile:{},fs=[...new Set((Array.isArray(p.frames)?p.frames:[]).filter(f=>FR.some(x=>x[0]===f)))];
+  o.profile={name:String(p.name||"").slice(0,20),avatar:typeof p.avatar==="string"&&p.avatar.length<150000&&IMG_RE.test(p.avatar)?p.avatar:"",frames:fs,frame:fs.includes(p.frame)?p.frame:""};
+  return o;
+}
+window.sanitizeG=sanitizeG;window.sanitizeStks=sanitizeStks;
 const GEN0=["ตั้งกระทะใส่น้ำมัน เจียวกระเทียมหรือหอมให้หอม (ถ้ามี)","ใส่เนื้อสัตว์หรือไข่ลงไปผัดจนสุก","ใส่ผักตามลงไปผัดไฟแรง","ปรุงรสด้วยของที่หยิบมา ชิมแล้วตักเสิร์ฟ"];
 const R=[
 {n:"ผัดกะเพราหมูสับ",need:["mince","garlic","chili","oyster","basil"],opt:["soy","sugar","fish","onion","egg","rice"],d:"หมูสับผัดไฟแรงกับพริกและกระเทียม หอมฉุยกินกับข้าวสวยร้อนๆ",s:["โขลกกระเทียมกับพริก","ผัดให้หอม ใส่หมูสับผัดจนสุก","ปรุงด้วยซอสหอยนางรม ซีอิ๊ว และน้ำตาลเล็กน้อย","ใส่ใบกะเพรา ผัดเร็วๆ ให้หอม","ตักเสิร์ฟ"]},
@@ -705,6 +750,10 @@ M("ผัดมะละกอใส่ไข่","papaya egg","garlic chili tom
 
 M("ข้าวคลุกน้ำปลา","rice fish","chili lime sugar pepper scallion coriander","เมนูลับประจำสิ้นเดือน ตอนเงินเดือนใกล้หมดแต่ยังต้องกินข้าว ข้าวสวยร้อนๆ คลุกน้ำปลา เรียบง่ายแต่อร่อยจนลืมกระเป๋าแฟบ","ตักข้าวสวยร้อนๆ ใส่ชาม|ราดน้ำปลาตามชอบ ใส่น้ำตาลหรือมะนาวนิดหน่อยก็ได้|คลุกให้เข้ากัน โรยพริกหรือต้นหอมถ้ามี|ตักกินได้เลย สิ้นเดือนนี้ก็รอดแล้ว",{secret:true,hint:"เมนูลับประจำสิ้นเดือน"});
 
+R.push({n:"หม้อรวมมิตรสยองขวัญ",need:[],opt:[],secret:true,weird:true,tag:"เมนูลับ ห้ามกิน",hint:"เมนูลับ ห้ามกิน",needTxt:"ทุกอย่างในตู้เย็น (ห้ามทำตาม)",
+d:"เอาทุกอย่างในตู้เย็นมารวมกันในหม้อเดียว น้ำปลาร้าชนกะทิ มะนาวชนกุ้ง ปลาหมึกตีกับใบกะเพรา ออกมาเป็นสีที่ไม่มีใครตั้งชื่อให้ อี๋จนกินไม่ได้ อย่าหาทำ",
+s:["เทของทุกอย่างลงหม้อใบเดียว (ใช่ ทุกอย่างจริงๆ)","ผัดไปต้มไป แล้วเริ่มรู้สึกเสียใจ","ดมกลิ่นครั้งเดียวพอ แล้วรีบเปิดหน้าต่าง","เทใส่ถังขยะ ห้ามกิน และอย่าหาทำอีก"]});
+
 function fname(m){
   const SH={mince:"หมูสับ",belly:"หมูสามชั้น",chop:"หมู",chicken:"ไก่",shrimp:"กุ้ง",egg:"ไข่"};
   const mt=(m.filter(i=>SH[i]).map(i=>SH[i]))[0]||"",veg=m.filter(i=>cat(i)==="veg").map(nm);
@@ -720,7 +769,7 @@ const LN='<svg class="ln" viewBox="0 0 100 8" preserveAspectRatio="none" aria-hi
 function buildShelves(){$("shelves").innerHTML=CATS.map(([k,t])=>`<div class="shelf"><h2>${t}</h2><div class="row">${ITEMS.filter(i=>i[2]===k).map(i=>`<button class="it" data-id="${i[0]}" aria-pressed="false">${ic(i[0])}<span>${i[1]}</span></button>`).join("")}</div>${LN}</div>`).join("")}
 buildShelves();
 
-function toggle(id){const i=sel.indexOf(id);i<0?sel.push(id):sel.splice(i,1);render()}
+function toggle(id){if(cooking)return;const i=sel.indexOf(id);i<0?sel.push(id):sel.splice(i,1);render()}
 function render(){
   document.querySelectorAll(".it").forEach(b=>{const o=sel.includes(b.dataset.id);b.classList.toggle("out",o);b.setAttribute("aria-pressed",o)});
   const t=$("tray");t.classList.remove("mix");
@@ -730,7 +779,7 @@ function render(){
   $("menu").hidden=true;forceR=null;PS=sel.slice();renderStock();renderRec();
 }
 document.addEventListener("click",e=>{const b=e.target.closest(".it,.chip");if(b){fly(b);toggle(b.dataset.id)}});
-$("clr").onclick=()=>{sel.length=0;render()};
+$("clr").onclick=()=>{if(cooking)return;sel.length=0;render()};
 
 $("mix").onclick=()=>{
   const r=forceR||pick2(sel),m=$("menu");forceR=null;
@@ -743,14 +792,14 @@ $("mix").onclick=()=>{
     const plate=`<svg class="plate" viewBox="0 0 200 200" aria-hidden="true"><g filter="url(#r)"><circle cx="100" cy="100" r="92"/><circle cx="100" cy="100" r="74"/></g>${pos.map(([x,y,id])=>IMG[id]?`<image href="${IMG[id]}" x="${x}" y="${y}" width="${sz}" height="${sz}" preserveAspectRatio="xMidYMid meet"/>`:`<svg class="ic" x="${x}" y="${y}" width="${sz}" height="${sz}" viewBox="0 0 48 48"><use href="#i-${id}"/></svg>`).join("")}</svg>`;
     const used=new Set([...r.need,...r.opt,...(r.any||[])]);
     const extra=sel.filter(i=>!used.has(i)&&i!=="oil"&&i!=="rice").map(nm);
-    m.innerHTML=`${plate}<h3>${r.n}</h3><p style="text-align:center">${r.d}</p>${r.hint?`<p class="note" style="text-align:center">${r.hint}</p>`:""}<p class="note">วัตถุดิบ: ${sel.map(nm).join(", ")}</p><ol>${r.s.map(s=>`<li>${s}</li>`).join("")}</ol>${extra.length?`<p class="note">${extra.join(", ")} ไม่อยู่ในสูตรนี้ ใส่เพิ่มตามชอบได้</p>`:""}`;
+    m.innerHTML=`${plate}<h3>${r.n}</h3><p style="text-align:center">${r.d}</p>${r.hint?`<p class="note" style="text-align:center">${r.hint}</p>`:""}<p class="note">วัตถุดิบ: ${sel.map(nm).join(", ")}</p><ol>${r.s.map(s=>`<li>${s}</li>`).join("")}</ol>${extra.length&&!r.weird?`<p class="note">${extra.join(", ")} ไม่อยู่ในสูตรนี้ ใส่เพิ่มตามชอบได้</p>`:""}`;
     m.scrollIntoView({behavior:"smooth",block:"nearest"});
   },r?550:0);
 };
 
 const STK=[["star","ดาว","#f6d860"],["heart","หัวใจ","#f4a3a3"],["flower","ดอกไม้","#f7c9dd"],["smile","หน้ายิ้ม","#fbe08a"],["sun","พระอาทิตย์","#fbd27a"],["cat","แมว","#f2d9b8"],["fish","ปลา","#a9d6e5"],["cloud","เมฆ","#d6e6f2"],["berry","สตรอว์เบอร์รี","#f28b82"]];
 let stks=[],closed=false,selId=null,drag=null;
-try{stks=JSON.parse(localStorage.getItem("fridgeStk")||"[]")}catch(e){stks=[]}
+try{stks=sanitizeStks(JSON.parse(localStorage.getItem("fridgeStk")||"[]"))}catch(e){stks=[]}
 window.stks = stks;
 
 const door=$("door"),layer=$("stkl");
@@ -767,7 +816,7 @@ function drawStk(){
 window.drawStk = drawStk;
 
 $("pals").addEventListener("click",e=>{
-  const b=e.target.closest(".ps");if(!b)return;
+  const b=e.target.closest(".ps");if(!b)return;if(window.stks.length>=60){toast("สติกเกอร์เต็มแล้ว (สูงสุด 60 ชิ้น)");return}
   const s={id:Date.now().toString(36)+Math.random().toString(36).slice(2,5),t:b.dataset.t,x:30+Math.random()*30,y:34+Math.random()*30,r:Math.round(Math.random()*30-15)};
   window.stks.push(s);selId=s.id;drawStk();saveS();
 });
@@ -843,7 +892,7 @@ setDoor(false);
 let forceR=null;
 const NC=["#fbe08a","#f7c9dd","#cfe8d5","#cfe0f5","#fcd9b6"];
 function addText(){
-  const v=$("stxt").value.trim();if(!v)return;
+  const v=$("stxt").value.trim();if(!v)return;if(window.stks.length>=60){toast("สติกเกอร์เต็มแล้ว (สูงสุด 60 ชิ้น)");return}
   const s={id:Date.now().toString(36)+Math.random().toString(36).slice(2,5),t:"text",txt:v,c:NC[Math.floor(Math.random()*NC.length)],x:15+Math.random()*20,y:34+Math.random()*30,r:Math.round(Math.random()*16-8),z:56};
   window.stks.push(s);selId=s.id;drawStk();saveS();$("stxt").value="";
 }
@@ -851,6 +900,8 @@ $("sadd").onclick=addText;
 $("stxt").addEventListener("keydown",e=>{if(e.key==="Enter")addText()});
 
 const SWC=[["","ค่าเริ่มต้น"],["#9bd3ae","มิ้นต์"],["#f4b6c2","ชมพู"],["#a9d0ee","ฟ้า"],["#f6dc7a","เหลืองเนย"],["#cdb8ee","ม่วงลาเวนเดอร์"],["#f8bf9a","พีช"]];
+function safeColor(c){return SWC.some(x=>x[0]===c)?c:""}
+window.safeColor=safeColor;
 const fr=document.querySelector(".fridge");
 function setColor(c,silent){
   fr.style.setProperty("--sw",c||"transparent");fr.classList.toggle("tint",!!c);
@@ -865,7 +916,7 @@ window.setColor = setColor;
 $("sws").innerHTML=SWC.map(([c,n])=>`<button class="sw" data-c="${c}" title="${n}" aria-label="สี${n}" aria-pressed="false" style="--c:${c||"var(--hl)"}"></button>`).join("");
 $("sws").addEventListener("click",e=>{const b=e.target.closest(".sw");if(b)setColor(b.dataset.c)});
 let c0="";try{c0=localStorage.getItem("fridgeColor")||""}catch(e){}
-setColor(c0,true);
+setColor(safeColor(c0),true);
 
 const UNIV=new Set(["rice","oil","salt","sugar","pepper","fish","soy","oyster"]);
 function pubR(){const ck=window.G.cooked||{};return R.filter(r=>!r.secret||ck[r.n])}
@@ -884,13 +935,14 @@ function fit(r,S){
   return{r,miss,stray,hit,ok:!miss.length&&!stray.length};
 }
 function sugg(S){
-  return pubR().map(r=>fit(r,S)).filter(o=>o.hit>0).sort((a,b)=>(a.miss.length+a.stray.length)-(b.miss.length+b.stray.length)||b.hit-a.hit).map(o=>({...o,
+  return pubR().filter(r=>!r.weird).map(r=>fit(r,S)).filter(o=>o.hit>0).sort((a,b)=>(a.miss.length+a.stray.length)-(b.miss.length+b.stray.length)||b.hit-a.hit).map(o=>({...o,
     tip:[o.miss.length?"เพิ่ม "+o.miss.join(", "):"",o.stray.length?"เอาออก "+o.stray.join(", "):""].filter(Boolean).join(" และ "),
     tag:[o.miss.length?"ขาด"+o.miss.slice(0,2).join(","):"",o.stray.length?"เกิน"+o.stray.slice(0,2).join(","):""].filter(Boolean).join(" ")||"ครบแล้ว"}));
 }
 function pick2(sel){
   const S=new Set(sel);let best=null,bs=-1;
-  for(const r of R){if(!fit(r,S).ok)continue;const s=r.need.length*3+(r.any?3:0)+r.opt.filter(o=>S.has(o)).length;if(s>bs){bs=s;best=r}}
+  if(S.size===ITEMS.length&&ITEMS.every(i=>S.has(i[0]))){const w=R.find(r=>r.weird);if(w)return w}
+  for(const r of R){if(r.weird||!fit(r,S).ok)continue;const s=r.need.length*3+(r.any?3:0)+r.opt.filter(o=>S.has(o)).length;if(s>bs){bs=s;best=r}}
   return best;
 }
 function noMatch(sel){
@@ -902,7 +954,7 @@ function noMatch(sel){
 function renderRec(){
   const S=new Set(sel),d=new Date().getDate();
   let L;
-  if(!sel.length)L=pubR().map((r,i)=>({r,k:(i*7+d*13)%53})).sort((a,b)=>a.k-b.k).slice(0,8).map(o=>({r:o.r,tag:""}));
+  if(!sel.length)L=pubR().filter(r=>!r.weird).map((r,i)=>({r,k:(i*7+d*13)%53})).sort((a,b)=>a.k-b.k).slice(0,8).map(o=>({r:o.r,tag:""}));
   else L=sugg(S).slice(0,8).map(o=>({r:o.r,tag:o.tag}));
   $("recl").innerHTML=monthEndNote(!sel.length)+(L.length?L.map(({r,tag})=>`<button class="rc" data-n="${R.indexOf(r)}" title="${r.d}">${r.need.slice(0,3).map(i=>ic(i)).join("")}${r.n}${tag?`<small>${tag}</small>`:""}</button>`).join(""):'<span class="empty">ลองหยิบวัตถุดิบเพิ่ม เดี๋ยวแนะนำเมนูให้</span>');
 }
@@ -942,7 +994,7 @@ function saveG(){
   if(window.saveCloudData) window.saveCloudData();
 }
 
-try{const s=JSON.parse(localStorage.getItem("fridgeSave")||"null");if(s&&typeof s.coins==="number"){window.G={...G,...s};fresh=false}}catch(e){}
+try{const s=JSON.parse(localStorage.getItem("fridgeSave")||"null");if(s&&typeof s.coins==="number"){window.G=sanitizeG({...G,...s});fresh=false}}catch(e){}
 if(fresh){window.G.log=[{t:Date.now(),d:"โบนัสเริ่มต้นผู้ใช้ใหม่",c:50}]}
 if(!window.G.starter){ITEMS.forEach(i=>{window.G.stock[i[0]]=Math.min(99,(window.G.stock[i[0]]||0)+1)});window.G.starter=true;addLog("รับวัตถุดิบเริ่มต้น อย่างละ 1 ชิ้น",0);window.saveGLocally(true);if(!fresh)setTimeout(()=>toast("ได้รับวัตถุดิบเริ่มต้น อย่างละ 1 ชิ้น"),500)}
 
@@ -1061,12 +1113,16 @@ $("mix").onclick=()=>{
 
 function cookDone(r,S){
   if(!window.G.cooked) window.G.cooked = {};
-  const first=!window.G.cooked[r.n],tot=Math.min(10,3*S.length+(first?5:0));
+  const first=!window.G.cooked[r.n],tot=r.weird?(first?1:0):first?Math.min(10,3*S.length+5):Math.min(3,S.length);
   S.forEach(i=>{window.G.stock[i]=Math.max(0,st(i)-1)});
   window.G.cooked[r.n]=(window.G.cooked[r.n]||0)+1;window.G.coins+=tot;addLog("ทำ "+r.n,tot);saveG();
   sel.length=0;render();
   const m=$("menu");m.hidden=false;
-  m.insertAdjacentHTML("beforeend",`<p class="reward">${coinIc} ได้รับ +${tot} เหรียญ (${S.length} วัตถุดิบ × 3${first?" + เมนูใหม่ 5":""} สูงสุด 10)${first?(r.secret?" ค้นพบเมนูลับ! เพิ่มสูตรลงสมุดแล้ว":" เพิ่มสูตรลงสมุดแล้ว"):""} ใช้วัตถุดิบไปอย่างละ 1</p>`);
+  if(r.weird){
+    m.insertAdjacentHTML("beforeend",`<p class="reward">${coinIc} กินไม่ได้จริงๆ วัตถุดิบทุกอย่างหายไปอย่างละ 1 ${tot?"ได้เหรียญปลอบใจ +"+tot+" ค้นพบเมนูลับ! เพิ่มสูตรลงสมุดแล้ว":"ไม่ได้เหรียญ"}</p>`);
+    renderWallet(true);toast(tot?"ค้นพบเมนูลับ ห้ามกิน! +"+tot+" เหรียญปลอบใจ":"บอกแล้วว่าอย่าหาทำ");return;
+  }
+  m.insertAdjacentHTML("beforeend",`<p class="reward">${coinIc} ได้รับ +${tot} เหรียญ ${first?"("+S.length+" วัตถุดิบ × 3 + เมนูใหม่ 5 สูงสุด 10)":"(ทำเมนูเดิมซ้ำ ได้ 1 เหรียญต่อวัตถุดิบ สูงสุด 3)"}${first?(r.secret?" ค้นพบเมนูลับ! เพิ่มสูตรลงสมุดแล้ว":" เพิ่มสูตรลงสมุดแล้ว"):""} ใช้วัตถุดิบไปอย่างละ 1</p>`);
   renderWallet(true);
   toast("ทำ "+r.n+" สำเร็จ +"+tot+" เหรียญ"+(first?(r.secret?" ค้นพบเมนูลับ! เพิ่มสูตรลงสมุดแล้ว":" เพิ่มสูตรลงสมุดแล้ว"):""));
 }
@@ -1076,7 +1132,6 @@ if(fresh)setTimeout(()=>{toast("ยินดีต้อนรับ! ได้ 
 /* ===== profile ===== */
 window.authInfo={google:false,name:"",photo:"",status:"ล็อกอินกูเกิลเพื่อเซฟคลาวด์อัตโนมัติ"};
 const DEF_AV="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%238a7a62'><circle cx='12' cy='8' r='4'/><path d='M12 14c-6.1 0-8 4-8 4v2h16v-2s-1.9-4-8-4z'/></svg>";
-const FR=[["mint","กรอบมินต์",70],["dot","กรอบลูกไม้ชมพู",90],["gold","กรอบทอง",120],["rb","กรอบรุ้ง",160]];
 function prof(){const g=window.G;if(!g.profile)g.profile={name:"",avatar:"",frames:[],frame:""};const p=g.profile;if(!Array.isArray(p.frames))p.frames=[];return p}
 const avSrc=()=>{const p=prof(),a=window.authInfo||{};return p.avatar||(a.google&&a.photo)||DEF_AV};
 function fitName(){
@@ -1095,13 +1150,15 @@ function renderUser(){
 }
 window.renderUser=renderUser;
 
+let delArm=false;
 function profHtml(){
-  const p=prof(),c=window.G.coins,src=esc(avSrc());
+  delArm=false;
+  const p=prof(),c=window.G.coins,src=esc(avSrc()),au=window.authInfo||{},uidLine=au.google&&au.uid?`<p class="note">รหัสผู้ใช้ (UID) ของคุณ: <span class="uid">${esc(au.uid)}</span></p>`:"";
   const frs=FR.map(([id,n,pr])=>{
     const own=p.frames.includes(id),on=p.frame===id;
     return`<div class="frow"><span class="avwrap fr-${id}" style="--s:48px"><img class="user-avatar" src="${src}" alt=""></span><span class="fn">${n}<small>${own?"เป็นเจ้าของแล้ว":pr+" เหรียญ"}</small></span>${own?`<button class="btn mini${on?" ghost":""}" data-feq="${id}">${on?"ถอดกรอบ":"ใช้กรอบนี้"}</button>`:`<button class="btn mini" data-fbuy="${id}"${c<pr?" disabled":""}>ซื้อ ${pr}</button>`}</div>`;
   }).join("");
-  return`<div class="pf"><span class="avwrap${p.frame?" fr-"+p.frame:""}" style="--s:76px"><img class="user-avatar" src="${src}" alt="รูปโปรไฟล์"></span><div class="pfc"><span class="note">แก้ชื่อได้ที่แถบด้านบน</span><div class="tadd"><label class="btn ghost" for="pimg">เปลี่ยนรูปโปรไฟล์<input type="file" id="pimg" class="vh" accept="image/*"></label><button class="btn ghost" id="pimgdel"${p.avatar?"":" disabled"}>ลบรูป</button></div></div></div><h3>กรอบรูป (ราคาเริ่มต้น 70 เหรียญ)</h3>${frs}`;
+  return`<div class="pf"><span class="avwrap${p.frame?" fr-"+p.frame:""}" style="--s:76px"><img class="user-avatar" src="${src}" alt="รูปโปรไฟล์"></span><div class="pfc"><span class="note">แก้ชื่อได้ที่แถบด้านบน</span><div class="tadd"><label class="btn ghost" for="pimg">เปลี่ยนรูปโปรไฟล์<input type="file" id="pimg" class="vh" accept="image/*"></label><button class="btn ghost" id="pimgdel"${p.avatar?"":" disabled"}>ลบรูป</button></div></div></div><h3>กรอบรูป (ราคาเริ่มต้น 70 เหรียญ)</h3>${frs}<h3>ข้อมูลส่วนตัว</h3>${uidLine}<p class="note">เมื่อล็อกอิน Google เกมจะเก็บชื่อที่แสดง รูปโปรไฟล์ และความคืบหน้าเกมของคุณไว้บนคลาวด์ เพื่อใช้เซฟข้ามเครื่องเท่านั้น คุณลบข้อมูลทั้งหมดได้ด้วยปุ่มด้านล่าง</p><button class="btn ghost" id="deldata">ลบข้อมูลของฉัน</button>`;
 }
 
 $("dbody").addEventListener("click",e=>{
@@ -1148,7 +1205,7 @@ const TIPS=[
 [0,"คลิกของในตู้เย็นเพื่อหยิบใส่ตะกร้า คลิกอีกครั้งเพื่อเอาคืน"],
 [0,"กด “รวมเป็นเมนู” ระบบจะดูว่าของในตะกร้าเข้ากับเมนูไทยอะไร และใช้วัตถุดิบไปอย่างละ 1"],
 [0,"ของหมดแล้วไปซื้อเพิ่มที่ร้านค้าได้ด้วยเหรียญ"],
-[1,"ทำอาหารได้ 3 เหรียญต่อวัตถุดิบ รวมไม่เกิน 10 เหรียญต่อเมนู ทำเมนูใหม่ครั้งแรกได้โบนัส +5"],
+[1,"ทำเมนูใหม่ครั้งแรกได้ 3 เหรียญต่อวัตถุดิบ +5 โบนัส รวมไม่เกิน 10 เหรียญ ส่วนทำเมนูเดิมซ้ำได้ 1 เหรียญต่อวัตถุดิบ สูงสุด 3"],
 [1,"เช็คอินทุกวันได้ +10 เหรียญ"],
 [2,"แถบเมนูแนะนำบอกว่าขาดหรือเกินอะไร กดแล้วระบบหยิบของให้ถ้ามีในตู้"],
 [3,"ปิดตู้เย็นเพื่อแต่งประตู ลาก หมุน ขยายสติกเกอร์ เพิ่มข้อความ และเปลี่ยนสีตู้ได้"],
@@ -1164,8 +1221,8 @@ function bookPages(){
   const ck=window.G.cooked||{},done=R.filter(r=>ck[r.n]),lock=R.filter(r=>!ck[r.n]&&!r.secret),n=done.length,P=[];
   P.push(`<div class="pg"><h4>วิธีเล่น</h4><ul>${TIPS.map(([k,t])=>n>=k?`<li>${t}</li>`:`<li class="lock">ล็อก ทำเมนูให้ครบ ${k} เมนูเพื่อปลดล็อกคำแนะนำนี้</li>`).join("")}</ul></div>`);
   done.forEach(r=>{
-    const need=r.need.map(nm).join(", ")+(r.any?", "+(r.anyName||"เนื้อสัตว์")+" ("+r.any.map(nm).join("/")+")":"");
-    P.push(`<div class="pg"><h4>${r.n}</h4>${r.secret?'<p class="note">เมนูลับ ประจำสิ้นเดือน</p>':""}<div class="pic">${r.need.slice(0,4).map(i=>ic(i)).join("")}</div><p>${r.d}</p><p class="note">วัตถุดิบหลัก: ${need}</p>${r.opt&&r.opt.length?`<p class="note">ใส่เพิ่มได้: ${r.opt.map(nm).join(", ")}</p>`:""}<ol>${r.s.map(x=>`<li>${x}</li>`).join("")}</ol><p class="note rt">ทำแล้ว ${ck[r.n]} ครั้ง</p></div>`);
+    const need=r.needTxt||(r.need.map(nm).join(", ")+(r.any?", "+(r.anyName||"เนื้อสัตว์")+" ("+r.any.map(nm).join("/")+")":""));
+    P.push(`<div class="pg"><h4>${r.n}</h4>${r.secret?'<p class="note">'+(r.tag||"เมนูลับ ประจำสิ้นเดือน")+'</p>':""}<div class="pic">${r.need.slice(0,4).map(i=>ic(i)).join("")}</div><p>${r.d}</p><p class="note">วัตถุดิบหลัก: ${need}</p>${r.opt&&r.opt.length?`<p class="note">ใส่เพิ่มได้: ${r.opt.map(nm).join(", ")}</p>`:""}<ol>${r.s.map(x=>`<li>${x}</li>`).join("")}</ol><p class="note rt">ทำแล้ว ${ck[r.n]} ครั้ง</p></div>`);
   });
   const hints=lock.slice(0,8).map(r=>`<div class="lk">${ic(r.need[0])}<span>??? <small>ใบ้: ใช้${nm(r.need[0])}</small></span></div>`).join("");
   P.push(`<div class="pg"><h4>${lock.length?"เมนูที่ยังไม่ปลดล็อก":"สมุดเล่มนี้เต็มแล้ว"}</h4>${n===0?'<p class="note">ยังไม่มีสูตรในสมุด ลองทำเมนูแรกดู สูตรจะถูกเขียนลงหน้าถัดไป</p>':""}${hints}${lock.length>8?`<p class="note">และอีก ${lock.length-8} เมนูที่ยังไม่ปลดล็อก</p>`:""}</div>`);
@@ -1275,6 +1332,34 @@ $("dbody").addEventListener("click",async e=>{
   const id=b.dataset.ingdel;
   if(await window.deleteIngImage(id)){const m={...IMG};delete m[id];window.setIngImages(m);toast("ลบรูป"+nm(id)+"แล้ว กลับไปใช้ไอคอนเดิม")}
   else toast("ลบไม่สำเร็จ ตรวจสอบ Firestore Rules");
+});
+
+/* ===== hardening: shared helpers, multi-tab sync, delete my data ===== */
+window.getIngImages=()=>IMG;
+window.addEventListener("storage",e=>{
+  if(e.key!=="fridgeUpdated"||!e.newValue)return;
+  try{
+    const g=JSON.parse(localStorage.getItem("fridgeSave")||"null");
+    if(g&&typeof g.coins==="number")window.G=sanitizeG(g);
+    window.stks=sanitizeStks(JSON.parse(localStorage.getItem("fridgeStk")||"[]"));selId=null;drawStk();
+    setColor(safeColor(localStorage.getItem("fridgeColor")||""),true);
+    sel.length=0;render();renderUser();if($("dlg").open)drawDlg();
+  }catch(err){}
+});
+$("dbody").addEventListener("click",async e=>{
+  if(e.target.id!=="deldata")return;
+  const btn=e.target;
+  if(!delArm){delArm=true;btn.textContent="กดอีกครั้งเพื่อยืนยันการลบข้อมูลทั้งหมด";return}
+  delArm=false;btn.disabled=true;
+  const ok=window.deleteCloudData?await window.deleteCloudData():true;
+  if(!ok){btn.disabled=false;toast("ลบข้อมูลบนคลาวด์ไม่สำเร็จ ลองใหม่อีกครั้ง");return}
+  try{["fridgeSave","fridgeStk","fridgeColor","fridgeUpdated"].forEach(k=>localStorage.removeItem(k))}catch(err){}
+  const s0={};ITEMS.forEach(i=>{s0[i[0]]=1});
+  window.G={coins:50,stock:s0,last:"",log:[{t:Date.now(),d:"เริ่มใหม่ หลังลบข้อมูล",c:50}],cooked:{},starter:true};
+  window.saveGLocally(true);
+  window.stks=[];window.saveStksLocally(true);selId=null;drawStk();setColor("",true);
+  sel.length=0;render();renderUser();drawDlg();
+  toast("ลบข้อมูลของคุณแล้ว");
 });
 drawStk();
 render();
