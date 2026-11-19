@@ -703,6 +703,8 @@ M("ไข่ตุ๋นหมูสับ","egg mince carrot","scallion mushroo
 M("ลาบไก่","chicken lime chili fish","scallion coriander onion sugar pepper","ยำไก่สับรสจัดแบบอีสาน เปรี้ยวเค็มเผ็ด","ผัดไก่สับกับน้ำเล็กน้อยจนสุก พักให้อุ่น|ปรุงด้วยน้ำปลา มะนาว พริกป่น|ใส่หอม ต้นหอม ผักชี คลุกเบาๆ ตักเสิร์ฟ");
 M("ผัดมะละกอใส่ไข่","papaya egg","garlic chili tomato scallion","มะละกอดิบผัดกับไข่ เมนูบ้านๆ กินง่าย","เจียวกระเทียมให้หอม ใส่มะละกอสับผัดให้นิ่ม|ตอกไข่ลงไปผัดให้เข้ากัน|ปรุงด้วยน้ำปลาและซีอิ๊ว ตักเสิร์ฟ");
 
+M("ข้าวคลุกน้ำปลา","rice fish","chili lime sugar pepper scallion coriander","เมนูลับประจำสิ้นเดือน ตอนเงินเดือนใกล้หมดแต่ยังต้องกินข้าว ข้าวสวยร้อนๆ คลุกน้ำปลา เรียบง่ายแต่อร่อยจนลืมกระเป๋าแฟบ","ตักข้าวสวยร้อนๆ ใส่ชาม|ราดน้ำปลาตามชอบ ใส่น้ำตาลหรือมะนาวนิดหน่อยก็ได้|คลุกให้เข้ากัน โรยพริกหรือต้นหอมถ้ามี|ตักกินได้เลย สิ้นเดือนนี้ก็รอดแล้ว",{secret:true,hint:"เมนูลับประจำสิ้นเดือน"});
+
 function fname(m){
   const SH={mince:"หมูสับ",belly:"หมูสามชั้น",chop:"หมู",chicken:"ไก่",shrimp:"กุ้ง",egg:"ไข่"};
   const mt=(m.filter(i=>SH[i]).map(i=>SH[i]))[0]||"",veg=m.filter(i=>cat(i)==="veg").map(nm);
@@ -866,6 +868,13 @@ let c0="";try{c0=localStorage.getItem("fridgeColor")||""}catch(e){}
 setColor(c0,true);
 
 const UNIV=new Set(["rice","oil","salt","sugar","pepper","fish","soy","oyster"]);
+function pubR(){const ck=window.G.cooked||{};return R.filter(r=>!r.secret||ck[r.n])}
+function rTotal(){return pubR().length}
+function monthEndNote(empty){
+  const t=new Date(),last=new Date(t.getFullYear(),t.getMonth()+1,0).getDate(),ck=window.G.cooked||{};
+  const sec=R.find(r=>r.secret);
+  return empty&&sec&&!ck[sec.n]&&t.getDate()>=last-2?'<span class="note">สิ้นเดือนแล้ว มีเมนูลับรออยู่ ลองข้าวสวยกับน้ำปลา</span> ':"";
+}
 function fit(r,S){
   const al=new Set([...r.need,...r.opt,...(r.any||[])]);
   const miss=r.need.filter(x=>!S.has(x)).map(nm);
@@ -875,7 +884,7 @@ function fit(r,S){
   return{r,miss,stray,hit,ok:!miss.length&&!stray.length};
 }
 function sugg(S){
-  return R.map(r=>fit(r,S)).filter(o=>o.hit>0).sort((a,b)=>(a.miss.length+a.stray.length)-(b.miss.length+b.stray.length)||b.hit-a.hit).map(o=>({...o,
+  return pubR().map(r=>fit(r,S)).filter(o=>o.hit>0).sort((a,b)=>(a.miss.length+a.stray.length)-(b.miss.length+b.stray.length)||b.hit-a.hit).map(o=>({...o,
     tip:[o.miss.length?"เพิ่ม "+o.miss.join(", "):"",o.stray.length?"เอาออก "+o.stray.join(", "):""].filter(Boolean).join(" และ "),
     tag:[o.miss.length?"ขาด"+o.miss.slice(0,2).join(","):"",o.stray.length?"เกิน"+o.stray.slice(0,2).join(","):""].filter(Boolean).join(" ")||"ครบแล้ว"}));
 }
@@ -893,9 +902,9 @@ function noMatch(sel){
 function renderRec(){
   const S=new Set(sel),d=new Date().getDate();
   let L;
-  if(!sel.length)L=R.map((r,i)=>({r,k:(i*7+d*13)%53})).sort((a,b)=>a.k-b.k).slice(0,8).map(o=>({r:o.r,tag:""}));
+  if(!sel.length)L=pubR().map((r,i)=>({r,k:(i*7+d*13)%53})).sort((a,b)=>a.k-b.k).slice(0,8).map(o=>({r:o.r,tag:""}));
   else L=sugg(S).slice(0,8).map(o=>({r:o.r,tag:o.tag}));
-  $("recl").innerHTML=L.length?L.map(({r,tag})=>`<button class="rc" data-n="${R.indexOf(r)}" title="${r.d}">${r.need.slice(0,3).map(i=>ic(i)).join("")}${r.n}${tag?`<small>${tag}</small>`:""}</button>`).join(""):'<span class="empty">ลองหยิบวัตถุดิบเพิ่ม เดี๋ยวแนะนำเมนูให้</span>';
+  $("recl").innerHTML=monthEndNote(!sel.length)+(L.length?L.map(({r,tag})=>`<button class="rc" data-n="${R.indexOf(r)}" title="${r.d}">${r.need.slice(0,3).map(i=>ic(i)).join("")}${r.n}${tag?`<small>${tag}</small>`:""}</button>`).join(""):'<span class="empty">ลองหยิบวัตถุดิบเพิ่ม เดี๋ยวแนะนำเมนูให้</span>');
 }
 $("recl").addEventListener("click",e=>{
   const b=e.target.closest(".rc");if(!b)return;
@@ -981,7 +990,7 @@ function backHtml(){
   const ids=ITEMS.map(i=>i[0]),have=ids.filter(i=>st(i)>0).length,cnt=ids.reduce((a,i)=>a+st(i),0),val=ids.reduce((a,i)=>a+st(i)*PRICE[i],0);
   const rows=ITEMS.map(([id,n])=>{const q=st(id);return`<tr class="${q===0?"z":q===1?"l":""}"><td>${ic(id)} ${n}</td><td>${q}</td><td>${PRICE[id]}</td><td>${q*PRICE[id]}</td><td>${q===0?"หมด":q===1?"ใกล้หมด":"ปกติ"}</td><td><button class="btn mini" data-buy="${id}" data-q="1"${window.G.coins<PRICE[id]?" disabled":""}>เติม +1</button></td></tr>`}).join("");
   const log=window.G.log.slice(0,15).map(l=>`<li><span>${new Date(l.t).toLocaleString("th-TH",{dateStyle:"short",timeStyle:"short"})}</span> ${esc(l.d)} <b class="${l.c<0?"neg":"pos"}">${l.c>0?"+":""}${l.c}</b></li>`).join("")||"<li>ยังไม่มีรายการ</li>";
-  return`<div class="sum"><div><b>${have}/${ids.length}</b><small>ชนิดที่มีของ</small></div><div><b>${cnt}</b><small>ชิ้นรวม</small></div><div><b>${val}</b><small>มูลค่าสต็อก (เหรียญ)</small></div><div><b>${Object.keys(window.G.cooked||{}).length}/${R.length}</b><small>เมนูที่เคยทำ</small></div></div><div class="tw"><table><thead><tr><th>วัตถุดิบ</th><th>ในตู้</th><th>ราคา/ชิ้น</th><th>มูลค่า</th><th>สถานะ</th><th></th></tr></thead><tbody>${rows}</tbody></table></div><h3>ประวัติเหรียญ</h3><ul class="log">${log}</ul><button class="btn ghost" id="rst">รีเซ็ตข้อมูลทั้งหมด</button>`;
+  return`<div class="sum"><div><b>${have}/${ids.length}</b><small>ชนิดที่มีของ</small></div><div><b>${cnt}</b><small>ชิ้นรวม</small></div><div><b>${val}</b><small>มูลค่าสต็อก (เหรียญ)</small></div><div><b>${Object.keys(window.G.cooked||{}).length}/${rTotal()}</b><small>เมนูที่เคยทำ</small></div></div><div class="tw"><table><thead><tr><th>วัตถุดิบ</th><th>ในตู้</th><th>ราคา/ชิ้น</th><th>มูลค่า</th><th>สถานะ</th><th></th></tr></thead><tbody>${rows}</tbody></table></div><h3>ประวัติเหรียญ</h3><ul class="log">${log}</ul><button class="btn ghost" id="rst">รีเซ็ตข้อมูลทั้งหมด</button>`;
 }
 
 function drawDlg(){
@@ -1057,9 +1066,9 @@ function cookDone(r,S){
   window.G.cooked[r.n]=(window.G.cooked[r.n]||0)+1;window.G.coins+=tot;addLog("ทำ "+r.n,tot);saveG();
   sel.length=0;render();
   const m=$("menu");m.hidden=false;
-  m.insertAdjacentHTML("beforeend",`<p class="reward">${coinIc} ได้รับ +${tot} เหรียญ (${S.length} วัตถุดิบ × 3${first?" + เมนูใหม่ 5":""} สูงสุด 10)${first?" เพิ่มสูตรลงสมุดแล้ว":""} ใช้วัตถุดิบไปอย่างละ 1</p>`);
+  m.insertAdjacentHTML("beforeend",`<p class="reward">${coinIc} ได้รับ +${tot} เหรียญ (${S.length} วัตถุดิบ × 3${first?" + เมนูใหม่ 5":""} สูงสุด 10)${first?(r.secret?" ค้นพบเมนูลับ! เพิ่มสูตรลงสมุดแล้ว":" เพิ่มสูตรลงสมุดแล้ว"):""} ใช้วัตถุดิบไปอย่างละ 1</p>`);
   renderWallet(true);
-  toast("ทำ "+r.n+" สำเร็จ +"+tot+" เหรียญ"+(first?" เพิ่มสูตรลงสมุดแล้ว":""));
+  toast("ทำ "+r.n+" สำเร็จ +"+tot+" เหรียญ"+(first?(r.secret?" ค้นพบเมนูลับ! เพิ่มสูตรลงสมุดแล้ว":" เพิ่มสูตรลงสมุดแล้ว"):""));
 }
 
 if(fresh)setTimeout(()=>{toast("ยินดีต้อนรับ! ได้ 50 เหรียญ และวัตถุดิบอย่างละ 1 ชิ้น")},500);
@@ -1149,14 +1158,14 @@ const TIPS=[
 let bookOpen=false,bookPg=0;
 function coverInner(){
   const n=R.filter(r=>(window.G.cooked||{})[r.n]).length;
-  return`<svg class="ic" viewBox="0 0 48 48" aria-hidden="true"><use href="#i-rice"/></svg><span class="ct">สมุดสูตรอาหาร</span><span class="cs">เขียนแล้ว ${n}/${R.length} เมนู</span><span class="cs">แตะเพื่อเปิดสมุด</span>`;
+  return`<svg class="ic" viewBox="0 0 48 48" aria-hidden="true"><use href="#i-rice"/></svg><span class="ct">สมุดสูตรอาหาร</span><span class="cs">เขียนแล้ว ${n}/${rTotal()} เมนู</span><span class="cs">แตะเพื่อเปิดสมุด</span>`;
 }
 function bookPages(){
-  const ck=window.G.cooked||{},done=R.filter(r=>ck[r.n]),lock=R.filter(r=>!ck[r.n]),n=done.length,P=[];
+  const ck=window.G.cooked||{},done=R.filter(r=>ck[r.n]),lock=R.filter(r=>!ck[r.n]&&!r.secret),n=done.length,P=[];
   P.push(`<div class="pg"><h4>วิธีเล่น</h4><ul>${TIPS.map(([k,t])=>n>=k?`<li>${t}</li>`:`<li class="lock">ล็อก ทำเมนูให้ครบ ${k} เมนูเพื่อปลดล็อกคำแนะนำนี้</li>`).join("")}</ul></div>`);
   done.forEach(r=>{
     const need=r.need.map(nm).join(", ")+(r.any?", "+(r.anyName||"เนื้อสัตว์")+" ("+r.any.map(nm).join("/")+")":"");
-    P.push(`<div class="pg"><h4>${r.n}</h4><div class="pic">${r.need.slice(0,4).map(i=>ic(i)).join("")}</div><p>${r.d}</p><p class="note">วัตถุดิบหลัก: ${need}</p>${r.opt&&r.opt.length?`<p class="note">ใส่เพิ่มได้: ${r.opt.map(nm).join(", ")}</p>`:""}<ol>${r.s.map(x=>`<li>${x}</li>`).join("")}</ol><p class="note rt">ทำแล้ว ${ck[r.n]} ครั้ง</p></div>`);
+    P.push(`<div class="pg"><h4>${r.n}</h4>${r.secret?'<p class="note">เมนูลับ ประจำสิ้นเดือน</p>':""}<div class="pic">${r.need.slice(0,4).map(i=>ic(i)).join("")}</div><p>${r.d}</p><p class="note">วัตถุดิบหลัก: ${need}</p>${r.opt&&r.opt.length?`<p class="note">ใส่เพิ่มได้: ${r.opt.map(nm).join(", ")}</p>`:""}<ol>${r.s.map(x=>`<li>${x}</li>`).join("")}</ol><p class="note rt">ทำแล้ว ${ck[r.n]} ครั้ง</p></div>`);
   });
   const hints=lock.slice(0,8).map(r=>`<div class="lk">${ic(r.need[0])}<span>??? <small>ใบ้: ใช้${nm(r.need[0])}</small></span></div>`).join("");
   P.push(`<div class="pg"><h4>${lock.length?"เมนูที่ยังไม่ปลดล็อก":"สมุดเล่มนี้เต็มแล้ว"}</h4>${n===0?'<p class="note">ยังไม่มีสูตรในสมุด ลองทำเมนูแรกดู สูตรจะถูกเขียนลงหน้าถัดไป</p>':""}${hints}${lock.length>8?`<p class="note">และอีก ${lock.length-8} เมนูที่ยังไม่ปลดล็อก</p>`:""}</div>`);
