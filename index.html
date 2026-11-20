@@ -12,7 +12,7 @@
 *{box-sizing:border-box}
 html{scroll-padding-top:env(safe-area-inset-top,0px)}
 body{margin:0;background:var(--bg);color:var(--ink);font-family:"Mali","Sarabun","Noto Sans Thai",sans-serif;line-height:1.6}
-main{max-width:1020px;margin:0 auto;padding:16px 16px 40px}
+main{max-width:1180px;margin:0 auto;padding:16px 16px 40px}
 h1{font-size:1.6rem;margin:0 0 4px}
 .sub{margin:0 0 14px;color:var(--soft)}
 
@@ -304,6 +304,225 @@ img.ic{object-fit:cover;border-radius:12px;filter:none}
 .shelf .row .ic{width:76px;height:76px}
 .tab[hidden]{display:none}
 .frow .ic{width:40px;height:40px;flex:none}
+
+/* ===== kitchen scene ===== */
+.steps{display:flex;gap:6px;overflow-x:auto;padding:4px 2px;margin:0 0 8px;scrollbar-width:none}
+.steps::-webkit-scrollbar{display:none}
+.steps button{flex:none;display:flex;align-items:center;gap:6px;border:1.5px solid var(--ink);border-radius:14px 10px 13px 10px;background:var(--paper);padding:3px 12px 3px 4px;font-size:.85rem}
+.steps b{width:24px;height:24px;border-radius:50%;border:1.5px solid var(--ink);display:grid;place-items:center;font-size:.8rem}
+.steps .done b{background:#9bd3ae;color:#3a3a4a}
+.steps .now{background:#f6d860;color:#3a3a4a}
+.steps .now b{background:#fff}
+.kmv{display:flex;gap:6px;margin-left:auto}
+.kmv button{width:34px;height:34px;border-radius:50%;border:1.5px solid var(--ink);background:var(--paper);padding:0;font-size:1.2rem;line-height:1}
+.decor{margin:0 0 8px;border:1.5px solid var(--ink);border-radius:12px;background:var(--paper);padding:6px 10px}
+.decor summary{cursor:pointer;font-weight:600}
+.decor .ctray,.decor .pal{margin-top:8px}
+.kwrap{position:relative;overflow-x:auto;overflow-y:hidden;border:solid var(--ink);border-width:2.5px 0;border-radius:0;background:#fdf4de;margin:0 0 14px;-webkit-overflow-scrolling:touch}
+.kfit{position:relative;width:calc(1780px*var(--ks,1));height:calc(560px*var(--ks,1))}
+.kscene{position:absolute;left:0;top:0;width:1780px;height:560px;color:#3a3a4a;transform:scale(var(--ks,1));transform-origin:0 0}
+.kbg{position:absolute;left:0;top:0;display:block}
+.kdim{position:absolute;inset:0;pointer-events:none;z-index:1;transition:background 1s}
+.kscene.night .kdim{background:rgba(24,34,80,.16)}
+.kscene.eve .kdim{background:rgba(255,150,80,.10)}
+.kwin{position:absolute;left:48px;top:58px;width:234px;height:196px;overflow:hidden;z-index:2;--sk1:#7cc8f2;--sk2:#e4f5ff;--h1:#8fd18a;--h2:#6fbf73;--h3:#a9d9a2;background:linear-gradient(var(--sk1),var(--sk2))}
+.kscene.eve .kwin{--sk1:#f58e6b;--sk2:#ffd9a0;--h1:#7aa86a;--h2:#5f8f5c;--h3:#8bb27b}
+.kscene.night .kwin{--sk1:#1c2550;--sk2:#46598f;--h1:#35566a;--h2:#274656;--h3:#3a5c6c}
+.khill{position:absolute;left:0;bottom:0;width:100%;height:110px}
+.khill .h1{fill:var(--h1)}.khill .h2{fill:var(--h2)}.khill .h3{fill:var(--h3)}
+.kscene.night .khill{filter:brightness(.7)}
+.ksun{position:absolute;left:160px;top:22px;width:42px;height:42px;border-radius:50%;background:#ffe27a;box-shadow:0 0 22px 8px rgba(255,226,122,.55)}
+.kscene.eve .ksun{top:84px;background:#ff9d5c;box-shadow:0 0 26px 10px rgba(255,157,92,.5)}
+.kscene.night .ksun{top:26px;background:#f2efd2;box-shadow:0 0 16px 4px rgba(242,239,210,.45)}
+.kstars{position:absolute;inset:0;opacity:0;transition:opacity 1s;background-image:radial-gradient(1.5px 1.5px at 20px 30px,#fff,transparent),radial-gradient(1.5px 1.5px at 90px 20px,#fff,transparent),radial-gradient(1px 1px at 140px 60px,#fff,transparent),radial-gradient(1.5px 1.5px at 205px 44px,#fff,transparent),radial-gradient(1px 1px at 60px 84px,#fff,transparent),radial-gradient(1px 1px at 120px 100px,#fff,transparent)}
+.kscene.night .kstars{opacity:1}
+.kcl{position:absolute;left:0;height:16px;width:52px;border-radius:12px;background:rgba(255,255,255,.92);box-shadow:16px -8px 0 -2px rgba(255,255,255,.92),32px 0 0 -1px rgba(255,255,255,.92);animation:drift 55s linear infinite}
+.kcl.c1{top:34px}.kcl.c2{top:70px;animation-duration:80s;animation-delay:-40s;transform:scale(.8)}
+.kscene.night .kcl{opacity:.3}
+@keyframes drift{from{margin-left:-90px}to{margin-left:260px}}
+.kwf{position:absolute;left:40px;top:50px;overflow:visible;z-index:3;pointer-events:none}
+.kscene .fridge{position:absolute;left:330px;top:46px;width:372px;height:474px;margin:0;z-index:6}
+.kscene #shelves{height:100%;overflow-y:auto;overflow-x:hidden;scrollbar-width:thin}
+.st{position:absolute;z-index:8;background:transparent;border:0;border-radius:12px;padding:0;color:inherit}
+.st:hover,.st:focus-visible{outline:2px dashed #3a3a4a;outline-offset:-2px;background:rgba(255,255,255,.14)}
+.st svg{display:block;width:100%;height:100%;pointer-events:none}
+.st.taken{opacity:.22}
+.st.next{animation:nxt 1.3s ease-in-out infinite}
+@keyframes nxt{0%,100%{box-shadow:0 0 0 0 rgba(246,216,96,0),inset 0 0 0 3px rgba(246,216,96,.95)}50%{box-shadow:0 0 0 8px rgba(246,216,96,.35),inset 0 0 0 3px rgba(246,216,96,.95)}}
+.stl{position:absolute;z-index:9;pointer-events:none;background:#fff;color:#3a3a4a;border:1.5px solid #3a3a4a;border-radius:10px;padding:0 8px;font-size:.78rem;line-height:1.5}
+.stl.next{background:#f6d860}
+.kbadge{position:absolute;top:-4px;right:-2px;background:#f6d860;color:#3a3a4a;border:1.5px solid #3a3a4a;border-radius:10px;padding:0 6px;font-size:.75rem;line-height:1.4;pointer-events:none}
+.koven{position:absolute;left:914px;top:422px;width:234px;height:80px;border-radius:6px;pointer-events:none;z-index:7;opacity:0;transition:opacity .5s;background:radial-gradient(ellipse at 50% 80%,rgba(255,170,60,.85),rgba(255,120,30,.35) 60%,transparent)}
+.koven.on{opacity:1}
+.kpan{position:absolute;left:890px;top:282px;z-index:7;display:none;pointer-events:none}
+.kpot{position:absolute;left:900px;top:240px;z-index:7;display:none;pointer-events:none}
+.kpanitems{position:absolute;left:915px;top:300px;width:112px;height:34px;display:flex;justify-content:center;align-items:center;z-index:7;pointer-events:none}
+.kpanitems .ic{width:28px;height:28px;filter:none;stroke-width:2.4;margin:0 -3px}
+.kflame{position:absolute;left:925px;top:326px;z-index:6;opacity:0;pointer-events:none;transform-origin:50% 100%}
+.kscene.cooking .kflame{opacity:1;animation:flick .35s ease-in-out infinite alternate}
+@keyframes flick{from{transform:scaleY(.8)}to{transform:scaleY(1.15)}}
+.kst{position:absolute;z-index:7;width:16px;height:16px;border-radius:50%;background:rgba(255,255,255,.9);border:1.5px solid rgba(58,58,74,.3);opacity:0;pointer-events:none;left:950px;top:262px}
+.kst.s2{left:980px;animation-delay:.45s}.kst.s3{left:1004px;animation-delay:.9s}
+.kscene.cooking .kst{animation:steam 1.3s ease-out infinite}
+@keyframes steam{0%{transform:translateY(24px) scale(.5);opacity:0}30%{opacity:.9}100%{transform:translateY(-56px) scale(1.5);opacity:0}}
+.kscene.cooking .kpanitems{animation:sizzle .18s linear infinite}
+.kscene.cooking .kpan,.kscene.cooking .kpot{animation:sizzle .22s linear infinite}
+@keyframes sizzle{0%,100%{transform:translate(0,0)}25%{transform:translate(1px,-1px)}75%{transform:translate(-1px,1px)}}
+.kbitems{position:absolute;left:1254px;top:262px;width:172px;height:50px;display:flex;align-items:flex-end;justify-content:center;gap:4px;z-index:7;pointer-events:none}
+.kbitems .ic{width:34px;height:34px;filter:none}
+.kbitems .bi{display:flex}
+.kbitems .bi.cut .ic{width:22px;height:22px;margin:0 -2px}
+.kknife{position:absolute;left:1388px;top:292px;z-index:7;pointer-events:none;transform:rotate(-8deg);transform-origin:90% 60%}
+.kscene.chop .kknife{animation:chop 1.4s ease-in-out}
+@keyframes chop{0%,100%{transform:translate(0,0) rotate(-8deg)}15%{transform:translate(-110px,-30px) rotate(-30deg)}28%{transform:translate(-110px,2px) rotate(6deg)}42%{transform:translate(-90px,-30px) rotate(-30deg)}55%{transform:translate(-90px,2px) rotate(6deg)}70%{transform:translate(-60px,-24px) rotate(-26deg)}82%{transform:translate(-60px,2px) rotate(6deg)}}
+.kchip{position:absolute;z-index:7;width:8px;height:8px;border-radius:2px;background:#9bd3ae;border:1px solid #3a3a4a;opacity:0;pointer-events:none;left:1300px;top:304px}
+.kchip.c2{left:1330px;background:#f6d860}.kchip.c3{left:1280px;background:#f4a3a3}
+.kscene.chop .kchip{animation:chips .5s ease-out 3}
+@keyframes chips{0%{transform:translate(0,0);opacity:1}100%{transform:translate(18px,-34px) rotate(160deg);opacity:0}}
+.kplates{position:absolute;left:1540px;top:172px;width:110px;height:84px;z-index:7;pointer-events:none}
+.kplates .pl{position:absolute;left:0;bottom:calc(var(--i)*9px);width:100px;height:22px;border-radius:50%;background:#fff;border:2px solid #3a3a4a;box-shadow:inset 0 0 0 5px #e8f1fb}
+.kdirty{position:absolute;left:1552px;top:326px;width:140px;height:24px;z-index:7;pointer-events:none}
+.kdirty .dp{position:absolute;left:calc(14px + var(--i)*6px);bottom:calc(var(--i)*5px);width:74px;height:14px;border-radius:50%;background:#e9d9bd;border:2px solid #3a3a4a;box-shadow:inset 10px 0 0 -4px #b88a54}
+.kwater{position:absolute;left:1588px;top:310px;width:30px;height:30px;z-index:7;pointer-events:none;opacity:0}
+.kscene.wash .kwater{opacity:1}
+.kwater .d1,.kwater .d2,.kwater .d3{position:absolute;left:10px;top:0;width:8px;height:14px;border-radius:50% 50% 50% 50%/60% 60% 40% 40%;background:#7cc8f2;border:1.5px solid #3a3a4a}
+.kscene.wash .kwater .d1{animation:drip .5s linear infinite}
+.kscene.wash .kwater .d2{animation:drip .5s linear .17s infinite}
+.kscene.wash .kwater .d3{animation:drip .5s linear .33s infinite}
+@keyframes drip{from{transform:translateY(0);opacity:1}to{transform:translateY(22px);opacity:.3}}
+.kwater .bub{position:absolute;width:12px;height:12px;border-radius:50%;background:rgba(255,255,255,.85);border:1.5px solid #7cc8f2;top:26px}
+.kwater .b1{left:-6px}.kwater .b2{left:30px;top:22px}.kwater .b3{left:66px}
+.kscene.wash .kwater .bub{animation:bub .8s ease-in-out infinite alternate}
+@keyframes bub{from{transform:translateY(0) scale(.7)}to{transform:translateY(-8px) scale(1.2)}}
+#mix.ready{animation:nxt 1.3s ease-in-out infinite}
+@media (prefers-reduced-motion:reduce){.kcl{animation:none}}
+body{overflow-x:hidden}
+
+/* ===== full-screen kitchen background + clear glass UI ===== */
+:root{--bg:#fdf4de;--paper:rgba(255,255,255,.46);--hl:rgba(255,255,255,.34);--soft:#6f6a5e;--line:rgba(58,58,74,.26);--dlg:rgba(255,255,255,.9)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--paper:rgba(40,32,20,.56);--hl:rgba(255,255,255,.12);--line:rgba(241,230,200,.26);--dlg:rgba(40,32,20,.88)}
+ body::before,body::after{filter:brightness(.5)}
+ .fridge{--paper:#352e20;--hl:#4a4030}}
+:root[data-theme="dark"]{--paper:rgba(40,32,20,.56);--hl:rgba(255,255,255,.12);--line:rgba(241,230,200,.26);--dlg:rgba(40,32,20,.88)}
+:root[data-theme="dark"] body::before,:root[data-theme="dark"] body::after{filter:brightness(.5)}
+:root[data-theme="dark"] .fridge{--paper:#352e20;--hl:#4a4030}
+.fridge{--paper:#f6fafd;--hl:#cfe4f3}
+
+/* kitchen fills the whole viewport behind everything */
+html{min-height:100%;background:#fdf4de}
+body{background:transparent;min-height:100vh;min-height:100dvh}
+body::before{content:"";position:fixed;inset:0;z-index:-2;pointer-events:none;
+ background:
+  linear-gradient(#a9794a,#a9794a) 0 calc(100% - 18vh)/100% 4px no-repeat,
+  repeating-linear-gradient(90deg,transparent 0 118px,rgba(110,72,36,.4) 118px 120px) 0 100%/100% 18vh no-repeat,
+  linear-gradient(#d3a874,#bf8f58) 0 100%/100% 18vh no-repeat,
+  linear-gradient(#fdf4de,#f5e3bf)}
+body::after{content:"";position:fixed;left:0;right:0;top:50vh;height:20vh;z-index:-1;pointer-events:none;
+ border-top:2px solid rgba(58,58,74,.3);border-bottom:2px solid rgba(58,58,74,.3);
+ background:linear-gradient(90deg,#fff 0 2px,transparent 2px) 0 0/34px 34px,linear-gradient(#fff 0 2px,transparent 2px) 0 0/34px 34px,#d2eadf}
+
+/* use the whole screen width */
+main{max-width:none;width:100%;padding:12px clamp(10px,2vw,28px) 40px}
+.kwrap{border:0;background:transparent;box-shadow:0 12px 30px rgba(80,50,20,.18)}
+
+/* glass UI: clear, thin lines, no heavy outlines */
+.auth-bar,.wallet,.rec,.ctray,.decor,.panel,.steps button,.kmv button,.btn-google,.pf{
+ background:var(--paper);border:1px solid var(--line);
+ -webkit-backdrop-filter:blur(10px) saturate(1.1);backdrop-filter:blur(10px) saturate(1.1)}
+.auth-bar,.wallet,.rec,.ctray,.decor{border-radius:16px}
+.panel{max-width:760px;margin:0 auto 24px;border-radius:20px;padding:18px}
+.panel svg.bd{display:none}
+.steps button{border-radius:999px}
+.steps b{border:1px solid var(--line);background:rgba(255,255,255,.5)}
+.steps .done{background:rgba(155,211,174,.6)}
+.steps .now{background:rgba(246,216,96,.8)}
+.chip,.rc,.reward{background:rgba(255,255,255,.55);border:1px solid var(--line)}
+.btn{border:1px solid var(--ink)}
+.btn.ghost{background:rgba(255,255,255,.35)}
+.btn.ghost:hover{background:rgba(255,255,255,.65)}
+.uname-in,.tadd input{background:rgba(255,255,255,.5);border:1px solid var(--line)}
+.user-avatar{border:1px solid var(--line)}
+.tab{background:var(--paper);border:1px solid var(--line);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
+.tab[aria-pressed="true"]{background:var(--ink)}
+.dmain{background:var(--dlg);border:1px solid var(--line);border-radius:20px;-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px)}
+.dh{border-bottom:1px solid var(--line)}
+.dx{border:1px solid var(--line);background:transparent}
+.tw{border:1px solid var(--line)}
+.dbody h3{border-bottom:1px solid var(--line)}
+.dbody td{border-bottom-color:var(--line)}
+.dbody td+td{border-left-color:var(--line)}
+.shop tr.cat td{border-bottom:1px solid var(--line)}
+h1,.sub{text-shadow:0 1px 6px rgba(255,255,255,.7)}
+
+/* ===== single-screen kitchen: camera, HUD, centered window ===== */
+html,body{height:100%;overflow:hidden;overscroll-behavior:none}
+main{position:fixed;left:0;top:0;width:100%;height:100vh;height:100dvh;max-width:none;margin:0;padding:0;overflow:hidden;overflow:clip}
+.kwrap{position:absolute;inset:0;margin:0;border:0;border-radius:0;box-shadow:none;background:transparent;overflow:hidden;overflow:clip;touch-action:none;cursor:grab;-webkit-user-select:none;user-select:none}
+.kwrap.drag{cursor:grabbing}
+.kfit{position:absolute;left:0;top:0;width:100%;height:100%}
+.kscene{position:absolute;left:0;top:0;width:1780px;height:560px;transform:none;transform-origin:0 0}
+.kscene #shelves{touch-action:pan-y}
+.st{cursor:pointer}
+
+.hud{position:absolute;left:0;right:0;z-index:30;display:flex;flex-wrap:wrap;align-items:center;gap:8px;padding:8px 10px;pointer-events:none}
+.hud>*{pointer-events:auto}
+.hud.top{top:0;padding-top:calc(8px + env(safe-area-inset-top,0px))}
+.hud.bottom{bottom:0;align-items:flex-end;padding-bottom:calc(8px + env(safe-area-inset-bottom,0px))}
+.hud h1{font-size:1.05rem;margin:0 4px 0 0;white-space:nowrap}
+.hud .sub{display:none}
+.auth-bar{margin:0;padding:4px 10px;flex:0 1 auto;flex-wrap:nowrap;gap:8px}
+.user-info{max-width:190px}
+.wallet{margin:0 0 0 auto;padding:4px 10px;gap:8px;flex:0 1 auto}
+.wallet .wsp{display:none}
+.wallet .btn{padding:4px 12px;font-size:.85rem}
+.rec{flex:0 1 760px;max-width:100%;margin:0;padding:4px 10px}
+
+.fctl{order:-1;flex:1 1 100%;display:none;gap:8px;flex-wrap:wrap;align-items:flex-start}
+body[data-zone="fridge"] .fctl{display:flex}
+.fctl .fbar{margin:0;padding:4px 10px;border-radius:16px;background:var(--paper);border:1px solid var(--line);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
+.fctl .decor{margin:0;flex:1 1 260px;max-width:520px}
+.steps{flex:1 1 260px;min-width:0;margin:0;padding:0;justify-content:center}
+.panel{flex:none;margin:0;padding:4px 10px;display:flex;align-items:center;gap:8px;position:relative;max-width:none;border-radius:16px}
+.panel h2{font-size:.9rem;margin:0;white-space:nowrap}
+.panel .acts{margin:0;gap:6px;flex-wrap:nowrap}
+.panel .btn{padding:4px 12px;font-size:.85rem;white-space:nowrap}
+.hbask{position:relative;flex:none;width:50px;height:36px;padding:0;border:0;background:none}
+.hbask svg{width:100%;height:100%;display:block;overflow:visible}
+.hbask .kbadge{top:-6px;right:-4px}
+.panel .tray{display:none;position:absolute;right:0;bottom:calc(100% + 10px);width:min(420px,calc(100vw - 20px));margin:0;z-index:40}
+.panel.open .tray{display:flex}
+
+.kmv{position:absolute;left:0;right:0;top:50%;transform:translateY(-50%);margin:0;padding:0 8px;display:flex;justify-content:space-between;pointer-events:none;z-index:25}
+.kmv button{pointer-events:auto;width:44px;height:44px;font-size:1.6rem;line-height:1;border-radius:50%;padding:0;background:var(--paper);border:1px solid var(--line);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
+.kmv button:disabled{opacity:.25;cursor:default}
+.zout{position:absolute;left:12px;top:calc(var(--padT,120px) + 8px);z-index:31;display:none;padding:6px 16px;border-radius:999px;font-weight:600;background:var(--ink);color:var(--bg);border:0;box-shadow:0 2px 10px rgba(0,0,0,.18)}
+body:not([data-zone="home"]) .zout{display:inline-flex}
+.toast{bottom:calc(var(--padB,100px) + 56px)}
+
+/* centered window for the served menu */
+.mwin{position:absolute;inset:0;z-index:50;display:none;align-items:center;justify-content:center;padding:16px;background:rgba(40,50,60,.3);-webkit-backdrop-filter:blur(3px);backdrop-filter:blur(3px)}
+.mwin:has(>.mcard>#menu:not([hidden])){display:flex}
+.mcard{position:relative;width:min(520px,100%);max-height:100%;display:flex}
+.mcard #menu{margin:0;width:100%;max-height:100%;overflow:auto;padding:22px 18px 18px;background:var(--dlg);border:1px solid var(--line);border-radius:22px;-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px)}
+#mclose{position:absolute;top:8px;right:8px;z-index:2;width:32px;height:32px;border-radius:50%;border:1px solid var(--line);background:rgba(255,255,255,.55);padding:0;line-height:1}
+dialog[open]{margin:auto}
+
+@media (max-width:760px){
+ .hud{gap:5px;padding-left:8px;padding-right:8px}
+ .hud h1,.rtl,#tot,.user-info,#authTxt,.panel h2{display:none}
+ .auth-bar{padding:3px 6px;gap:4px}
+ .btn-google{padding:5px 7px}
+ .wallet{flex:1 1 0;min-width:0;margin-left:0;flex-wrap:nowrap;gap:5px;padding:3px 8px}
+ .wallet .wc{font-size:0}
+ .wallet .wc b{font-size:.85rem}
+ .wallet .wc .ic{width:24px;height:24px}
+ .wallet .btn{padding:3px 6px;font-size:.72rem;white-space:nowrap}
+ .rec{padding:3px 8px}
+ .steps{flex:1 1 100%;justify-content:flex-start}
+ .panel{margin-left:auto}
+ .panel .btn{padding:4px 9px;font-size:.8rem}
+ .kmv button{width:38px;height:38px}
+}
 </style>
 </head>
 <body>
@@ -361,6 +580,163 @@ img.ic{object-fit:cover;border-radius:12px;filter:none}
 </svg>
 
 <main>
+<div class="kwrap" id="kwrap" role="region" aria-label="ห้องครัว เลื่อนซ้ายขวาเพื่อดูทั้งห้อง">
+<div class="kfit" id="kfit"><div class="kscene day" id="kscene">
+<svg class="kbg" width="1780" height="560" viewBox="0 0 1780 560" aria-hidden="true">
+<defs>
+<linearGradient id="kwall" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fdf4de"/><stop offset="1" stop-color="#f5e3bf"/></linearGradient>
+<linearGradient id="kwood" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e8c288"/><stop offset="1" stop-color="#cf9a5e"/></linearGradient>
+<linearGradient id="kdoor" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#d9a96f"/><stop offset="1" stop-color="#c58b50"/></linearGradient>
+<linearGradient id="ksteel" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#eef1f5"/><stop offset=".5" stop-color="#d3d9e0"/><stop offset="1" stop-color="#bcc4ce"/></linearGradient>
+<pattern id="ktile" width="34" height="34" patternUnits="userSpaceOnUse"><rect width="34" height="34" fill="#cfe9de"/><path d="M0 0H34V34" fill="none" stroke="#fff" stroke-width="2.5"/></pattern>
+<pattern id="kfloor" width="130" height="40" patternUnits="userSpaceOnUse"><rect width="130" height="40" fill="#c99d6a"/><path d="M0 0V40M130 0V40" stroke="#a9794a" stroke-width="2"/><path d="M0 20H130" stroke="#b78a58" stroke-width="1"/></pattern>
+</defs>
+<g stroke="#3a3a4a" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round">
+<rect width="1780" height="520" fill="url(#kwall)" stroke="none"/>
+<rect y="262" width="1780" height="70" fill="url(#ktile)" stroke="none"/>
+<path d="M0 262H1780"/>
+<rect y="520" width="1780" height="40" fill="url(#kfloor)"/>
+<!-- left counter -->
+<rect x="0" y="352" width="332" height="168" fill="#b9824a"/>
+<rect x="14" y="366" width="146" height="138" rx="6" fill="url(#kdoor)"/>
+<rect x="172" y="366" width="146" height="138" rx="6" fill="url(#kdoor)"/>
+<circle cx="146" cy="436" r="5" fill="#6e4a2a"/><circle cx="186" cy="436" r="5" fill="#6e4a2a"/>
+<rect x="-4" y="330" width="340" height="24" rx="4" fill="url(#kwood)"/>
+<path d="M12 342H320" stroke="#b27f46" stroke-width="1.5"/>
+<!-- canisters -->
+<rect x="38" y="292" width="46" height="38" rx="6" fill="#fff"/><rect x="34" y="282" width="54" height="12" rx="5" fill="#cfe0f5"/><path d="M48 310h26" stroke-width="2"/>
+<rect x="98" y="300" width="42" height="30" rx="6" fill="#fff"/><rect x="94" y="291" width="50" height="11" rx="5" fill="#f7c9dd"/>
+<!-- right short counter -->
+<rect x="700" y="352" width="184" height="168" fill="#b9824a"/>
+<rect x="712" y="366" width="160" height="138" rx="6" fill="url(#kdoor)"/>
+<circle cx="858" cy="436" r="5" fill="#6e4a2a"/>
+<rect x="696" y="330" width="192" height="24" rx="4" fill="url(#kwood)"/>
+<path d="M708 342H876" stroke="#b27f46" stroke-width="1.5"/>
+<rect x="726" y="294" width="40" height="36" rx="6" fill="#f7c9dd"/>
+<path d="M736 294L728 252M748 294L752 246M760 294L772 254" stroke-width="4" fill="none"/>
+<ellipse cx="727" cy="250" rx="6" ry="9" fill="#e8c288"/><ellipse cx="752" cy="244" rx="6" ry="9" fill="#e8c288"/><ellipse cx="773" cy="251" rx="6" ry="9" fill="#e8c288"/>
+<rect x="800" y="268" width="24" height="62" rx="8" fill="#f2d98a"/><rect x="805" y="256" width="14" height="14" rx="3" fill="#8a6b3a"/>
+<rect x="834" y="280" width="22" height="50" rx="6" fill="#6b4a2f"/><rect x="838" y="270" width="14" height="12" rx="3" fill="#2f2f3a"/>
+<!-- hood + oven + cooktop -->
+<path d="M886 16H1176L1154 64H908Z" fill="url(#ksteel)"/>
+<path d="M918 38H1144M926 49H1136" stroke="#8a93a1" stroke-width="2"/>
+<path d="M898 80H1164" stroke-width="5" fill="none"/>
+<circle cx="940" cy="80" r="4" fill="#3a3a4a"/><circle cx="1026" cy="80" r="4" fill="#3a3a4a"/><circle cx="1090" cy="80" r="4" fill="#3a3a4a"/><circle cx="1142" cy="80" r="4" fill="#3a3a4a"/>
+<rect x="884" y="352" width="294" height="168" fill="url(#ksteel)"/>
+<rect x="896" y="360" width="270" height="32" rx="6" fill="#e6eaef"/>
+<circle cx="930" cy="376" r="9" fill="#8a93a1"/><circle cx="985" cy="376" r="9" fill="#8a93a1"/><circle cx="1040" cy="376" r="9" fill="#8a93a1"/><circle cx="1095" cy="376" r="9" fill="#8a93a1"/><circle cx="1140" cy="376" r="4" fill="#f4a3a3"/>
+<rect x="896" y="400" width="270" height="112" rx="8" fill="#d9dee5"/>
+<rect x="914" y="406" width="234" height="8" rx="4" fill="#8a93a1"/>
+<rect x="914" y="422" width="234" height="80" rx="6" fill="#3f4654"/>
+<path d="M926 430h30l-18 64h-12z" fill="#fff" opacity=".18" stroke="none"/>
+<rect x="888" y="324" width="286" height="28" rx="5" fill="#3a3f4b"/>
+<ellipse cx="975" cy="338" rx="42" ry="8" fill="none" stroke="#8f98a6" stroke-width="3"/><ellipse cx="975" cy="338" rx="22" ry="4" fill="none" stroke="#8f98a6" stroke-width="2"/>
+<ellipse cx="1085" cy="338" rx="42" ry="8" fill="none" stroke="#8f98a6" stroke-width="3"/><ellipse cx="1085" cy="338" rx="22" ry="4" fill="none" stroke="#8f98a6" stroke-width="2"/>
+<!-- board counter -->
+<rect x="1180" y="352" width="302" height="168" fill="#b9824a"/>
+<rect x="1192" y="366" width="140" height="138" rx="6" fill="url(#kdoor)"/>
+<rect x="1342" y="366" width="128" height="138" rx="6" fill="url(#kdoor)"/>
+<circle cx="1322" cy="436" r="5" fill="#6e4a2a"/><circle cx="1352" cy="436" r="5" fill="#6e4a2a"/>
+<rect x="1176" y="330" width="310" height="24" rx="4" fill="url(#kwood)"/>
+<path d="M1188 342H1474" stroke="#b27f46" stroke-width="1.5"/>
+<path d="M1246 300H1438L1426 326H1234Z" fill="#ecc88e"/>
+<path d="M1234 326H1426V334H1234Z" fill="#c99a58"/>
+<ellipse cx="1252" cy="312" rx="6" ry="3" fill="#b98749" stroke-width="1.5"/>
+<!-- sink unit -->
+<rect x="1482" y="352" width="298" height="168" fill="#b9824a"/>
+<rect x="1494" y="366" width="128" height="138" rx="6" fill="url(#kdoor)"/>
+<rect x="1632" y="366" width="136" height="138" rx="6" fill="url(#kdoor)"/>
+<circle cx="1610" cy="436" r="5" fill="#6e4a2a"/><circle cx="1644" cy="436" r="5" fill="#6e4a2a"/>
+<rect x="1478" y="330" width="302" height="24" rx="4" fill="url(#kwood)"/>
+<path d="M1528 328H1722L1708 350H1542Z" fill="#9aa3b0"/>
+<path d="M1544 332H1706L1698 344H1552Z" fill="#7f8896" stroke="none"/>
+<path d="M1630 328V302Q1630 286 1612 286H1598V306" fill="none" stroke-width="12"/>
+<path d="M1630 328V302Q1630 286 1612 286H1598V306" fill="none" stroke="#d3d9e0" stroke-width="6"/>
+<rect x="1616" y="322" width="28" height="10" rx="3" fill="url(#ksteel)"/>
+<path d="M1644 308h22" stroke-width="10" fill="none"/><path d="M1644 308h22" stroke="#d3d9e0" stroke-width="5" fill="none"/>
+<!-- upper wooden cabinet -->
+<rect x="1494" y="36" width="288" height="14" rx="5" fill="url(#kwood)"/>
+<rect x="1500" y="50" width="276" height="216" rx="8" fill="url(#kdoor)"/>
+<rect x="1514" y="64" width="248" height="188" rx="4" fill="#6b4727"/>
+<rect x="1514" y="156" width="248" height="10" fill="url(#kwood)"/>
+<g stroke-width="2">
+<rect x="1534" y="122" width="30" height="34" rx="5" fill="#cfe0f5"/><path d="M1564 130q14 0 0 18" fill="none"/>
+<rect x="1578" y="122" width="30" height="34" rx="5" fill="#f7c9dd"/><path d="M1608 130q14 0 0 18" fill="none"/>
+<rect x="1622" y="122" width="30" height="34" rx="5" fill="#fbe08a"/><path d="M1652 130q14 0 0 18" fill="none"/>
+<rect x="1666" y="122" width="30" height="34" rx="5" fill="#cfe8d5"/><path d="M1696 130q14 0 0 18" fill="none"/>
+<path d="M1710 156q0-26 22-26t22 26z" fill="#fff"/><path d="M1714 148q18-12 36 0" fill="none" opacity=".4"/>
+</g>
+<!-- wall clock -->
+<circle cx="795" cy="140" r="42" fill="#fff"/><circle cx="795" cy="140" r="36" fill="#fdf4de" stroke-width="1.5"/>
+<path d="M795 108v6M795 166v6M763 140h6M821 140h6" stroke-width="3"/>
+<line id="kcH" x1="795" y1="140" x2="795" y2="122" stroke-width="4"/>
+<line id="kcM" x1="795" y1="140" x2="795" y2="112" stroke-width="2.5"/>
+<circle cx="795" cy="140" r="3.5" fill="#3a3a4a"/>
+</g>
+</svg>
+<div class="kdim"></div>
+<div class="kwin" aria-hidden="true">
+<div class="kstars"></div><div class="ksun"></div><div class="kcl c1"></div><div class="kcl c2"></div>
+<svg class="khill" viewBox="0 0 234 110" preserveAspectRatio="none">
+<path class="h3" d="M0 38Q40 4 92 30T180 22T234 36V110H0Z"/>
+<path class="h1" d="M0 56Q60 26 120 50T234 44V110H0Z"/>
+<rect x="168" y="46" width="30" height="22" fill="#f4e4c8" stroke="#3a3a4a" stroke-width="1.5"/>
+<path d="M164 46L183 30L202 46Z" fill="#d9776b" stroke="#3a3a4a" stroke-width="1.5"/>
+<path class="h2" d="M0 76Q70 56 140 74T234 68V110H0Z"/>
+<rect x="36" y="48" width="6" height="30" fill="#7b4f26"/><circle cx="39" cy="42" r="17" fill="#5faa63" stroke="#3a3a4a" stroke-width="1.5"/>
+</svg>
+</div>
+<svg class="kwf" width="250" height="228" viewBox="0 0 250 228" aria-hidden="true">
+<g stroke="#3a3a4a" stroke-linejoin="round" stroke-linecap="round">
+<path d="M125 8V204M8 106H242" stroke-width="9" fill="none"/><path d="M125 8V204M8 106H242" stroke="#fff" stroke-width="4.5" fill="none"/>
+<path fill="#fff" fill-rule="evenodd" stroke-width="2.6" d="M0 0H250V212H0Z M8 8V204H242V8Z"/>
+<path d="M8 8H52Q44 104 54 204H8Z" fill="#f7c9dd" stroke-width="2"/><path d="M242 8H198Q206 104 196 204H242Z" fill="#f7c9dd" stroke-width="2"/>
+<path d="M-8 3H258" stroke-width="5" fill="none"/>
+<rect x="-8" y="208" width="266" height="16" rx="4" fill="url(#kwood)" stroke-width="2.4"/>
+</g>
+</svg>
+<section class="fridge" aria-label="ตู้เย็น">
+    <svg class="frame" aria-hidden="true"><g filter="url(#r)"><rect class="bg" x="1%" y="1%" width="98%" height="98%" rx="22"/><rect x="1%" y="1%" width="98%" height="98%" rx="22"/><rect x="95%" y="9%" width="1.8%" height="22%" rx="6"/></g></svg>
+    <div id="shelves"></div>
+    <div id="door" class="door" aria-label="ประตูตู้เย็น">
+      <svg class="frame" aria-hidden="true"><g filter="url(#r)"><rect class="bg" x="1%" y="1%" width="98%" height="98%" rx="22"/><rect x="1%" y="1%" width="98%" height="98%" rx="22"/><line x1="1%" y1="30%" x2="99%" y2="30%"/></g></svg>
+      <div id="stkl" class="stkl"></div>
+      <button id="hdl" class="hdl" aria-label="เปิดตู้เย็น"></button>
+    </div>
+  </section>
+<button class="st" id="tPan" style="left:902px;top:72px;width:76px;height:150px" aria-label="กระทะ (ใช้ผัดและทอด)"><svg viewBox="0 0 76 150" aria-hidden="true"><g stroke="#3a3a4a" stroke-width="2.4"><rect x="33" y="0" width="10" height="58" rx="5" fill="#6b4a2f"/><circle cx="38" cy="102" r="34" fill="#4a4f5c" stroke-width="2.6"/><circle cx="38" cy="102" r="25" fill="#5f6677" stroke-width="1.5"/><path d="M20 90q8-10 20-12" fill="none" stroke="#fff" stroke-width="3" opacity=".35" stroke-linecap="round"/></g></svg></button>
+<button class="st" id="tPot" style="left:988px;top:72px;width:76px;height:150px" aria-label="หม้อ (ใช้ต้มและตุ๋น)"><svg viewBox="0 0 76 150" aria-hidden="true"><g stroke="#3a3a4a" stroke-width="2.4" stroke-linejoin="round"><path d="M38 0V24" fill="none" stroke-width="3"/><rect x="30" y="22" width="16" height="9" rx="4" fill="#8a93a1"/><path d="M6 46Q38 30 70 46V52H6Z" fill="#c9d0d8"/><rect x="8" y="52" width="60" height="72" rx="8" fill="#aeb7c2"/><rect x="0" y="64" width="10" height="9" rx="3" fill="#6b4a2f"/><rect x="66" y="64" width="10" height="9" rx="3" fill="#6b4a2f"/><path d="M18 62v46" stroke="#fff" stroke-width="4" opacity=".35" fill="none" stroke-linecap="round"/></g></svg></button>
+<button class="st" id="tSpat" style="left:1072px;top:72px;width:36px;height:150px" aria-label="ตะหลิว (คู่กับกระทะ)"><svg viewBox="0 0 36 150" aria-hidden="true"><g stroke="#3a3a4a" stroke-width="2.4" stroke-linejoin="round"><rect x="13" y="0" width="10" height="84" rx="5" fill="#6b4a2f"/><path d="M5 82H31V126Q31 138 18 138T5 126Z" fill="#c9d0d8"/><path d="M12 96v24M18 96v24M24 96v24" stroke="#8a93a1" stroke-width="2" fill="none"/></g></svg></button>
+<button class="st" id="tLadle" style="left:1116px;top:72px;width:52px;height:150px" aria-label="กระบวย (คู่กับหม้อ)"><svg viewBox="0 0 52 150" aria-hidden="true"><g stroke="#3a3a4a" stroke-width="2.4" stroke-linejoin="round"><rect x="21" y="0" width="10" height="98" rx="5" fill="#c9d0d8"/><path d="M3 104H49A23 23 0 0 1 3 104Z" fill="#c9d0d8"/><path d="M12 112q14 10 28 0" fill="none" stroke="#fff" stroke-width="3" opacity=".4"/></g></svg></button>
+<span class="stl" id="tPanL" style="left:1170px;top:60px">กระทะ/หม้อ</span>
+<button class="st" id="stStove" style="left:892px;top:262px;width:276px;height:84px" aria-label="เตาไฟ (แตะเพื่อปรุงอาหาร)"></button>
+<span class="stl" id="stStoveL" style="left:1112px;top:290px">เตา</span>
+<button class="st" id="stOven" style="left:890px;top:352px;width:282px;height:166px" aria-label="เตาอบ"></button>
+<div class="koven" id="kOvenGlow"></div>
+<svg class="kpan" id="kPan" viewBox="0 0 170 80" width="170" height="80" aria-hidden="true"><g stroke="#3a3a4a" stroke-width="2.4"><ellipse cx="80" cy="50" rx="62" ry="20" fill="#3d4250"/><ellipse cx="80" cy="47" rx="52" ry="15" fill="#565c6c"/><rect x="138" y="42" width="30" height="9" rx="4" fill="#6b4a2f"/></g></svg>
+<div class="kpanitems" id="kPanItems"></div>
+<svg class="kpot" id="kPot" viewBox="0 0 150 100" width="150" height="100" aria-hidden="true"><g stroke="#3a3a4a" stroke-width="2.4" stroke-linejoin="round"><rect x="20" y="30" width="100" height="62" rx="9" fill="#aeb7c2"/><rect x="8" y="46" width="14" height="10" rx="4" fill="#6b4a2f"/><rect x="118" y="46" width="14" height="10" rx="4" fill="#6b4a2f"/><path d="M16 30Q70 12 124 30V36H16Z" fill="#c9d0d8"/><rect x="62" y="14" width="16" height="9" rx="4" fill="#8a93a1"/><path d="M32 44v38" stroke="#fff" stroke-width="4" opacity=".35" fill="none" stroke-linecap="round"/></g></svg>
+<svg class="kflame" viewBox="0 0 100 30" width="100" height="30" aria-hidden="true"><g stroke="#3a3a4a" stroke-width="1.5"><path d="M10 30Q6 14 14 6Q16 16 22 18Q22 8 28 2Q34 14 32 30Z" fill="#ffb347"/><path d="M36 30Q32 12 42 2Q44 14 52 16Q54 6 60 0Q66 14 64 30Z" fill="#ff8a3d"/><path d="M68 30Q66 16 74 8Q78 18 82 18Q84 10 90 6Q94 18 92 30Z" fill="#ffb347"/></g></svg>
+<i class="kst s1"></i><i class="kst s2"></i><i class="kst s3"></i>
+<button class="st" id="stBoard" style="left:1226px;top:262px;width:222px;height:78px" aria-label="เขียงและมีด (แตะเพื่อหั่น)"></button>
+<span class="stl" id="stBoardL" style="left:1236px;top:236px">เขียง</span>
+<div class="kbitems" id="kBoardItems"></div>
+<svg class="kknife" id="kKnife" viewBox="0 0 110 34" width="110" height="34" aria-hidden="true"><g stroke="#3a3a4a" stroke-width="2.2" stroke-linejoin="round"><path d="M2 20L56 6Q72 4 74 14L74 22L10 24Z" fill="#dfe4ea"/><rect x="72" y="10" width="36" height="12" rx="6" fill="#6b4a2f"/></g></svg>
+<i class="kchip c1"></i><i class="kchip c2"></i><i class="kchip c3"></i>
+<button class="st" id="stCab" style="left:1500px;top:50px;width:276px;height:216px" aria-label="ตู้ไม้เก็บจานและถ้วย (แตะเพื่อหยิบจาน)"></button>
+<span class="stl" id="stCabL" style="left:1560px;top:10px">ตู้จาน</span>
+<div class="kplates" id="kPlates"></div>
+<button class="st" id="stSink" style="left:1516px;top:240px;width:220px;height:108px" aria-label="ซิงค์ล้างจาน (แตะเพื่อล้างจาน)"></button>
+<span class="stl" id="stSinkL" style="left:1704px;top:290px">ซิงค์</span>
+<div class="kdirty" id="kDirty"></div>
+<div class="kwater"><i class="d1"></i><i class="d2"></i><i class="d3"></i><i class="bub b1"></i><i class="bub b2"></i><i class="bub b3"></i></div>
+</div></div>
+</div>
+
+
+<div class="hud top" id="hudTop">
+<h1>Cook & Create</h1>
+<p class="sub">หยิบวัตถุดิบจากตู้เย็น หั่น ปรุง จัดจาน แล้วเสิร์ฟเมนู</p>
 <div class="auth-bar">
   <div class="user-profile" id="uprof">
     <span id="avw" class="avwrap"><img id="uavatar" class="user-avatar" src="data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%238a7a62'%3E%3Ccircle cx='12' cy='8' r='4'/%3E%3Cpath d='M12 14c-6.1 0-8 4-8 4v2h16v-2s-1.9-4-8-4z'/%3E%3C/svg%3E" alt="ผู้ใช้"></span>
@@ -374,38 +750,38 @@ img.ic{object-fit:cover;border-radius:12px;filter:none}
     <span id="authTxt">เข้าสู่ระบบด้วย Google</span>
   </button>
 </div>
-
-<h1>Cook & Create</h1>
-<p class="sub">คลิกของในตู้เย็นเพื่อหยิบใส่ตะกร้า แล้วกดรวมเป็นเมนู</p>
 <div class="wallet"><span class="wc"><svg class="ic" viewBox="0 0 48 48" aria-hidden="true"><use href="#i-coin"/></svg><b id="coin">0</b> เหรียญ</span><span class="note" id="tot"></span><span class="wsp"></span><button class="btn" id="chk">เช็คอินวันนี้ +10</button><button class="btn ghost" id="shopb">ร้านค้า</button><button class="btn ghost" id="bookb">สมุดสูตร</button></div>
 <div class="rec" aria-label="แถบเมนูแนะนำ"><span class="rtl">เมนูแนะนำ</span><div id="recl" class="recl"></div></div>
-<div class="layout">
-  <div class="lcol">
-  <div class="fbar"><button class="btn" id="dr">ปิดตู้เย็น</button><span class="note" id="dh"></span></div>
-  <div class="ctray"><span class="note">ถาดสีตู้เย็น</span><span id="sws"></span></div>
-  <div id="pal" class="pal" hidden><span class="note">เลือกสติกเกอร์แล้วลากไปวางบนประตู คลิกที่สติกเกอร์เพื่อหมุนหรือขยาย</span><span id="pals"></span><span class="tadd"><input id="stxt" maxlength="30" placeholder="พิมพ์ข้อความ เช่น อย่าลืมซื้อไข่" aria-label="ข้อความสติกเกอร์"><button class="btn ghost" id="sadd">เพิ่มข้อความ</button></span><button class="btn ghost" id="sclr">ล้างสติกเกอร์</button></div>
-  <section class="fridge" aria-label="ตู้เย็น">
-    <svg class="frame" aria-hidden="true"><g filter="url(#r)"><rect class="bg" x="1%" y="1%" width="98%" height="98%" rx="22"/><rect x="1%" y="1%" width="98%" height="98%" rx="22"/><rect x="95%" y="9%" width="1.8%" height="22%" rx="6"/></g></svg>
-    <div id="shelves"></div>
-    <div id="door" class="door" aria-label="ประตูตู้เย็น">
-      <svg class="frame" aria-hidden="true"><g filter="url(#r)"><rect class="bg" x="1%" y="1%" width="98%" height="98%" rx="22"/><rect x="1%" y="1%" width="98%" height="98%" rx="22"/><line x1="1%" y1="30%" x2="99%" y2="30%"/></g></svg>
-      <div id="stkl" class="stkl"></div>
-      <button id="hdl" class="hdl" aria-label="เปิดตู้เย็น"></button>
-    </div>
-  </section>
-  </div>
-
-  <section class="panel" aria-live="polite">
-    <svg class="bd" aria-hidden="true"><g filter="url(#r)"><rect x="1" y="1" width="calc(100% - 2px)" height="calc(100% - 2px)" rx="16"/></g></svg>
-    <h2>ตะกร้าวัตถุดิบ <span id="cnt" class="note"></span></h2>
-    <div id="tray" class="tray"></div>
-    <div class="acts">
-      <button class="btn" id="mix" disabled>รวมเป็นเมนู</button>
-      <button class="btn ghost" id="clr" disabled>เก็บเข้าตู้เย็น</button>
-    </div>
-    <div id="menu" class="menu" hidden></div>
-  </section>
 </div>
+<div class="kmv" aria-label="เลื่อนห้องครัว"><button data-mv="-1" aria-label="เลื่อนครัวไปทางซ้าย">‹</button><button data-mv="1" aria-label="เลื่อนครัวไปทางขวา">›</button></div>
+<button class="zout" id="zout" aria-label="ซูมออกดูทั้งห้อง">ซูมออก</button>
+<div class="hud bottom" id="hudBot">
+<div class="fctl" id="fctl">
+<div class="fbar"><button class="btn" id="dr">ปิดตู้เย็น</button><span class="note" id="dh"></span></div>
+<details class="decor"><summary>ตกแต่งตู้เย็น (สีและสติกเกอร์)</summary>
+<div class="ctray"><span class="note">ถาดสีตู้เย็น</span><span id="sws"></span></div>
+<div id="pal" class="pal" hidden><span class="note">เลือกสติกเกอร์แล้วลากไปวางบนประตู คลิกที่สติกเกอร์เพื่อหมุนหรือขยาย</span><span id="pals"></span><span class="tadd"><input id="stxt" maxlength="30" placeholder="พิมพ์ข้อความ เช่น อย่าลืมซื้อไข่" aria-label="ข้อความสติกเกอร์"><button class="btn ghost" id="sadd">เพิ่มข้อความ</button></span><button class="btn ghost" id="sclr">ล้างสติกเกอร์</button></div>
+</details>
+</div>
+<nav class="steps" id="steps" aria-label="ขั้นตอนทำอาหาร">
+  <button data-go="fridge" data-s="pick"><b>1</b>หยิบของ</button>
+  <button data-go="board" data-s="cut"><b>2</b>หั่น</button>
+  <button data-go="stove" data-s="cook"><b>3</b>ปรุง</button>
+  <button data-go="cab" data-s="plate"><b>4</b>จัดจาน</button>
+  <button data-go="serve" data-s="serve"><b>5</b>เสิร์ฟ</button>
+  <button data-go="sink" data-s="wash"><b>6</b>ล้างจาน</button>
+</nav>
+<section class="panel" id="bpanel" aria-live="polite">
+  <button class="hbask" id="kbasket" aria-label="ตะกร้าวัตถุดิบ (แตะเพื่อดูของในตะกร้า)" aria-expanded="false"><svg viewBox="0 0 100 64" aria-hidden="true"><g stroke="#3a3a4a" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"><path d="M20 30Q50 -8 80 30" fill="none" stroke-width="7" stroke="#7b4f26"/><path d="M8 28H92L82 62H18Z" fill="#9a6a35"/><path d="M10 28H90L88 40H12Z" fill="#cd3b3b" opacity=".75" stroke="none"/><path d="M26 40L30 60M42 40L44 62M58 40L58 62M74 40L70 60" stroke="#7b4f26" stroke-width="2" fill="none"/></g></svg><span class="kbadge" id="kbadge">0</span></button>
+  <h2>ตะกร้า <span id="cnt" class="note"></span></h2>
+  <div class="acts">
+    <button class="btn" id="mix" disabled>เสิร์ฟเมนู</button>
+    <button class="btn ghost" id="clr" disabled>เก็บเข้าตู้เย็น</button>
+  </div>
+  <div id="tray" class="tray"></div>
+</section>
+</div>
+<div class="mwin" id="mwin"><div class="mcard" aria-live="polite"><button id="mclose" aria-label="ปิดหน้าต่างเมนู">✕</button><div id="menu" class="menu" hidden></div></div></div>
 </main>
 <dialog id="dlg" aria-label="ร้านค้าและคลังสต็อก"><div class="dwrap">
 <nav class="vt" aria-label="เมนูร้านค้า">
@@ -442,7 +818,8 @@ const cloudReady = !!(firebaseConfig.apiKey && firebaseConfig.projectId);
 // แนะนำให้ใส่ UID (ล็อกอินแล้วดูได้ที่แท็บโปรไฟล์ > ข้อมูลส่วนตัว) แล้วลบอีเมลออกจากโค้ด
 // ถ้า OWNER_UID ว่าง ระบบจะใช้อีเมลแทน
 // *** ความปลอดภัยจริงอยู่ที่ Firestore Security Rules ดูไฟล์ firestore.rules ***
-const OWNER_UID = "5960lkFqaFOZ9DpyjnSBQAMMnTD3";
+const OWNER_UID = "";
+const OWNER_EMAIL = "waranthayapn@gmail.com";
 
 let auth = null, db = null, googleProvider = null;
 let isGoogleUser = false;
@@ -691,6 +1068,7 @@ function sanitizeG(g){
   o.last=typeof g.last==="string"&&/^\d{4}-\d{2}-\d{2}$/.test(g.last)?g.last:"";
   o.log=(Array.isArray(g.log)?g.log:[]).slice(0,60).map(l=>({t:num(l&&l.t,0,9e15,0),d:String(l&&l.d||"").slice(0,80),c:Math.floor(num(l&&l.c,-100000,100000,0))}));
   if(g.cooked&&typeof g.cooked==="object")R.forEach(r=>{const v=g.cooked[r.n];if(v)o.cooked[r.n]=Math.floor(num(v,1,100000,1))});
+  o.plates=Math.floor(num(g.plates,0,8,4));o.dirty=Math.floor(num(g.dirty,0,8,0));
   o.starter=!!g.starter;
   const p=g.profile&&typeof g.profile==="object"?g.profile:{},fs=[...new Set((Array.isArray(p.frames)?p.frames:[]).filter(f=>FR.some(x=>x[0]===f)))];
   o.profile={name:String(p.name||"").slice(0,20),avatar:typeof p.avatar==="string"&&p.avatar.length<150000&&IMG_RE.test(p.avatar)?p.avatar:"",frames:fs,frame:fs.includes(p.frame)?p.frame:""};
@@ -775,7 +1153,7 @@ function render(){
   t.innerHTML=sel.length?sel.map(id=>`<button class="chip${PS.includes(id)?"":" new"}" data-id="${id}" title="เอาคืนเข้าตู้เย็น">${ic(id)}${nm(id)}</button>`).join(""):'<p class="empty">ตะกร้ายังว่างอยู่ ลองคลิกของในตู้เย็นดู</p>';
   $("cnt").textContent=sel.length?`(${sel.length} อย่าง)`:"";
   $("mix").disabled=$("clr").disabled=!sel.length;
-  $("menu").hidden=true;forceR=null;PS=sel.slice();renderStock();renderRec();
+  $("menu").hidden=true;forceR=null;PS=sel.slice();kReset();renderStock();renderRec();
 }
 document.addEventListener("click",e=>{const b=e.target.closest(".it,.chip");if(b){fly(b);toggle(b.dataset.id)}});
 $("clr").onclick=()=>{if(cooking)return;sel.length=0;render()};
@@ -792,7 +1170,6 @@ $("mix").onclick=()=>{
     const used=new Set([...r.need,...r.opt,...(r.any||[])]);
     const extra=sel.filter(i=>!used.has(i)&&i!=="oil"&&i!=="rice").map(nm);
     m.innerHTML=`${plate}<h3>${r.n}</h3><p style="text-align:center">${r.d}</p>${r.hint?`<p class="note" style="text-align:center">${r.hint}</p>`:""}<p class="note">วัตถุดิบ: ${sel.map(nm).join(", ")}</p><ol>${r.s.map(s=>`<li>${s}</li>`).join("")}</ol>${extra.length&&!r.weird?`<p class="note">${extra.join(", ")} ไม่อยู่ในสูตรนี้ ใส่เพิ่มตามชอบได้</p>`:""}`;
-    m.scrollIntoView({behavior:"smooth",block:"nearest"});
   },r?550:0);
 };
 
@@ -829,7 +1206,7 @@ layer.addEventListener("pointerdown",e=>{
   if(h){
     const s=window.stks.find(s=>s.id===el.dataset.id),b=el.getBoundingClientRect(),r=layer.getBoundingClientRect(),cx=b.left+b.width/2,cy=b.top+b.height/2,z0=s.z||56;
     selId=s.id;
-    drag={mode:h.classList.contains("rot")?"rot":"rsz",s,el,r,cx,cy,z0,r0:s.r||0,a0:Math.atan2(e.clientY-cy,e.clientX-cx),d0:Math.max(1,Math.hypot(e.clientX-cx,e.clientY-cy)),ccx:s.x/100*r.width+el.offsetWidth/2,ccy:s.y/100*r.height+el.offsetHeight/2};
+    drag={mode:h.classList.contains("rot")?"rot":"rsz",s,el,r,cx,cy,z0,r0:s.r||0,a0:Math.atan2(e.clientY-cy,e.clientX-cx),d0:Math.max(1,Math.hypot(e.clientX-cx,e.clientY-cy)),ccx:s.x/100*r.width+el.offsetWidth*(window.KS||1)/2,ccy:s.y/100*r.height+el.offsetHeight*(window.KS||1)/2};
     h.setPointerCapture(e.pointerId);e.preventDefault();return;
   }
   selId=el.dataset.id;
@@ -846,13 +1223,13 @@ layer.addEventListener("pointermove",e=>{
     if(drag.mode==="rot"){s.r=Math.round(drag.r0+(Math.atan2(e.clientY-cy,e.clientX-cx)-drag.a0)*180/Math.PI);el.style.setProperty("--r",s.r+"deg")}
     else{
       const z=Math.max(28,Math.min(180,Math.round(drag.z0*Math.hypot(e.clientX-cx,e.clientY-cy)/drag.d0)));
-      s.z=z;el.style.setProperty("--z",z+"px");s.x=(drag.ccx-el.offsetWidth/2)/r.width*100;s.y=(drag.ccy-el.offsetHeight/2)/r.height*100;
+      s.z=z;el.style.setProperty("--z",z+"px");s.x=(drag.ccx-el.offsetWidth*(window.KS||1)/2)/r.width*100;s.y=(drag.ccy-el.offsetHeight*(window.KS||1)/2)/r.height*100;
       el.style.setProperty("--z",z+"px");el.style.left=s.x+"%";el.style.top=s.y+"%";
     }
     return;
   }
   const{s,el,r,dx,dy}=drag;
-  const mx=(r.width-el.offsetWidth)/r.width*100,my=(r.height-el.offsetHeight)/r.height*100;
+  const mx=(r.width-el.offsetWidth*(window.KS||1))/r.width*100,my=(r.height-el.offsetHeight*(window.KS||1))/r.height*100;
   s.x=Math.max(0,Math.min(mx,(e.clientX-dx-r.left)/r.width*100));
   s.y=Math.max(0,Math.min(my,(e.clientY-dy-r.top)/r.height*100));
   el.style.left=s.x+"%";el.style.top=s.y+"%";
@@ -963,7 +1340,7 @@ $("recl").addEventListener("click",e=>{
   if(r.any)ids.push(r.any.find(x=>S.has(x))||r.any[0]);
   if(closed)setDoor(false);
   sel.length=0;ids.forEach(i=>sel.push(i));render();
-  forceR=r;$("mix").click();
+  forceR=r;toast("หยิบวัตถุดิบใส่ตะกร้าแล้ว ไปหั่นที่เขียงต่อได้เลย");kUpdate();
 });
 
 function fly(b){
@@ -971,7 +1348,7 @@ function fly(b){
   const src=b.querySelector(".ic");if(!src)return;
   const a=src.getBoundingClientRect(),toTray=b.classList.contains("it");
   let t;
-  if(toTray)t=$("tray").getBoundingClientRect();
+  if(toTray)t=($("kbasket")||$("tray")).getBoundingClientRect();
   else{const it=document.querySelector(`.it[data-id="${b.dataset.id}"] .ic`);if(!it||$("shelves").inert)return;t=it.getBoundingClientRect()}
   const c=src.cloneNode(true);
   Object.assign(c.style,{position:"fixed",left:a.left+"px",top:a.top+"px",width:a.width+"px",height:a.height+"px",zIndex:60,pointerEvents:"none"});
@@ -1018,6 +1395,7 @@ function renderStock(){
     b.classList.toggle("none",n<=0&&!inT);b.classList.toggle("low",n===1);
   });
   renderWallet();
+  if(typeof kUpdate==="function")kUpdate();
 }
 window.renderStock = renderStock;
 
@@ -1104,6 +1482,8 @@ const oldMix=$("mix").onclick;
 $("mix").onclick=()=>{
   if(cooking)return;
   const S=[...sel],rr=forceR||pick2(S);
+  if(K.busy){toast("รอสักครู่ กำลังทำอยู่");return}
+  if(rr){const ms=kMissing(rr);if(ms){toast(ms.msg);kScrollTo(ms.at);return}}
   oldMix();
   if(!rr)return;
   cooking=true;
@@ -1114,6 +1494,7 @@ function cookDone(r,S){
   if(!window.G.cooked) window.G.cooked = {};
   const first=!window.G.cooked[r.n],tot=r.weird?(first?1:0):first?Math.min(10,3*S.length+5):Math.min(3,S.length);
   S.forEach(i=>{window.G.stock[i]=Math.max(0,st(i)-1)});
+  window.G.plates=Math.max(0,kPlates()-1);window.G.dirty=Math.min(8,kDirty()+1);
   window.G.cooked[r.n]=(window.G.cooked[r.n]||0)+1;window.G.coins+=tot;addLog("ทำ "+r.n,tot);saveG();
   sel.length=0;render();
   const m=$("menu");m.hidden=false;
@@ -1201,13 +1582,15 @@ $("uname").addEventListener("change",e=>{
 
 /* ===== recipe book ===== */
 const TIPS=[
-[0,"คลิกของในตู้เย็นเพื่อหยิบใส่ตะกร้า คลิกอีกครั้งเพื่อเอาคืน"],
-[0,"กด “รวมเป็นเมนู” ระบบจะดูว่าของในตะกร้าเข้ากับเมนูไทยอะไร และใช้วัตถุดิบไปอย่างละ 1"],
+[0,"หยิบวัตถุดิบจากตู้เย็นใส่ตะกร้า ตะกร้าอยู่บนเคาน์เตอร์ซ้ายข้างตู้เย็น คลิกอีกครั้งเพื่อเอาคืน"],
+[0,"ทำตามลำดับในครัว หั่นที่เขียง เลือกกระทะหรือหม้อบนผนังแล้วตั้งเตา หยิบจานจากตู้ไม้ แล้วกด “เสิร์ฟเมนู”"],
 [0,"ของหมดแล้วไปซื้อเพิ่มที่ร้านค้าได้ด้วยเหรียญ"],
+[1,"เมนูผัดและทอดใช้กระทะ เมนูต้มและตุ๋นใช้หม้อ ส่วนยำและส้มตำไม่ต้องใช้เตา"],
 [1,"ทำเมนูใหม่ครั้งแรกได้ 3 เหรียญต่อวัตถุดิบ +5 โบนัส รวมไม่เกิน 10 เหรียญ ส่วนทำเมนูเดิมซ้ำได้ 1 เหรียญต่อวัตถุดิบ สูงสุด 3"],
 [1,"เช็คอินทุกวันได้ +10 เหรียญ"],
-[2,"แถบเมนูแนะนำบอกว่าขาดหรือเกินอะไร กดแล้วระบบหยิบของให้ถ้ามีในตู้"],
-[3,"ปิดตู้เย็นเพื่อแต่งประตู ลาก หมุน ขยายสติกเกอร์ เพิ่มข้อความ และเปลี่ยนสีตู้ได้"],
+[2,"จานที่เสิร์ฟแล้วจะสกปรก (มีจาน 4 ใบ) แตะซิงค์เพื่อล้างจาน"],
+[2,"แถบเมนูแนะนำบอกว่าขาดหรือเกินอะไร กดแล้วระบบหยิบของใส่ตะกร้าให้ถ้ามีในตู้"],
+[3,"ปิดตู้เย็นแล้วเปิดหัวข้อ “ตกแต่งตู้เย็น” เพื่อวางสติกเกอร์ เพิ่มข้อความ และเปลี่ยนสีตู้ได้"],
 [5,"แท็บโปรไฟล์มีกรอบรูปให้ซื้อด้วยเหรียญ แตะรูปโปรไฟล์ด้านบนเพื่อเปิด"],
 [8,"ล็อกอิน Google เพื่อเซฟความคืบหน้าและสูตรในสมุดขึ้นคลาวด์"]
 ];
@@ -1360,6 +1743,236 @@ $("dbody").addEventListener("click",async e=>{
   sel.length=0;render();renderUser();drawDlg();
   toast("ลบข้อมูลของคุณแล้ว");
 });
+
+/* ===== kitchen: cooking steps ===== */
+const K={cut:false,tool:null,cooked:false,plated:false,busy:false};
+const kPlates=()=>window.G.plates==null?4:window.G.plates;
+const kDirty=()=>window.G.dirty||0;
+const NOCUT=new Set(["rice","egg","mince"]);
+const needsCut=()=>sel.some(i=>!sea(i)&&!NOCUT.has(i));
+const kPreview=()=>forceR||pick2(sel);
+function howOf(r){
+  if(!r)return"none";
+  if(r.weird)return"pot";
+  if(/^(ต้ม|ข้าวต้ม|ไข่ตุ๋น|ปลาร้าทรง)/.test(r.n))return"pot";
+  if(/^(ส้มตำ|ยำ|กุ้งแช่|ข้าวคลุก)/.test(r.n))return"none";
+  return"pan";
+}
+function kReset(){K.cut=false;K.tool=null;K.cooked=false;K.plated=false}
+const SW=1780,SH=560;
+const ZONES={fridge:{x:326,y:36,w:380,h:490},stove:{x:880,y:30,w:304,h:350},board:{x:1172,y:236,w:318,h:140},cab:{x:1488,y:30,w:300,h:248},sink:{x:1478,y:250,w:304,h:130}};
+const ZMAP={tPan:"stove",tPot:"stove",tSpat:"stove",tLadle:"stove",stStove:"stove",stOven:"stove",stBoard:"board",stCab:"cab",stSink:"sink"};
+const cam={zone:"home",cx:516,cy:SH/2,s:1,tx:0,ty:0,b:null,dragged:false};
+const kw=$("kwrap"),ksc=$("kscene"),hudT=$("hudTop"),hudB=$("hudBot");
+let camAnim=null;
+const noMotion=()=>matchMedia("(prefers-reduced-motion:reduce)").matches;
+function camBounds(){
+  const W=kw.clientWidth||innerWidth,H=kw.clientHeight||innerHeight;
+  const pt=Math.ceil(hudT.getBoundingClientRect().bottom)+4;
+  const pb=Math.ceil(H-hudB.getBoundingClientRect().top)+4;
+  const AH=Math.max(160,H-pt-pb);
+  document.documentElement.style.setProperty("--padB",pb+"px");document.documentElement.style.setProperty("--padT",pt+"px");
+  return cam.b={W,H,pt,pb,AH,base:Math.max(AH/SH,W/SW)};
+}
+function camPose(cx,cy,s,b){
+  const sw=SW*s,sh=SH*s;
+  const tx=sw<=b.W?(b.W-sw)/2:Math.min(0,Math.max(b.W-sw,b.W/2-cx*s));
+  const ty=sh<=b.AH?b.pt+(b.AH-sh)/2:Math.min(b.pt,Math.max(b.pt+b.AH-sh,b.pt+b.AH/2-cy*s));
+  return{tx,ty,s,cx:(b.W/2-tx)/s,cy:(b.pt+b.AH/2-ty)/s};
+}
+const poseCss=p=>"translate("+p.tx+"px,"+p.ty+"px) scale("+p.s+")";
+function camNow(){const m=new DOMMatrix(getComputedStyle(ksc).transform);return{tx:m.e,ty:m.f,s:m.a||1}}
+function camArrows(b,p){
+  const l=document.querySelector('[data-mv="-1"]'),r=document.querySelector('[data-mv="1"]');
+  if(l)l.disabled=p.tx>=-1;if(r)r.disabled=p.tx<=b.W-SW*p.s+1;
+}
+function camApply(p,o){
+  o=o||{};const b=o.b||cam.b||camBounds();
+  const from=camNow();
+  if(camAnim){camAnim.cancel();camAnim=null}
+  ksc.style.transform=poseCss(p);
+  Object.assign(cam,{tx:p.tx,ty:p.ty,s:p.s,cx:p.cx,cy:p.cy});window.KS=p.s;
+  camArrows(b,p);
+  if(!o.anim||noMotion())return;
+  const kf=[{transform:"translate("+from.tx+"px,"+from.ty+"px) scale("+from.s+")"}];
+  if(o.arc){
+    const cxF=(b.W/2-from.tx)/from.s,sm=Math.max(b.W/SW,Math.min(from.s,p.s)*.62);
+    kf.push({transform:poseCss(camPose((cxF+p.cx)/2,SH/2,sm,b)),offset:.45});
+  }
+  kf.push({transform:poseCss(p)});
+  const a=ksc.animate(kf,{duration:o.arc?1050:760,easing:"cubic-bezier(.45,.05,.2,1)"});
+  camAnim=a;a.onfinish=()=>{if(camAnim===a)camAnim=null};
+}
+function camGo(zone,o){
+  o=o||{};const prev=cam.zone;
+  document.body.dataset.zone=zone;
+  const b=camBounds();let s,cx,cy;
+  if(zone==="home"){s=b.base;cx=cam.cx;cy=SH/2}
+  else{const z=ZONES[zone];s=Math.max(b.W/SW,Math.min(b.W*.94/z.w,b.AH*.94/z.h,b.base*2.4));cx=z.x+z.w/2;cy=z.y+z.h/2}
+  cam.zone=zone;
+  camApply(camPose(cx,cy,s,b),{b,anim:!o.instant,arc:prev!=="home"&&zone!=="home"&&prev!==zone});
+}
+function camPan(dx,anim){camApply(camPose(cam.cx+dx,cam.cy,cam.s,cam.b||camBounds()),{anim:anim})}
+function kScrollTo(k){camGo(k==="serve"?"home":k)}
+function kMissing(r){
+  const how=howOf(r);
+  if(needsCut()&&!K.cut)return{msg:"ยังไม่ได้หั่นวัตถุดิบ ไปที่เขียงก่อน",at:"board"};
+  if(how!=="none"&&!K.cooked)return{msg:K.tool?"ยังไม่ได้ตั้งเตา แตะที่เตาเพื่อปรุง":"เลือกกระทะหรือหม้อจากผนังเหนือเตาก่อน",at:"stove"};
+  if(!K.plated)return{msg:"ยังไม่ได้หยิบจาน แตะตู้ไม้เหนือซิงค์",at:"cab"};
+  return null;
+}
+function kUpdate(){
+  const sc=$("kscene");if(!sc)return;
+  const has=sel.length>0,r=has?kPreview():null,how=howOf(r),nc=has&&needsCut();
+  const stg=!has?(kDirty()>0&&kPlates()===0?"wash":"pick"):!r?"pick":(nc&&!K.cut)?"cut":(how!=="none"&&!K.cooked)?"cook":!K.plated?"plate":"serve";
+  const done={pick:has,cut:has&&(!nc||K.cut),cook:has&&!!r&&(how==="none"||K.cooked),plate:K.plated};
+  document.querySelectorAll("#steps button[data-s]").forEach(b=>{const k=b.dataset.s;b.classList.toggle("done",!!done[k]);b.classList.toggle("now",k===stg)});
+  document.querySelectorAll(".st.next,.stl.next").forEach(e=>e.classList.remove("next"));
+  const nx=stg==="cut"?["stBoard"]:stg==="cook"?(K.tool?["stStove"]:["tPan","tPot","tSpat","tLadle"]):stg==="plate"?["stCab"]:stg==="wash"?["stSink"]:[];
+  nx.forEach(id=>{const e=$(id);if(e)e.classList.add("next");const l=$(id+"L");if(l)l.classList.add("next")});
+  if(stg==="cook"&&!K.tool)$("tPanL").classList.add("next");
+  $("mix").classList.toggle("ready",stg==="serve");
+  $("kbadge").textContent=sel.length;
+  const cutIds=sel.filter(i=>!sea(i)&&!NOCUT.has(i));
+  $("kBoardItems").innerHTML=cutIds.map(i=>K.cut?`<span class="bi cut">${ic(i)}${ic(i)}${ic(i)}</span>`:`<span class="bi">${ic(i)}</span>`).join("");
+  $("kPan").style.display=K.tool==="pan"?"block":"none";
+  $("kPot").style.display=K.tool==="pot"?"block":"none";
+  $("kPanItems").innerHTML=K.tool==="pan"?sel.filter(i=>!sea(i)).slice(0,4).map(i=>ic(i)).join(""):"";
+  ["tPan","tSpat"].forEach(id=>$(id).classList.toggle("taken",K.tool==="pan"));
+  ["tPot","tLadle"].forEach(id=>$(id).classList.toggle("taken",K.tool==="pot"));
+  const cp=Math.max(0,kPlates()-(K.plated?1:0));
+  $("kPlates").innerHTML=Array.from({length:cp},(_,i)=>`<i class="pl" style="--i:${i}"></i>`).join("");
+  $("kDirty").innerHTML=Array.from({length:kDirty()},(_,i)=>`<i class="dp" style="--i:${i}"></i>`).join("");
+}
+function kBusy(cls,ms,done){
+  K.busy=true;$("kscene").classList.add(cls);
+  setTimeout(()=>{K.busy=false;$("kscene").classList.remove(cls);done();kUpdate()},ms);
+}
+const kNeedBasket=()=>{toast("ตะกร้ายังว่าง หยิบวัตถุดิบจากตู้เย็นก่อน");kScrollTo("fridge")};
+const kNoMenu=()=>toast("ของชุดนี้ยังไม่เข้ากับเมนูไทยที่รู้จัก ลองปรับวัตถุดิบในตะกร้า");
+function kChop(){
+  if(K.busy)return;
+  if(!sel.length)return kNeedBasket();
+  if(!needsCut()){K.cut=true;toast("วัตถุดิบชุดนี้ไม่ต้องหั่น ไปปรุงได้เลย");kUpdate();return}
+  if(K.cut){toast("หั่นเสร็จแล้ว ไปที่เตาต่อได้เลย");return}
+  kBusy("chop",1500,()=>{K.cut=true;toast("หั่นเสร็จแล้ว")});
+}
+function kTool(t){
+  if(K.busy)return;
+  if(!sel.length)return kNeedBasket();
+  if(K.cooked){toast("ปรุงเสร็จแล้ว ไปจัดจานได้เลย");return}
+  const r=kPreview();
+  if(!r)return kNoMenu();
+  const how=howOf(r);
+  if(how==="none"){toast(r.n+" ไม่ต้องใช้เตา ไปจัดจานได้เลย");K.cooked=true;kUpdate();return}
+  if(how!==t){toast(how==="pot"?"เมนูต้มและตุ๋นต้องใช้หม้อ":"เมนูผัดและทอดต้องใช้กระทะ");return}
+  K.tool=t;toast(t==="pot"?"ตั้งหม้อบนเตาแล้ว แตะเตาเพื่อเริ่มต้ม":"ตั้งกระทะบนเตาแล้ว แตะเตาเพื่อเริ่มผัด");kUpdate();kScrollTo("stove");
+}
+function kCook(){
+  if(K.busy)return;
+  if(!sel.length)return kNeedBasket();
+  const r=kPreview();
+  if(!r)return kNoMenu();
+  const how=howOf(r);
+  if(how==="none"){toast(r.n+" ไม่ต้องใช้เตา ไปจัดจานได้เลย");K.cooked=true;kUpdate();return}
+  if(needsCut()&&!K.cut){toast("หั่นวัตถุดิบที่เขียงก่อน");kScrollTo("board");return}
+  if(!K.tool){toast("เลือกกระทะหรือหม้อจากผนังเหนือเตาก่อน");return}
+  if(K.cooked){toast("ปรุงสุกแล้ว ไปจัดจานได้เลย");return}
+  kBusy("cooking",2400,()=>{K.cooked=true;toast("สุกแล้ว หอมน่ากิน")});
+}
+function kPlate(){
+  if(K.busy)return;
+  if(!sel.length)return kNeedBasket();
+  const r=kPreview();
+  if(!r)return kNoMenu();
+  const m=kMissing(r);
+  if(m&&m.at!=="cab"){toast(m.msg);kScrollTo(m.at);return}
+  if(K.plated){toast("หยิบจานแล้ว กด เสิร์ฟเมนู ได้เลย");return}
+  if(kPlates()<=0){toast("จานสะอาดหมด ไปล้างจานที่ซิงค์ก่อน");kScrollTo("sink");return}
+  K.plated=true;toast("หยิบจานแล้ว กด เสิร์ฟเมนู ได้เลย");kUpdate();kScrollTo("serve");
+}
+function kWash(){
+  if(K.busy)return;
+  const d=kDirty();
+  if(!d){toast("ไม่มีจานสกปรก จานสะอาดอยู่ "+kPlates()+" ใบ");return}
+  kBusy("wash",1600,()=>{window.G.plates=Math.min(8,kPlates()+d);window.G.dirty=0;saveG();toast("ล้างจานเสร็จแล้ว จานสะอาด "+kPlates()+" ใบ")});
+}
+$("steps").addEventListener("click",e=>{const b=e.target.closest("[data-go]");if(b)kScrollTo(b.dataset.go)});
+document.querySelectorAll("[data-mv]").forEach(b=>b.onclick=()=>camPan(+b.dataset.mv*(cam.b?cam.b.W:innerWidth)/cam.s*.5,true));
+$("zout").onclick=()=>camGo("home");
+$("tPan").onclick=$("tSpat").onclick=()=>kTool("pan");
+$("tPot").onclick=$("tLadle").onclick=()=>kTool("pot");
+$("stStove").onclick=kCook;
+$("stBoard").onclick=kChop;
+$("stCab").onclick=kPlate;
+$("stSink").onclick=kWash;
+const bp=$("bpanel");
+function trayOpen(on){bp.classList.toggle("open",on);$("kbasket").setAttribute("aria-expanded",on)}
+$("kbasket").onclick=()=>trayOpen(!bp.classList.contains("open"));
+document.addEventListener("click",e=>{if(bp.classList.contains("open")&&!e.target.closest("#bpanel,.it,.chip"))trayOpen(false)});
+$("mclose").onclick=()=>{$("menu").hidden=true};
+$("mwin").addEventListener("click",e=>{if(e.target===$("mwin"))$("menu").hidden=true});
+
+$("stOven").onclick=()=>{const on=$("kOvenGlow").classList.toggle("on");toast(on?"เปิดไฟเตาอบแล้ว ตอนนี้เตาอบยังไม่มีเมนูให้อบ":"ปิดไฟเตาอบแล้ว")};
+function kTime(){
+  const d=new Date(),h=d.getHours()+d.getMinutes()/60,sc=$("kscene"),m=d.getMinutes(),hh=(d.getHours()%12)+m/60;
+  sc.classList.remove("day","eve","night");sc.classList.add(h>=6&&h<16?"day":h>=16&&h<19?"eve":"night");
+  $("kcM").setAttribute("transform","rotate("+m*6+" 795 140)");$("kcH").setAttribute("transform","rotate("+hh*30+" 795 140)");
+}
+kTime();setInterval(kTime,60000);
+/* camera input: drag / wheel / keys, first-tap zoom, resize */
+let pd=null;
+kw.addEventListener("pointerdown",e=>{
+  if(e.pointerType==="mouse"&&e.button!==0)return;
+  const inFr=e.target.closest(".fridge");
+  if(inFr&&cam.zone==="fridge")return;
+  if(e.target.closest("input,select,textarea"))return;
+  pd={id:e.pointerId,x:e.clientX,moved:false};
+  if(inFr)e.stopPropagation();
+},true);
+window.addEventListener("pointermove",e=>{
+  if(!pd||e.pointerId!==pd.id)return;
+  const dx=e.clientX-pd.x;
+  if(!pd.moved){if(Math.abs(dx)<7)return;pd.moved=true;try{kw.setPointerCapture(pd.id)}catch(_){}kw.classList.add("drag")}
+  pd.x=e.clientX;camPan(-dx/cam.s,false);
+});
+const pdEnd=e=>{if(!pd||e.pointerId!==pd.id)return;if(pd.moved){cam.dragged=true;setTimeout(()=>{cam.dragged=false},60)}pd=null;kw.classList.remove("drag")};
+window.addEventListener("pointerup",pdEnd);window.addEventListener("pointercancel",pdEnd);
+kw.addEventListener("wheel",e=>{
+  if(e.ctrlKey)return;
+  const sh=e.target.closest&&e.target.closest("#shelves");
+  if(sh&&sh.scrollHeight>sh.clientHeight+1)return;
+  e.preventDefault();
+  const k=e.deltaMode===1?16:1,d=(Math.abs(e.deltaX)>Math.abs(e.deltaY)?e.deltaX:e.deltaY)*k;
+  camPan(d/cam.s,false);
+},{passive:false});
+window.addEventListener("click",e=>{
+  if(cam.dragged){cam.dragged=false;e.stopPropagation();e.preventDefault();return}
+  const t=e.target;if(!t.closest||!t.closest("#kwrap"))return;
+  const st=t.closest(".st");let z=null;
+  if(st&&ZMAP[st.id])z=ZMAP[st.id];else if(t.closest(".fridge"))z="fridge";
+  if(z&&cam.zone!==z){e.stopPropagation();e.preventDefault();camGo(z)}
+},true);
+kw.addEventListener("focusin",e=>{
+  const t=e.target;if(!t.matches||!t.matches(":focus-visible"))return;
+  const st=t.closest(".st");const z=st&&ZMAP[st.id]?ZMAP[st.id]:t.closest(".fridge")?"fridge":null;
+  if(z&&cam.zone!==z)camGo(z);
+});
+document.addEventListener("keydown",e=>{
+  if(e.target.closest&&e.target.closest("input,textarea,select,[contenteditable],.stk"))return;
+  if(document.querySelector("dialog[open]"))return;
+  if(e.key==="Escape"){
+    if(!$("menu").hidden){$("menu").hidden=true;return}
+    if(bp.classList.contains("open")){trayOpen(false);return}
+    if(cam.zone!=="home")camGo("home");return;
+  }
+  if(e.key==="ArrowLeft"||e.key==="ArrowRight")camPan((e.key==="ArrowLeft"?-1:1)*cam.b.W/cam.s*.35,true);
+});
+document.querySelector(".decor").addEventListener("toggle",()=>camGo(cam.zone));
+let kRz=null;window.addEventListener("resize",()=>{clearTimeout(kRz);kRz=setTimeout(()=>camGo(cam.zone,{instant:true}),80)});
+if(document.fonts&&document.fonts.ready)document.fonts.ready.then(()=>camGo(cam.zone,{instant:true}));
+document.body.dataset.zone="home";
+camGo("home",{instant:true});
 drawStk();
 render();
 renderUser();
