@@ -523,6 +523,38 @@ dialog[open]{margin:auto}
  .panel .btn{padding:4px 9px;font-size:.8rem}
  .kmv button{width:38px;height:38px}
 }
+
+/* ===== community recipes & reviews ===== */
+.cnav,.csort{display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin:0 0 8px}
+.cr{border:1px solid var(--line);border-radius:14px;padding:10px 12px;margin:0 0 10px;background:rgba(255,255,255,.35)}
+.crh{display:flex;gap:8px;align-items:baseline;flex-wrap:wrap}
+.crh b{font-size:1.05rem}
+.crp{margin-left:auto;display:inline-flex;align-items:center;gap:3px;font-weight:600}
+.crp .ic{width:20px;height:20px;fill:#f6d860}
+.cr p{margin:4px 0}
+.cra{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px}
+.cform label{display:block;margin:10px 0;font-weight:600}
+.cform input,.cform textarea,.cform select,.rvf textarea{display:block;width:100%;margin-top:4px;padding:6px 10px;border:1px solid var(--line);border-radius:10px;background:rgba(255,255,255,.55);font:inherit;font-weight:400;color:var(--ink);box-sizing:border-box}
+.cgrid{display:flex;flex-wrap:wrap;gap:6px;margin:4px 0 10px}
+.cc{display:inline-flex;align-items:center;gap:4px;padding:2px 10px 2px 4px;border:1px solid var(--line);border-radius:999px;background:rgba(255,255,255,.45);color:var(--ink)}
+.cc .ic{width:26px;height:26px}
+.cc.on{background:rgba(246,216,96,.75);border-color:var(--ink)}
+#cferr{color:#b3412f;min-height:1.2em;margin:6px 0}
+.rv{margin-top:14px;border-top:1px solid var(--line);padding-top:8px}
+.rvh{display:flex;gap:8px;align-items:baseline;flex-wrap:wrap}
+.rvi{border-bottom:1px dashed var(--line);padding:6px 0}
+.rvi p{margin:2px 0 0}
+.stars{color:#e0a800;letter-spacing:1px}
+.starpick{margin:8px 0 2px}
+.starpick button{background:none;border:0;font-size:1.6rem;line-height:1;color:#c9b27a;padding:0 2px}
+.starpick button.on{color:#e0a800}
+.rvf .btn{margin-top:6px}
+#rvdlg{width:min(520px,94vw);max-height:86vh;border:1px solid var(--line);border-radius:22px;background:var(--dlg);overflow:auto;-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px)}
+#rvdlg::backdrop{background:rgba(40,50,60,.35)}
+.rvwrap{padding:14px 16px 18px}
+.rvtop{display:flex;align-items:center;gap:8px}
+.rvtop h3{margin:0;flex:1;font-size:1.15rem}
+@media (max-width:760px){#commb{display:none}}
 </style>
 </head>
 <body>
@@ -574,6 +606,7 @@ dialog[open]{margin:auto}
 <symbol id="t-shop" viewBox="0 0 48 48"><path d="M8 18h32l-3 22H11z"/><path d="M16 18q0-10 8-10t8 10"/></symbol>
 <symbol id="t-book" viewBox="0 0 48 48"><path d="M7 9h13q4 0 4 4v27q0-4-4-4H7zM41 9H28q-4 0-4 4v27q0-4 4-4h13z"/></symbol>
 <symbol id="t-img" viewBox="0 0 48 48"><rect x="6" y="9" width="36" height="30" rx="4"/><circle cx="17" cy="20" r="4"/><path d="M8 36l11-10 8 7 6-5 9 8"/></symbol>
+<symbol id="t-comm" viewBox="0 0 48 48"><path d="M6 10h36v22H24l-8 8v-8H6z"/><path d="M14 18h20M14 25h12"/></symbol>
 <symbol id="t-prof" viewBox="0 0 48 48"><circle cx="24" cy="16" r="8"/><path d="M8 42q2-14 16-14t16 14"/></symbol>
 <symbol id="i-pepper" viewBox="0 0 48 48"><path d="M18 5h12v6H18zM16 11h16l-3 31H19z"/><path d="M21 22h6M21 30h6"/></symbol>
 </defs>
@@ -750,7 +783,7 @@ dialog[open]{margin:auto}
     <span id="authTxt">เข้าสู่ระบบด้วย Google</span>
   </button>
 </div>
-<div class="wallet"><span class="wc"><svg class="ic" viewBox="0 0 48 48" aria-hidden="true"><use href="#i-coin"/></svg><b id="coin">0</b> เหรียญ</span><span class="note" id="tot"></span><span class="wsp"></span><button class="btn" id="chk">เช็คอินวันนี้ +10</button><button class="btn ghost" id="shopb">ร้านค้า</button><button class="btn ghost" id="bookb">สมุดสูตร</button></div>
+<div class="wallet"><span class="wc"><svg class="ic" viewBox="0 0 48 48" aria-hidden="true"><use href="#i-coin"/></svg><b id="coin">0</b> เหรียญ</span><span class="note" id="tot"></span><span class="wsp"></span><button class="btn" id="chk">เช็คอินวันนี้ +10</button><button class="btn ghost" id="shopb">ร้านค้า</button><button class="btn ghost" id="bookb">สมุดสูตร</button><button class="btn ghost" id="commb">สูตรชุมชน</button></div>
 <div class="rec" aria-label="แถบเมนูแนะนำ"><span class="rtl">เมนูแนะนำ</span><div id="recl" class="recl"></div></div>
 </div>
 <div class="kmv" aria-label="เลื่อนห้องครัว"><button data-mv="-1" aria-label="เลื่อนครัวไปทางซ้าย">‹</button><button data-mv="1" aria-label="เลื่อนครัวไปทางขวา">›</button></div>
@@ -788,17 +821,19 @@ dialog[open]{margin:auto}
 <button class="tab" data-t="shop" aria-pressed="true"><svg class="ic" viewBox="0 0 48 48" aria-hidden="true"><use href="#t-shop"/></svg><span class="lb">ร้านค้า</span></button>
 <button class="tab" data-t="book" aria-pressed="false"><svg class="ic" viewBox="0 0 48 48" aria-hidden="true"><use href="#t-book"/></svg><span class="lb">สมุดสูตร</span></button>
 <button class="tab" data-t="prof" aria-pressed="false"><svg class="ic" viewBox="0 0 48 48" aria-hidden="true"><use href="#t-prof"/></svg><span class="lb">โปรไฟล์</span></button>
+<button class="tab" data-t="comm" aria-pressed="false"><svg class="ic" viewBox="0 0 48 48" aria-hidden="true"><use href="#t-comm"/></svg><span class="lb">ชุมชน</span></button>
 <button class="tab" data-t="own" aria-pressed="false" hidden><svg class="ic" viewBox="0 0 48 48" aria-hidden="true"><use href="#t-img"/></svg><span class="lb">จัดการรูป</span></button>
 </nav>
 <div class="dmain"><div class="dh"><span class="dcoin"><svg class="ic" viewBox="0 0 48 48" aria-hidden="true"><use href="#i-coin"/></svg><b id="dcoin"></b></span><button class="dx" id="dclose" aria-label="ปิด">✕</button></div><div id="dbody" class="dbody"></div></div>
 </div></dialog>
+<dialog id="rvdlg" aria-label="รีวิวเมนู"><div class="rvwrap"><div class="rvtop"><h3 id="rvt"></h3><button class="dx" id="rvx" aria-label="ปิด">✕</button></div><div id="rvbox" class="rv"></div></div></dialog>
 <div id="toast" class="toast" role="status" aria-live="polite"></div>
 
 <!-- Firebase SDK Imports -->
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
 import { getAuth, signInWithPopup, signInWithRedirect, GoogleAuthProvider, signOut, onAuthStateChanged, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-import { getFirestore, doc, setDoc, getDoc, getDocs, deleteDoc, collection, query, where } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+import { getFirestore, doc, setDoc, getDoc, getDocs, deleteDoc, collection, query, where, orderBy, limit } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
 const appId = typeof __app_id !== 'undefined' ? __app_id : 'fridge-menu-app';
 
@@ -946,6 +981,65 @@ window.deleteCloudData = async () => {
   catch (e) { console.error(e); return false; }
 };
 
+// ---------- ชุมชน: สูตรผู้เล่น + รีวิว (ทุกคนอ่านได้ เขียนได้เมื่อล็อกอิน บังคับด้วย Security Rules) ----------
+const pubCol = n => collection(db, 'artifacts', appId, 'public', 'data', n);
+const cleanStr = (s, n) => String(s == null ? "" : s).replace(/[\u0000-\u001f\u007f<>]/g, " ").replace(/\s+/g, " ").trim().slice(0, n);
+const gUser = () => (auth && auth.currentUser && isGoogleUser) ? auth.currentUser : null;
+window.commApi = {
+  available: () => !!(cloudReady && db),
+  canWrite: () => !!(cloudReady && db && gUser()),
+  uid: () => gUser() ? gUser().uid : "",
+  async listRecipes() {
+    const s = await getDocs(query(pubCol('recipes'), orderBy('t', 'desc'), limit(60)));
+    return s.docs.map(d => ({ id: d.id, ...d.data() }));
+  },
+  async publishRecipe(r) {
+    const u = gUser(); if (!u) throw new Error("login required");
+    const ref = doc(pubCol('recipes'));
+    await setDoc(ref, {
+      n: cleanStr(r.n, 40), d: cleanStr(r.d, 120),
+      need: (r.need || []).slice(0, 8).map(String),
+      s: (r.s || []).slice(0, 6).map(x => cleanStr(x, 80)),
+      how: ['pan', 'pot', 'none'].includes(r.how) ? r.how : 'pan',
+      price: Math.max(0, Math.min(30, Math.floor(Number(r.price) || 0))),
+      uid: u.uid, author: cleanStr(r.author, 20) || "ผู้เล่นนิรนาม", t: Date.now()
+    });
+    return ref.id;
+  },
+  async deleteRecipe(id) { await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'recipes', String(id))); },
+  async hasBought(id) {
+    const u = gUser(); if (!u) return false;
+    const s = await getDoc(doc(db, 'artifacts', appId, 'public', 'data', 'recipes', String(id), 'buyers', u.uid));
+    return s.exists();
+  },
+  async buy(id, price) {
+    const u = gUser(); if (!u) throw new Error("login required");
+    await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'recipes', String(id), 'buyers', u.uid),
+      { uid: u.uid, price: Math.max(0, Math.min(30, Math.floor(Number(price) || 0))), t: Date.now() });
+  },
+  async listBuyers(id) {
+    const s = await getDocs(collection(db, 'artifacts', appId, 'public', 'data', 'recipes', String(id), 'buyers'));
+    return s.docs.map(d => ({ uid: d.id, ...d.data() }));
+  },
+  async listReviews(menu) {
+    const s = await getDocs(query(pubCol('reviews'), where('menu', '==', String(menu)), limit(50)));
+    return s.docs.map(d => ({ id: d.id, ...d.data() }));
+  },
+  async listCommunityReviews() {
+    const s = await getDocs(query(pubCol('reviews'), where('menu', '>=', 'c-'), where('menu', '<', 'c.'), limit(400)));
+    return s.docs.map(d => ({ id: d.id, ...d.data() }));
+  },
+  async saveReview(menu, rating, text, name) {
+    const u = gUser(); if (!u) throw new Error("login required");
+    const m = String(menu);
+    await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'reviews', m + '__' + u.uid), {
+      menu: m, uid: u.uid, name: cleanStr(name, 20) || "ผู้เล่น",
+      rating: Math.max(1, Math.min(5, Math.round(Number(rating) || 5))), text: cleanStr(text, 200), t: Date.now()
+    });
+  },
+  async deleteReview(id) { await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'reviews', String(id))); }
+};
+
 function setGuestUI(msg) {
   window.authInfo = { google: false, name: "", photo: "", uid: "", status: msg || "ล็อกอินกูเกิลเพื่อเซฟคลาวด์อัตโนมัติ" };
   $u("authTxt").textContent = "เข้าสู่ระบบด้วย Google";
@@ -1070,6 +1164,11 @@ function sanitizeG(g){
   if(g.cooked&&typeof g.cooked==="object")R.forEach(r=>{const v=g.cooked[r.n];if(v)o.cooked[r.n]=Math.floor(num(v,1,100000,1))});
   o.plates=Math.floor(num(g.plates,0,8,4));o.dirty=Math.floor(num(g.dirty,0,8,0));
   o.starter=!!g.starter;
+  o.owned={};
+  if(g.owned&&typeof g.owned==="object")Object.keys(g.owned).slice(0,60).forEach(k=>{const c=cleanRecipe(k,g.owned[k]);if(c&&!R.some(r=>!r.comm&&r.n===c.n)){c.own=!!(g.owned[k]&&g.owned[k].own);o.owned[k]=c}});
+  Object.keys(o.owned).forEach(k=>{const v=g.cooked&&g.cooked[o.owned[k].n];if(v)o.cooked[o.owned[k].n]=Math.floor(num(v,1,100000,1))});
+  o.claimed={};
+  if(g.claimed&&typeof g.claimed==="object")Object.keys(g.claimed).slice(0,30).forEach(k=>{if(RID_RE.test(k))o.claimed[k]=Math.floor(num(g.claimed[k],0,100000,0))});
   const p=g.profile&&typeof g.profile==="object"?g.profile:{},fs=[...new Set((Array.isArray(p.frames)?p.frames:[]).filter(f=>FR.some(x=>x[0]===f)))];
   o.profile={name:String(p.name||"").slice(0,20),avatar:typeof p.avatar==="string"&&p.avatar.length<150000&&IMG_RE.test(p.avatar)?p.avatar:"",frames:fs,frame:fs.includes(p.frame)?p.frame:""};
   return o;
@@ -1295,6 +1394,35 @@ let c0="";try{c0=localStorage.getItem("fridgeColor")||""}catch(e){}
 setColor(safeColor(c0),true);
 
 const UNIV=new Set(["rice","oil","salt","sugar","pepper","fish","soy","oyster"]);
+
+/* ===== community recipes (core) ===== */
+const NAME_RE=/^[\u0E00-\u0E7Fa-zA-Z0-9 ().!?+\-]{2,40}$/;
+const RID_RE=/^[A-Za-z0-9_-]{1,40}$/;
+const HOWS={pan:"ผัด/ทอด",pot:"ต้ม/ตุ๋น",none:"ไม่ต้องปรุง"};
+const BADN=["__proto__","constructor","prototype"];
+const clipTxt=(s,n)=>String(s==null?"":s).replace(/[\u0000-\u001f\u007f<>]/g," ").replace(/\s+/g," ").trim().slice(0,n);
+function cleanRecipe(id,d){
+  if(!RID_RE.test(String(id))||!d||typeof d!=="object")return null;
+  const n=String(d.n||"").replace(/\s+/g," ").trim();
+  if(!NAME_RE.test(n)||BADN.includes(n))return null;
+  const need=[...new Set((Array.isArray(d.need)?d.need:[]).filter(i=>typeof i==="string"&&idx(i)>=0))];
+  if(need.length<2||need.length>8||!need.some(i=>!UNIV.has(i)))return null;
+  const s=(Array.isArray(d.s)?d.s:[]).map(x=>clipTxt(x,80)).filter(Boolean).slice(0,6);
+  if(!s.length)return null;
+  return{id:String(id),n,d:clipTxt(d.d,120),need,s,how:HOWS[d.how]?d.how:"pan",price:Math.floor(num(d.price,0,30,0)),uid:clipTxt(d.uid,64),author:clipTxt(d.author,20)||"ผู้เล่นนิรนาม",t:num(d.t,0,9e15,0)};
+}
+const toR=(id,o)=>({n:o.n,need:o.need.slice(),opt:[],d:o.d,s:o.s.slice(),how:o.how,comm:true,cid:id,author:o.author,price:o.price,uid:o.uid});
+const hash36=s=>{let h=2166136261;for(let i=0;i<s.length;i++){h^=s.charCodeAt(i);h=Math.imul(h,16777619)}return(h>>>0).toString(36)};
+const mkey=r=>r.comm?"c-"+r.cid:"b-"+hash36(r.n);
+let commSig="";
+function commSync(){
+  const o=(window.G&&window.G.owned)||{},sig=Object.keys(o).sort().join(",");
+  if(sig===commSig)return;
+  commSig=sig;
+  for(let i=R.length-1;i>=0;i--)if(R[i].comm)R.splice(i,1);
+  Object.keys(o).forEach(k=>R.push(toR(k,o[k])));
+  if(typeof renderRec==="function"&&document.getElementById("recl"))renderRec();
+}
 function pubR(){const ck=window.G.cooked||{};return R.filter(r=>!r.secret||ck[r.n])}
 function rTotal(){return pubR().length}
 function monthEndNote(empty){
@@ -1388,6 +1516,7 @@ function renderWallet(bump){
 }
 
 function renderStock(){
+  commSync();
   document.querySelectorAll(".it").forEach(b=>{
     const id=b.dataset.id,inT=sel.includes(id),n=st(id)-(inT?1:0);
     let g=b.querySelector(".bdg");if(!g){g=document.createElement("b");g.className="bdg";b.appendChild(g)}
@@ -1425,7 +1554,8 @@ function backHtml(){
 function drawDlg(){
   rstArm=false;$("dcoin").textContent=window.G.coins;
   document.querySelectorAll(".tab").forEach(b=>b.setAttribute("aria-pressed",b.dataset.t===tab));
-  $("dbody").innerHTML=tab==="prof"?profHtml():tab==="own"?ownHtml():tab==="book"?bookHtml():"<h3>ซื้อวัตถุดิบ</h3>"+shopHtml()+"<h3>คลังสต็อก</h3>"+backHtml();
+  $("dbody").innerHTML=tab==="prof"?profHtml():tab==="own"?ownHtml():tab==="comm"?commHtml():tab==="book"?bookHtml():"<h3>ซื้อวัตถุดิบ</h3>"+shopHtml()+"<h3>คลังสต็อก</h3>"+backHtml();
+  if(tab==="comm")commLoad();
 }
 
 function openDlg(t,hl){
@@ -1487,7 +1617,7 @@ $("mix").onclick=()=>{
   oldMix();
   if(!rr)return;
   cooking=true;
-  setTimeout(()=>{cookDone(rr,S);cooking=false},620);
+  setTimeout(()=>{cookDone(rr,S);addRv(rr);cooking=false},620);
 };
 
 function cookDone(r,S){
@@ -1508,6 +1638,260 @@ function cookDone(r,S){
 }
 
 if(fresh)setTimeout(()=>{toast("ยินดีต้อนรับ! ได้ 50 เหรียญ และวัตถุดิบอย่างละ 1 ชิ้น")},500);
+
+/* ===== community: market / invent / mine / reviews ===== */
+const CM={view:"market",sort:"new",list:null,revs:null,busy:false,err:"",mine:null,f:{n:"",d:"",need:[],how:"pan",s:"",price:5}};
+const capi=()=>window.commApi||null;
+const cOn=()=>{const a=capi();return !!(a&&a.available())};
+const cW=()=>{const a=capi();return !!(a&&a.canWrite())};
+const myUid=()=>{const a=capi();return a?a.uid():""};
+const stars=n=>"★".repeat(n)+"☆".repeat(5-n);
+const avgOf=a=>a.length?a.reduce((s,x)=>s+x.rating,0)/a.length:0;
+const myName=()=>clipTxt(prof().name||(window.authInfo&&window.authInfo.name),20)||"ผู้เล่น";
+const ownedMap=()=>window.G.owned||(window.G.owned={});
+const cRevs=r=>(CM.revs&&CM.revs["c-"+r.id])||[];
+
+function commHtml(){
+  const nav=[["market","ตลาดสูตร"],["create","คิดค้นสูตร"],["mine","สูตรของฉัน"]].map(([k,t])=>`<button class="btn mini${CM.view===k?"":" ghost"}" data-cv="${k}">${t}</button>`).join("");
+  return`<div class="cnav">${nav}</div><div id="cbody">${cBody()}</div>`;
+}
+function cBody(){return CM.view==="create"?createHtml():CM.view==="mine"?mineHtml():marketHtml()}
+function cRefresh(){const b=$("cbody");if(b&&tab==="comm"&&CM.view!=="create")b.innerHTML=cBody()}
+async function cFetch(){
+  const raw=await capi().listRecipes(),revs=await capi().listCommunityReviews();
+  CM.list=raw.map(x=>cleanRecipe(x.id,x)).filter(Boolean);
+  CM.revs={};
+  revs.forEach(v=>{const k=String(v.menu||"");(CM.revs[k]=CM.revs[k]||[]).push({rating:Math.round(num(v.rating,1,5,5))})});
+}
+async function commLoad(force){
+  if(CM.view==="create")return;
+  if(!cOn()){CM.err="ยังเชื่อมต่อออนไลน์ไม่ได้ (ต้องเปิดผ่านเว็บ https และตั้งค่า Firebase)";cRefresh();return}
+  if(CM.list&&!force){cRefresh();if(CM.view==="mine")mineLoad();return}
+  CM.busy=true;CM.err="";cRefresh();
+  try{await cFetch()}catch(e){console.warn(e);CM.err="โหลดสูตรจากชุมชนไม่สำเร็จ ลองใหม่อีกครั้ง"}
+  CM.busy=false;cRefresh();
+  if(CM.view==="mine"&&!CM.err)mineLoad();
+}
+
+function marketHtml(){
+  if(CM.err)return`<p class="empty">${CM.err}</p><p><button class="btn mini ghost" data-crefresh="1">ลองใหม่</button></p>`;
+  if(CM.busy||!CM.list)return'<p class="empty">กำลังโหลดสูตรจากชุมชน...</p>';
+  const O=ownedMap(),me=myUid();
+  const rt=r=>avgOf(cRevs(r));
+  const L=CM.list.slice();
+  if(CM.sort==="top")L.sort((a,b)=>rt(b)-rt(a)||b.t-a.t);else if(CM.sort==="cheap")L.sort((a,b)=>a.price-b.price||b.t-a.t);else L.sort((a,b)=>b.t-a.t);
+  const sorts=[["new","ใหม่ล่าสุด"],["top","คะแนนสูง"],["cheap","ราคาถูก"]].map(([k,t])=>`<button class="btn mini${CM.sort===k?"":" ghost"}" data-csort="${k}">${t}</button>`).join("");
+  const cards=L.map(r=>{
+    const own=!!O[r.id],mine=!!me&&r.uid===me,rv=cRevs(r);
+    const act=own?`<button class="btn mini" data-cuse="${r.id}">ทำเมนูนี้</button>`:`<button class="btn mini" data-cbuy="${r.id}">${mine?"รับสูตรของฉัน":"ซื้อสูตร "+(r.price?r.price+" เหรียญ":"ฟรี")}</button>`;
+    return`<div class="cr"><div class="crh"><b>${esc(r.n)}</b><span class="note">โดย ${esc(r.author)}</span><span class="crp">${r.price?coinIc+r.price:"ฟรี"}</span></div><p>${esc(r.d)}</p><p class="note">${HOWS[r.how]} · ใช้วัตถุดิบ ${r.need.length} อย่าง${own?": "+r.need.map(nm).join(", "):" (ซื้อแล้วถึงจะเห็นส่วนผสมและวิธีทำ)"}</p><p class="note">${rv.length?`<span class="stars">${stars(Math.round(avgOf(rv)))}</span> ${avgOf(rv).toFixed(1)} (${rv.length} รีวิว)`:"ยังไม่มีรีวิว"}</p><div class="cra">${act}<button class="btn mini ghost" data-crv="c-${r.id}">รีวิว</button>${window.isOwner?`<button class="btn mini ghost" data-cdel="${r.id}">ลบ (เจ้าของเว็บ)</button>`:""}</div></div>`;
+  }).join("");
+  return`<div class="csort">${sorts}<button class="btn mini ghost" data-crefresh="1">รีเฟรช</button></div>${cards||'<p class="empty">ยังไม่มีสูตรจากผู้เล่น ไปคิดค้นสูตรแรกของคุณที่แท็บ "คิดค้นสูตร"</p>'}`;
+}
+
+function createHtml(){
+  const f=CM.f;
+  const chips=CATS.map(([k,t])=>`<div class="note">${t}</div><div class="cgrid">${ITEMS.filter(i=>i[2]===k).map(i=>`<button type="button" class="cc${f.need.includes(i[0])?" on":""}" data-cing="${i[0]}" aria-pressed="${f.need.includes(i[0])}">${ic(i[0])}<span>${i[1]}</span></button>`).join("")}</div>`).join("");
+  return`<div class="cform"><p class="note">คิดสูตรแปลกใหม่ของคุณเอง เลือกวัตถุดิบ 2-8 อย่าง ตั้งราคาขายเป็นเหรียญ (0 = แจกฟรี) คนอื่นซื้อแล้วจะทำเมนูนี้ได้ และคุณรับเหรียญจากยอดขาย</p>
+<label>ชื่อเมนู<input id="cfn" maxlength="40" value="${esc(f.n)}" placeholder="เช่น ข้าวผัดมะนาวปลาหมึก" autocomplete="off"></label>
+<label>คำอธิบายสั้นๆ<textarea id="cfd" maxlength="120" rows="2">${esc(f.d)}</textarea></label>
+<div><b>วัตถุดิบ</b> <span class="note" id="cfcnt">${f.need.length}/8</span>${chips}</div>
+<label>วิธีปรุง<select id="cfh">${Object.entries(HOWS).map(([k,t])=>`<option value="${k}"${f.how===k?" selected":""}>${t}</option>`).join("")}</select></label>
+<label>ขั้นตอน (บรรทัดละ 1 ขั้น สูงสุด 6 ขั้น)<textarea id="cfs" rows="5" maxlength="520">${esc(f.s)}</textarea></label>
+<label>ราคาขาย (เหรียญ 0-30)<input id="cfp" type="number" min="0" max="30" value="${esc(f.price)}"></label>
+<p class="note" id="cferr" role="alert"></p>
+<button class="btn" id="cfpub">เผยแพร่สูตร</button></div>`;
+}
+async function cPublish(){
+  const f=CM.f,err=$("cferr"),btn=$("cfpub"),fail=m=>{err.textContent=m};
+  const n=f.n.replace(/\s+/g," ").trim();
+  if(!NAME_RE.test(n)||BADN.includes(n))return fail("ชื่อเมนูใช้ได้เฉพาะตัวอักษรไทย/อังกฤษ ตัวเลข และ ( ) . ! ? + - ความยาว 2-40 ตัว");
+  if(R.some(r=>!r.comm&&r.n===n)||Object.values(ownedMap()).some(r=>r.n===n))return fail("มีเมนูชื่อนี้อยู่แล้ว ลองตั้งชื่ออื่น");
+  const need=f.need.slice();
+  if(need.length<2)return fail("เลือกวัตถุดิบอย่างน้อย 2 อย่าง");
+  if(!need.some(i=>!UNIV.has(i)))return fail("ต้องมีวัตถุดิบหลักอย่างน้อย 1 อย่างที่ไม่ใช่เครื่องปรุงพื้นฐาน (ข้าว น้ำมัน เกลือ น้ำตาล พริกไทย น้ำปลา ซีอิ๊ว ซอสหอยนางรม)");
+  const S=new Set(need),dup=R.find(r=>!r.weird&&!r.comm&&fit(r,S).ok);
+  if(dup)return fail("ชุดวัตถุดิบนี้ตรงกับเมนูเดิมในเกม ("+dup.n+") ลองผสมให้แปลกใหม่กว่านี้");
+  const steps=f.s.split("\n").map(x=>clipTxt(x,80)).filter(Boolean).slice(0,6);
+  if(!steps.length)return fail("เขียนขั้นตอนอย่างน้อย 1 ขั้น");
+  if(clipTxt(f.d,120).length<3)return fail("เขียนคำอธิบายสั้นๆ ของเมนู");
+  if(!cW())return fail("ต้องล็อกอินด้วย Google (และเปิดผ่านเว็บ https) ก่อนเผยแพร่สูตร");
+  btn.disabled=true;fail("กำลังเผยแพร่...");
+  try{
+    if(!CM.list)await cFetch();
+    if(CM.list.some(r=>r.n===n)){btn.disabled=false;return fail("มีสูตรชื่อนี้ในตลาดแล้ว ลองตั้งชื่ออื่น")}
+    const same=CM.list.find(r=>r.need.length===need.length&&need.every(i=>r.need.includes(i)));
+    if(same){btn.disabled=false;return fail("มีคนคิดสูตรวัตถุดิบชุดนี้แล้ว ("+same.n+") ลองเปลี่ยนส่วนผสม")}
+    if(CM.list.filter(r=>r.uid===myUid()).length>=5){btn.disabled=false;return fail("เผยแพร่ได้สูงสุด 5 สูตรต่อคน ลบสูตรเดิมก่อน")}
+    const price=Math.floor(num(f.price,0,30,0)),author=myName();
+    const id=await capi().publishRecipe({n,d:clipTxt(f.d,120),need,s:steps,how:f.how,price,author});
+    const c=cleanRecipe(id,{n,d:f.d,need,s:steps,how:f.how,price,uid:myUid(),author,t:Date.now()});
+    if(c){c.own=true;ownedMap()[id]=c}
+    addLog("เผยแพร่สูตร "+n,0);saveG();commSync();
+    CM.f={n:"",d:"",need:[],how:"pan",s:"",price:5};CM.list=null;CM.view="mine";
+    drawDlg();toast("เผยแพร่สูตร "+n+" แล้ว");
+  }catch(e){console.warn(e);btn.disabled=false;fail("เผยแพร่ไม่สำเร็จ (อาจยังไม่ได้ตั้งค่า Rules บน Firebase) ลองใหม่อีกครั้ง")}
+}
+
+function mineHtml(){
+  if(CM.err)return`<p class="empty">${CM.err}</p><p><button class="btn mini ghost" data-crefresh="1">ลองใหม่</button></p>`;
+  const me=myUid();
+  if(!me)return'<p class="empty">ล็อกอินด้วย Google เพื่อดูสูตรที่คุณเผยแพร่และรับเหรียญจากยอดขาย</p>';
+  if(CM.busy||!CM.list)return'<p class="empty">กำลังโหลด...</p>';
+  const L=CM.list.filter(r=>r.uid===me);
+  if(!L.length)return'<p class="empty">ยังไม่ได้เผยแพร่สูตร ไปที่แท็บ "คิดค้นสูตร" ได้เลย</p>';
+  const cl=window.G.claimed||{};
+  return L.map(r=>{
+    const m=CM.mine&&CM.mine[r.id],rv=cRevs(r);
+    let sale='<span class="note">กำลังนับยอดขาย...</span>',btn="";
+    if(m&&m.err)sale='<span class="note">โหลดยอดขายไม่สำเร็จ</span>';
+    else if(m){const un=Math.max(0,m.sum-(cl[r.id]||0));sale=`<span class="note">ขายแล้ว ${m.n} ชุด รวม ${m.sum} เหรียญ${un?` (ยังไม่รับ ${un})`:""}</span>`;if(un>0)btn=`<button class="btn mini" data-cclaim="${r.id}">รับ ${un} เหรียญ</button>`}
+    return`<div class="cr"><div class="crh"><b>${esc(r.n)}</b><span class="crp">${r.price?coinIc+r.price:"ฟรี"}</span></div><p class="note">${rv.length?`<span class="stars">${stars(Math.round(avgOf(rv)))}</span> ${avgOf(rv).toFixed(1)} (${rv.length} รีวิว)`:"ยังไม่มีรีวิว"}</p><p>${sale}</p><div class="cra">${btn}<button class="btn mini ghost" data-crv="c-${r.id}">ดูรีวิว</button><button class="btn mini ghost" data-cdel="${r.id}">ลบสูตรออกจากตลาด</button></div></div>`;
+  }).join("");
+}
+async function mineLoad(){
+  const me=myUid();if(!me||!CM.list)return;
+  CM.mine=CM.mine||{};
+  await Promise.all(CM.list.filter(r=>r.uid===me).map(async r=>{
+    try{const b=await capi().listBuyers(r.id),o=b.filter(x=>x.uid!==me);CM.mine[r.id]={n:o.length,sum:o.reduce((s,x)=>s+Math.floor(num(x.price,0,30,0)),0)}}
+    catch(e){CM.mine[r.id]={err:1}}
+  }));
+  cRefresh();
+}
+function cClaim(id){
+  const m=CM.mine&&CM.mine[id],r=(CM.list||[]).find(x=>x.id===id);if(!m||!r)return;
+  const g=window.G;g.claimed=g.claimed||{};
+  const un=Math.max(0,m.sum-(g.claimed[id]||0));if(!un)return;
+  g.claimed[id]=m.sum;g.coins+=un;addLog("ค่าสูตร "+r.n,un);saveG();renderWallet(true);
+  $("dcoin").textContent=g.coins;cRefresh();toast("รับเหรียญจากยอดขาย +"+un);
+}
+async function cDelete(id){
+  const r=(CM.list||[]).find(x=>x.id===id);if(!r)return;
+  if(!confirm("ลบสูตร "+r.n+" ออกจากตลาด?\nคนที่ซื้อไปแล้วยังทำเมนูนี้ได้"))return;
+  try{await capi().deleteRecipe(id);CM.list=CM.list.filter(x=>x.id!==id);toast("ลบสูตรแล้ว");cRefresh()}
+  catch(e){console.warn(e);toast("ลบไม่สำเร็จ")}
+}
+let cBusy=false;
+async function cBuy(id){
+  if(cBusy)return;
+  const r=(CM.list||[]).find(x=>x.id===id);if(!r)return;
+  const O=ownedMap(),me=myUid();
+  if(O[id]){toast("มีสูตรนี้อยู่แล้ว");return}
+  if(!cW()){toast("ต้องล็อกอินด้วย Google ก่อนซื้อสูตร");return}
+  if(R.some(x=>x.n===r.n)){toast("มีเมนูชื่อ "+r.n+" ในสมุดอยู่แล้ว");return}
+  const free=!!me&&r.uid===me;
+  if(!free&&window.G.coins<r.price){toast("เหรียญไม่พอ ต้องใช้ "+r.price+" เหรียญ");return}
+  cBusy=true;
+  try{
+    let paid=0;
+    if(!free){
+      let had=false;try{had=await capi().hasBought(id)}catch(_){}
+      if(!had){await capi().buy(id,r.price);paid=r.price}
+    }
+    const g=window.G;g.coins-=paid;
+    O[id]={...r,own:free};
+    addLog((free?"รับสูตร ":paid?"ซื้อสูตร ":"กู้คืนสูตร ")+r.n,-paid);
+    saveG();commSync();renderWallet(true);
+    $("dcoin").textContent=g.coins;cRefresh();
+    toast(free?"รับสูตร "+r.n+" แล้ว":"ซื้อสูตร "+r.n+" แล้ว ลองทำเมนูนี้ได้เลย");
+  }catch(e){console.warn(e);toast("ซื้อสูตรไม่สำเร็จ ลองใหม่อีกครั้ง")}
+  cBusy=false;
+}
+function cUse(id){
+  const r=R.find(x=>x.cid===id);if(!r)return;
+  if(cooking||K.busy){toast("รอสักครู่ กำลังทำอยู่");return}
+  const miss=r.need.filter(i=>st(i)<=0);
+  if(miss.length){toast("ขาด "+miss.map(nm).join(", ")+" ในตู้เย็น");openDlg("shop",miss);return}
+  sel.length=0;r.need.forEach(i=>sel.push(i));render();
+  $("dlg").close();toast("ใส่วัตถุดิบของ "+r.n+" ลงตะกร้าแล้ว ไปหั่นและปรุงได้เลย");
+  kScrollTo(needsCut()?"board":"stove");
+}
+
+/* --- reviews (inline box + popup) --- */
+async function mountReviews(el,key,o){
+  o=o||{};el._o=o;el.dataset.key=key;
+  el.innerHTML='<div class="rvh"><b>รีวิวเมนูนี้</b><span class="note rva"></span></div><div class="rvl"><p class="note">กำลังโหลดรีวิว...</p></div><div class="rvf"></div>';
+  const a=capi(),L=el.querySelector(".rvl"),F=el.querySelector(".rvf"),A=el.querySelector(".rva");
+  if(!a||!a.available()){L.innerHTML='<p class="note">ดูรีวิวไม่ได้ในตอนนี้ (ยังไม่ได้เชื่อมต่อออนไลน์)</p>';return}
+  let rows;
+  try{rows=await a.listReviews(key)}catch(e){console.warn(e);if(el.isConnected)L.innerHTML='<p class="note">โหลดรีวิวไม่สำเร็จ</p>';return}
+  if(!el.isConnected||el.dataset.key!==key)return;
+  const me=a.uid();
+  rows=rows.map(x=>({id:String(x.id),uid:String(x.uid||""),name:clipTxt(x.name,20)||"ผู้เล่น",rating:Math.round(num(x.rating,1,5,5)),text:clipTxt(x.text,200),t:num(x.t,0,9e15,0)})).sort((p,q)=>q.t-p.t);
+  A.textContent=rows.length?stars(Math.round(avgOf(rows)))+" "+avgOf(rows).toFixed(1)+" ("+rows.length+")":"";
+  L.innerHTML=rows.length?rows.map(r=>`<div class="rvi"><div><span class="stars">${stars(r.rating)}</span> <b>${esc(r.name)}</b> <span class="note">${new Date(r.t).toLocaleDateString("th-TH")}</span>${(r.uid===me||window.isOwner)?` <button class="btn mini ghost" data-rvdel="${esc(r.id)}">ลบ</button>`:""}</div>${r.text?`<p>${esc(r.text)}</p>`:""}</div>`).join(""):'<p class="note">ยังไม่มีรีวิว มาเป็นคนแรกเลย</p>';
+  if(!a.canWrite())F.innerHTML='<p class="note">ล็อกอินด้วย Google เพื่อเขียนรีวิว</p>';
+  else if(!o.can)F.innerHTML=`<p class="note">${esc(o.why||"ทำเมนูนี้สักครั้งก่อนถึงจะรีวิวได้")}</p>`;
+  else{
+    const mine=rows.find(r=>r.uid===me),v=mine?mine.rating:5;
+    F.innerHTML=`<div class="starpick" data-v="${v}">${[1,2,3,4,5].map(i=>`<button type="button" data-star="${i}" class="${i<=v?"on":""}" aria-label="${i} ดาว">★</button>`).join("")}</div><textarea maxlength="200" rows="2" placeholder="เขียนรีวิวสั้นๆ (ไม่เกิน 200 ตัวอักษร)">${esc(mine?mine.text:"")}</textarea><button class="btn mini" data-rvsend="1">${mine?"แก้ไขรีวิว":"ส่งรีวิว"}</button>`;
+  }
+}
+document.addEventListener("click",async e=>{
+  const box=e.target.closest(".rv");if(!box)return;
+  const key=box.dataset.key,a=capi();if(!key||!a)return;
+  const s=e.target.closest("[data-star]");
+  if(s){const v=+s.dataset.star,p=s.parentElement;p.dataset.v=v;[...p.children].forEach((b,i)=>b.classList.toggle("on",i<v));return}
+  const send=e.target.closest("[data-rvsend]");
+  if(send){
+    const rating=Math.round(num(box.querySelector(".starpick").dataset.v,1,5,5)),text=clipTxt(box.querySelector("textarea").value,200);
+    send.disabled=true;
+    try{await a.saveReview(key,rating,text,myName());toast("ส่งรีวิวแล้ว ขอบคุณที่แชร์");if(CM.list&&key.startsWith("c-")){CM.revs=null;cFetch().then(cRefresh).catch(()=>{})}}
+    catch(err){console.warn(err);toast("ส่งรีวิวไม่สำเร็จ ลองใหม่อีกครั้ง");send.disabled=false;return}
+    mountReviews(box,key,box._o);return;
+  }
+  const del=e.target.closest("[data-rvdel]");
+  if(del){
+    del.disabled=true;
+    try{await a.deleteReview(del.dataset.rvdel);mountReviews(box,key,box._o)}
+    catch(err){console.warn(err);toast("ลบรีวิวไม่สำเร็จ");del.disabled=false}
+  }
+});
+const canRevB=r=>((window.G.cooked||{})[r.n]||0)>0;
+function addRv(r){
+  if(!r)return;const m=$("menu");if(m.hidden)return;
+  const box=document.createElement("div");box.className="rv";m.appendChild(box);
+  mountReviews(box,mkey(r),{can:true});
+}
+const rvd=$("rvdlg");
+function openRvDlg(key,title,can,why){
+  $("rvt").textContent=title;const box=$("rvbox");
+  mountReviews(box,key,{can,why});
+  if(!rvd.open)rvd.showModal();
+}
+$("rvx").onclick=()=>rvd.close();
+rvd.addEventListener("click",e=>{if(e.target===rvd)rvd.close()});
+function openRvFor(key){
+  if(key.startsWith("c-")){
+    const id=key.slice(2),r=(CM.list||[]).find(x=>x.id===id)||ownedMap()[id];if(!r)return;
+    openRvDlg(key,r.n,!!ownedMap()[id],"ซื้อสูตรนี้ก่อนถึงจะรีวิวได้");
+  }
+}
+
+$("dbody").addEventListener("click",e=>{
+  const t=e.target;let b;
+  if(b=t.closest("[data-cv]")){CM.view=b.dataset.cv;drawDlg();return}
+  if(b=t.closest("[data-crefresh]")){CM.list=null;CM.mine=null;drawDlg();return}
+  if(b=t.closest("[data-csort]")){CM.sort=b.dataset.csort;cRefresh();return}
+  if(b=t.closest("[data-cbuy]")){cBuy(b.dataset.cbuy);return}
+  if(b=t.closest("[data-cuse]")){cUse(b.dataset.cuse);return}
+  if(b=t.closest("[data-crv]")){openRvFor(b.dataset.crv);return}
+  if(b=t.closest("[data-cclaim]")){cClaim(b.dataset.cclaim);return}
+  if(b=t.closest("[data-cdel]")){cDelete(b.dataset.cdel);return}
+  if(b=t.closest("[data-rvn]")){const r=R.find(x=>x.n===b.dataset.rvn);if(r)openRvDlg(mkey(r),r.n,r.comm?!!ownedMap()[r.cid]:canRevB(r),"ทำเมนูนี้สักครั้งก่อนถึงจะรีวิวได้");return}
+  if(b=t.closest("[data-cing]")){
+    const id=b.dataset.cing,a=CM.f.need,i=a.indexOf(id);
+    if(i>=0)a.splice(i,1);else if(a.length<8)a.push(id);else{toast("เลือกวัตถุดิบได้สูงสุด 8 อย่าง");return}
+    b.classList.toggle("on",a.includes(id));b.setAttribute("aria-pressed",a.includes(id));$("cfcnt").textContent=a.length+"/8";return;
+  }
+  if(t.closest("#cfpub")){cPublish();return}
+});
+$("dbody").addEventListener("input",e=>{
+  const id=e.target.id,f=CM.f;
+  if(id==="cfn")f.n=e.target.value;else if(id==="cfd")f.d=e.target.value;else if(id==="cfs")f.s=e.target.value;
+  else if(id==="cfp")f.price=e.target.value;else if(id==="cfh")f.how=e.target.value;
+});
+$("commb").onclick=()=>openDlg("comm");
 
 /* ===== profile ===== */
 window.authInfo={google:false,name:"",photo:"",status:"ล็อกอินกูเกิลเพื่อเซฟคลาวด์อัตโนมัติ"};
@@ -1604,7 +1988,7 @@ function bookPages(){
   P.push(`<div class="pg"><h4>วิธีเล่น</h4><ul>${TIPS.map(([k,t])=>n>=k?`<li>${t}</li>`:`<li class="lock">ล็อก ทำเมนูให้ครบ ${k} เมนูเพื่อปลดล็อกคำแนะนำนี้</li>`).join("")}</ul></div>`);
   done.forEach(r=>{
     const need=r.needTxt||(r.need.map(nm).join(", ")+(r.any?", "+(r.anyName||"เนื้อสัตว์")+" ("+r.any.map(nm).join("/")+")":""));
-    P.push(`<div class="pg"><h4>${r.n}</h4>${r.secret?'<p class="note">'+(r.tag||"เมนูลับ ประจำสิ้นเดือน")+'</p>':""}<div class="pic">${r.need.slice(0,4).map(i=>ic(i)).join("")}</div><p>${r.d}</p><p class="note">วัตถุดิบหลัก: ${need}</p>${r.opt&&r.opt.length?`<p class="note">ใส่เพิ่มได้: ${r.opt.map(nm).join(", ")}</p>`:""}<ol>${r.s.map(x=>`<li>${x}</li>`).join("")}</ol><p class="note rt">ทำแล้ว ${ck[r.n]} ครั้ง</p></div>`);
+    P.push(`<div class="pg"><h4>${r.n}</h4>${r.secret?'<p class="note">'+(r.tag||"เมนูลับ ประจำสิ้นเดือน")+'</p>':""}<div class="pic">${r.need.slice(0,4).map(i=>ic(i)).join("")}</div><p>${r.d}</p><p class="note">วัตถุดิบหลัก: ${need}</p>${r.opt&&r.opt.length?`<p class="note">ใส่เพิ่มได้: ${r.opt.map(nm).join(", ")}</p>`:""}<ol>${r.s.map(x=>`<li>${x}</li>`).join("")}</ol><p class="note rt">ทำแล้ว ${ck[r.n]} ครั้ง</p>${r.comm?'<p class="note">สูตรโดย '+esc(r.author)+'</p>':''}<button class="btn mini ghost" data-rvn="${esc(r.n)}">รีวิวเมนูนี้</button></div>`);
   });
   const hints=lock.slice(0,8).map(r=>`<div class="lk">${ic(r.need[0])}<span>??? <small>ใบ้: ใช้${nm(r.need[0])}</small></span></div>`).join("");
   P.push(`<div class="pg"><h4>${lock.length?"เมนูที่ยังไม่ปลดล็อก":"สมุดเล่มนี้เต็มแล้ว"}</h4>${n===0?'<p class="note">ยังไม่มีสูตรในสมุด ลองทำเมนูแรกดู สูตรจะถูกเขียนลงหน้าถัดไป</p>':""}${hints}${lock.length>8?`<p class="note">และอีก ${lock.length-8} เมนูที่ยังไม่ปลดล็อก</p>`:""}</div>`);
@@ -1753,6 +2137,7 @@ const needsCut=()=>sel.some(i=>!sea(i)&&!NOCUT.has(i));
 const kPreview=()=>forceR||pick2(sel);
 function howOf(r){
   if(!r)return"none";
+  if(r.how)return r.how;
   if(r.weird)return"pot";
   if(/^(ต้ม|ข้าวต้ม|ไข่ตุ๋น|ปลาร้าทรง)/.test(r.n))return"pot";
   if(/^(ส้มตำ|ยำ|กุ้งแช่|ข้าวคลุก)/.test(r.n))return"none";
