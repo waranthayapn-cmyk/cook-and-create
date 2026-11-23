@@ -341,7 +341,7 @@ img.ic{object-fit:cover;border-radius:12px;filter:none}
 .kscene.night .kcl{opacity:.3}
 @keyframes drift{from{margin-left:-90px}to{margin-left:260px}}
 .kwf{position:absolute;left:40px;top:50px;overflow:visible;z-index:3;pointer-events:none}
-.kscene .fridge{position:absolute;left:330px;top:46px;width:372px;height:474px;margin:0;z-index:6}
+.kscene .fridge{position:absolute;left:350px;top:4px;width:312px;height:516px;margin:0;z-index:6}
 .kscene #shelves{height:100%;overflow-y:auto;overflow-x:hidden;scrollbar-width:thin}
 .st{position:absolute;z-index:8;background:transparent;border:0;border-radius:12px;padding:0;color:inherit}
 .st:hover,.st:focus-visible{outline:2px dashed #3a3a4a;outline-offset:-2px;background:rgba(255,255,255,.14)}
@@ -555,6 +555,39 @@ dialog[open]{margin:auto}
 .rvtop{display:flex;align-items:center;gap:8px}
 .rvtop h3{margin:0;flex:1;font-size:1.15rem}
 @media (max-width:760px){#commb{display:none}}
+
+/* ===== เมนูแนะนำ: แผงกระจกใส พับ/ขยายได้ ลอยทับตู้เย็น ===== */
+.rec{position:absolute;z-index:32;left:12px;top:calc(var(--padT,120px) + 52px);flex:none;width:min(272px,calc(100vw - 24px));max-width:none;margin:0;padding:6px;display:flex;flex-direction:column;align-items:stretch;gap:6px;border:1px solid rgba(255,255,255,.7);border-radius:20px;background:rgba(255,255,255,.28);-webkit-backdrop-filter:blur(8px) saturate(1.2);backdrop-filter:blur(8px) saturate(1.2);box-shadow:0 6px 22px rgba(40,50,60,.16),inset 0 1px 0 rgba(255,255,255,.6);pointer-events:auto}
+.rec .rtl{display:flex!important;align-items:center;justify-content:space-between;gap:8px;width:100%;padding:6px 10px;border:0;border-radius:14px;background:rgba(255,255,255,.35);font-weight:600;font-size:.95rem;color:var(--ink);text-align:left}
+.rec .rtl:hover{background:rgba(255,255,255,.55)}
+.rec .rcv{width:9px;height:9px;border-right:2.4px solid var(--ink);border-bottom:2.4px solid var(--ink);transform:rotate(45deg) translate(-2px,-2px);transition:transform .25s}
+.rec.shut .rcv{transform:rotate(-135deg) translate(-2px,-2px)}
+.rec .recl{display:flex;flex-direction:column;gap:5px;overflow-x:hidden;overflow-y:auto;padding:2px;max-height:min(56vh,calc(100dvh - var(--padT,120px) - var(--padB,100px) - 120px));transition:max-height .3s ease,opacity .25s ease,padding .3s;scrollbar-width:thin}
+.rec.shut .recl{max-height:0;opacity:0;padding-top:0;padding-bottom:0;overflow:hidden;pointer-events:none}
+.rec .rc{width:100%;white-space:normal;flex-wrap:wrap;row-gap:0;padding:3px 10px 3px 4px;background:rgba(255,255,255,.5);border:1px solid rgba(255,255,255,.75);border-radius:14px;text-align:left}
+.rec .rc:hover{background:rgba(255,255,255,.78)}
+.rec .rc small{flex-basis:100%;margin:0 0 0 2px}
+.rec .empty,.rec .recl>p,.rec .recl>.note{padding:4px 8px;color:var(--ink)}
+:root[data-theme="dark"] .rec{background:rgba(40,32,20,.34);border-color:rgba(241,230,200,.3)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .rec{background:rgba(40,32,20,.34);border-color:rgba(241,230,200,.3)}}
+@media (max-width:760px){.rec{width:min(236px,calc(100vw - 24px));top:calc(var(--padT,120px) + 50px)}.rec .rtl{display:flex!important}}
+
+/* เหรียญชิดขวา (แถวใต้โปรไฟล์) และเมนูแนะนำอยู่ใต้เหรียญ ชิดขวาสุด */
+.hbrk{flex:0 0 100%;height:0;margin:-8px 0 0;padding:0;pointer-events:none}
+.hud.top .wallet{margin:0 0 0 auto;flex:0 1 auto;justify-content:flex-end}
+.rec{left:auto;right:0;top:calc(var(--padT,120px) + 8px);border-top-right-radius:0;border-bottom-right-radius:0;border-right:0}
+.zout{left:12px;right:auto}
+@media (max-width:760px){.hud.top .wallet{flex:1 1 100%}.rec{top:calc(var(--padT,120px) + 8px)}}
+.kmv{z-index:34}
+.rec{margin-right:0}
+/* เมนูแนะนำชิดขอบบนขวา เหรียญอยู่ซ้ายของแผง */
+.hbrk{display:none}
+.rec{top:0;border-top:0;border-top-right-radius:0;border-top-left-radius:0;padding-top:calc(6px + env(safe-area-inset-top,0px))}
+.hud.top{padding-right:calc(min(272px,100vw - 24px) + 10px)}
+.hud.top .wallet{margin:0 0 0 auto;flex:0 1 auto}
+.zout{top:calc(var(--padT,120px) + 8px)}
+@media (max-width:760px){.hud.top .wallet{flex:1 1 0}}
+@media (max-width:760px){.hud.top{padding-right:8px}.hbrk{display:block}.hud.top .wallet{flex:1 1 100%}.rec{top:calc(var(--padT,120px) + 8px);border-top:1px solid rgba(255,255,255,.7);border-top-left-radius:20px;padding-top:6px}.zout{top:calc(var(--padT,120px) + 8px)}}
 </style>
 </head>
 <body>
@@ -783,10 +816,11 @@ dialog[open]{margin:auto}
     <span id="authTxt">เข้าสู่ระบบด้วย Google</span>
   </button>
 </div>
+<div class="hbrk" aria-hidden="true"></div>
 <div class="wallet"><span class="wc"><svg class="ic" viewBox="0 0 48 48" aria-hidden="true"><use href="#i-coin"/></svg><b id="coin">0</b> เหรียญ</span><span class="note" id="tot"></span><span class="wsp"></span><button class="btn" id="chk">เช็คอินวันนี้ +10</button><button class="btn ghost" id="shopb">ร้านค้า</button><button class="btn ghost" id="bookb">สมุดสูตร</button><button class="btn ghost" id="commb">สูตรชุมชน</button></div>
-<div class="rec" aria-label="แถบเมนูแนะนำ"><span class="rtl">เมนูแนะนำ</span><div id="recl" class="recl"></div></div>
 </div>
 <div class="kmv" aria-label="เลื่อนห้องครัว"><button data-mv="-1" aria-label="เลื่อนครัวไปทางซ้าย">‹</button><button data-mv="1" aria-label="เลื่อนครัวไปทางขวา">›</button></div>
+<aside class="rec" id="recp" aria-label="แถบเมนูแนะนำ"><button type="button" class="rtl" id="rectg" aria-expanded="true" aria-controls="recl"><span>เมนูแนะนำ</span><i class="rcv" aria-hidden="true"></i></button><div id="recl" class="recl"></div></aside>
 <button class="zout" id="zout" aria-label="ซูมออกดูทั้งห้อง">ซูมออก</button>
 <div class="hud bottom" id="hudBot">
 <div class="fctl" id="fctl">
@@ -2145,7 +2179,7 @@ function howOf(r){
 }
 function kReset(){K.cut=false;K.tool=null;K.cooked=false;K.plated=false}
 const SW=1780,SH=560;
-const ZONES={fridge:{x:326,y:36,w:380,h:490},stove:{x:880,y:30,w:304,h:350},board:{x:1172,y:236,w:318,h:140},cab:{x:1488,y:30,w:300,h:248},sink:{x:1478,y:250,w:304,h:130}};
+const ZONES={fridge:{x:342,y:0,w:328,h:524},stove:{x:880,y:30,w:304,h:350},board:{x:1172,y:236,w:318,h:140},cab:{x:1488,y:30,w:300,h:248},sink:{x:1478,y:250,w:304,h:130}};
 const ZMAP={tPan:"stove",tPot:"stove",tSpat:"stove",tLadle:"stove",stStove:"stove",stOven:"stove",stBoard:"board",stCab:"cab",stSink:"sink"};
 const cam={zone:"home",cx:516,cy:SH/2,s:1,tx:0,ty:0,b:null,dragged:false};
 const kw=$("kwrap"),ksc=$("kscene"),hudT=$("hudTop"),hudB=$("hudBot");
@@ -2361,6 +2395,10 @@ camGo("home",{instant:true});
 drawStk();
 render();
 renderUser();
+
+/* toggle เมนูแนะนำ (พับ/ขยาย) */
+(()=>{const p=document.getElementById("recp"),t=document.getElementById("rectg");if(!p||!t)return;
+t.addEventListener("click",()=>{const shut=p.classList.toggle("shut");t.setAttribute("aria-expanded",String(!shut))});})();
 </script>
 </body>
 </html>
