@@ -2395,7 +2395,7 @@ $("dbody").addEventListener("change",async e=>{
     const url=await shrinkImg(f);
     if(!IMG_RE.test(url)||url.length>=150000){toast("รูปใหญ่เกินไป ลองรูปที่เรียบง่ายกว่านี้");return}
     if(await window.saveIngImage(id,url)){window.setIngImages({...IMG,[id]:url});toast("อัปโหลดรูป"+imgLabel(id)+"แล้ว")}
-    else toast("บันทึกไม่สำเร็จ ตรวจสอบ Firestore Rules และอีเมลเจ้าของ");
+    else{window.setIngImages({...IMG,[id]:url});toast("ขึ้นคลาวด์ไม่สำเร็จ (ตรวจ Firestore Rules/การล็อกอิน) แสดงรูป"+imgLabel(id)+"ในเครื่องนี้ไปก่อน")}
   }catch(err){toast("เปิดรูปนี้ไม่ได้ ลองไฟล์อื่น")}
 });
 $("dbody").addEventListener("click",async e=>{
