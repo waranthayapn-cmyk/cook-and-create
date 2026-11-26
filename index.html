@@ -827,6 +827,16 @@ body.pg-open .kcookui{z-index:90;top:calc(58px + env(safe-area-inset-top,0px))}
 @keyframes kpourtilt{0%,100%{transform:none}30%,75%{transform:translate(26px,-12px) rotate(9deg)}}
 .kscene:has(.kwp.on) #stStoveL{opacity:0;transition:opacity .3s}
 .kwpi{left:8px;bottom:-4px;width:108px;height:108px}
+.svwp{left:716px;top:372px;z-index:9;transform-origin:0 0;transform:translateY(-20px) scale(1.7)}
+.svwp.on{transform:scale(1.7)}
+.svwp .kwst s{left:-34px;top:-44px}
+.svwp.pour .kwst s{animation-name:kwfall2}
+@keyframes kwfall2{0%{transform:translate(0,0);opacity:0}15%{opacity:1}55%{transform:translate(46px,-30px)}100%{transform:translate(98px,118px);opacity:0}}
+.vstage.pouring .svware{animation:kpourtilt 1.6s ease-in-out}
+.vstage.pouring .svcitems,.vstage.dished .svcitems{opacity:0;transition:opacity .4s}
+/* จานที่อัปโหลด: เรียงแนวนอนทีละใบในตู้จาน */
+.kplates.has-img{left:1526px;width:224px;height:62px;top:190px}
+.kplates.has-img .pl{left:calc(var(--i)*min(60px,164px/var(--m,1)));bottom:0}
 </style>
 </head>
 <body>
@@ -1121,6 +1131,7 @@ body.pg-open .kcookui{z-index:90;top:calc(58px + env(safe-area-inset-top,0px))}
     <div class="svware" id="svWare"></div>
     <div class="svcitems" id="svCItems"></div>
     <div class="svside" id="svSide"></div>
+    <div class="kwp svwp" id="svWP" aria-hidden="true"><i class="kwpd"></i><i class="kwm"></i><img class="kwpi" alt=""><b class="kwst"><s></s><s></s><s></s><s></s><s></s><s></s><s></s></b></div>
     <button type="button" class="svfire" id="svFire">เปิดไฟ</button>
   </div>
   <button type="button" class="cvgo" id="svGo" hidden>ไปหยิบวัตถุดิบที่ตู้เย็น</button>
@@ -2647,7 +2658,7 @@ function kUpdate(){
   $("kLadleS").style.display=pot?"block":"none";
   [["tPan","tSpat"],["tPot","tLadle"]].forEach(([a,b],n)=>{const on=K.tool===(n?"pot":"pan");$(a).classList.toggle("taken",on);$(b).classList.toggle("taken",on)});
   const cp=Math.max(0,kPlates()-(K.plated?1:0));
-  $("kPlates").innerHTML=Array.from({length:cp},(_,i)=>`<i class="pl" style="--i:${i}"></i>`).join("");
+  $("kPlates").innerHTML=Array.from({length:cp},(_,i)=>`<i class="pl" style="--i:${i}"></i>`).join("");$("kPlates").style.setProperty("--m",Math.max(cp-1,1));
   const dn=Math.min(8,kDirty());
   $("kDirty").innerHTML=Array.from({length:dn},(_,i)=>`<button type="button" class="dplate" data-i="${i}" style="--dirt:${dirtAt(i)}" aria-label="จานสกปรก (ลากฟองน้ำถูหรือแตะเพื่อล้าง)"></button>`).join("");
   sponge.classList.toggle("show",dn>0);
@@ -2829,7 +2840,7 @@ function kFlip(){
 function kCookDone(){
   clearInterval(K.iv);K.cs=null;K.cooked=true;$("kscene").classList.remove("cooking");
   toast("สุกแล้ว หอมน่ากิน");kUpdate();
-  setTimeout(()=>{if(!svp.hidden&&K.cooked)closeStove()},1500);
+  setTimeout(()=>{if(!svp.hidden&&K.cooked&&kPlates()<=0)closeStove()},1500);
 }
 $("kFlipBtn").onclick=kFlip;
 
@@ -3087,18 +3098,21 @@ function applyToolImgs(){
 /* ===== จานรอข้างเตา + แอนิเมชันเทอาหาร + รูปเมนูในจาน (เจ้าของอัปโหลดต่อเมนู) ===== */
 const kwT=[];let kwState=0;
 function kSyncPlate(){
-  const wp=$("kWP"),sc=$("kscene"),im=wp.querySelector(".kwpi");
-  if(!K.cooked){kwT.splice(0).forEach(clearTimeout);kwState=0;wp.className="kwp";sc.classList.remove("pouring","dished");im.removeAttribute("src");return}
+  const wps=[$("kWP"),$("svWP")],scs=[$("kscene"),$("svStage")],each=f=>wps.forEach(f),sc=f=>scs.forEach(f);
+  const reset=()=>{each(w=>{w.className=w.classList.contains("svwp")?"kwp svwp":"kwp";w.querySelector(".kwpi").removeAttribute("src")});sc(c=>c.classList.remove("pouring","dished"))};
+  if(!K.cooked){kwT.splice(0).forEach(clearTimeout);kwState=0;reset();return}
   const r=sel.length?kPreview():null,du=r?IMG["dish-"+R.findIndex(x=>x.n===r.n)]:"",pu=IMG["dec-plate"];
-  if(pu)wp.style.setProperty("--pimg",`url("${pu}")`);else wp.style.removeProperty("--pimg");
-  wp.classList.toggle("hasplate",!!pu);wp.classList.toggle("hasdish",!!du);
-  if(du)im.src=du;else im.removeAttribute("src");
-  if(K.plated){if(kwState!==2){kwT.splice(0).forEach(clearTimeout);wp.classList.add("on","full");wp.classList.remove("pour");sc.classList.remove("pouring");sc.classList.add("dished");kwState=2}return}
+  each(w=>{const im=w.querySelector(".kwpi");
+    if(pu)w.style.setProperty("--pimg",`url("${pu}")`);else w.style.removeProperty("--pimg");
+    w.classList.toggle("hasplate",!!pu);w.classList.toggle("hasdish",!!du);
+    if(du)im.src=du;else im.removeAttribute("src")});
+  if(K.plated){if(kwState!==2){kwT.splice(0).forEach(clearTimeout);each(w=>{w.classList.add("on","full");w.classList.remove("pour")});sc(c=>{c.classList.remove("pouring");c.classList.add("dished")});kwState=2}return}
   if(kwState===0&&kPlates()>0){
     kwState=1;
-    kwT.push(setTimeout(()=>wp.classList.add("on"),1000));
-    kwT.push(setTimeout(()=>{wp.classList.add("pour");sc.classList.add("pouring")},1700));
-    kwT.push(setTimeout(()=>{wp.classList.remove("pour");wp.classList.add("full");sc.classList.remove("pouring");sc.classList.add("dished");kwState=2;K.plated=true;toast("เทอาหารใส่จานแล้ว กด เสิร์ฟเมนู ได้เลย");kUpdate()},3300));
+    kwT.push(setTimeout(()=>each(w=>w.classList.add("on")),1000));
+    kwT.push(setTimeout(()=>{each(w=>w.classList.add("pour"));sc(c=>c.classList.add("pouring"))},1700));
+    kwT.push(setTimeout(()=>{each(w=>{w.classList.remove("pour");w.classList.add("full")});sc(c=>{c.classList.remove("pouring");c.classList.add("dished")});kwState=2;K.plated=true;toast("เทอาหารใส่จานแล้ว กด เสิร์ฟเมนู ได้เลย");kUpdate();
+      setTimeout(()=>{if(!svp.hidden&&K.cooked)closeStove()},1600)},3300));
   }
 }
 {const _ku=kUpdate;kUpdate=function(){_ku.apply(this,arguments);kSyncPlate()}}
