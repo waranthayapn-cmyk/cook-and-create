@@ -837,6 +837,23 @@ body.pg-open .kcookui{z-index:90;top:calc(58px + env(safe-area-inset-top,0px))}
 /* จานที่อัปโหลด: เรียงแนวนอนทีละใบในตู้จาน */
 .kplates.has-img{left:1526px;width:224px;height:62px;top:190px}
 .kplates.has-img .pl{left:calc(var(--i)*min(60px,164px/var(--m,1)));bottom:0}
+.it{position:relative}
+.it.lock{opacity:.5;filter:grayscale(1)}
+.it .lk{position:absolute;right:2px;top:0;font-style:normal;font-size:.85rem;filter:none}
+.unlp{margin:6px 10px 2px;font-size:.78rem;opacity:.75;text-align:center}
+#unl{position:fixed;inset:0;z-index:90;display:grid;place-items:center;background:rgba(40,40,60,.35);-webkit-backdrop-filter:blur(3px);backdrop-filter:blur(3px)}
+#unl .unc{width:min(420px,calc(100vw - 32px));max-height:86vh;overflow:auto;padding:16px 18px;border-radius:22px;background:rgba(255,255,255,.88);border:1px solid rgba(255,255,255,.9);box-shadow:0 10px 36px rgba(40,50,60,.3);text-align:center}
+#unl h3{margin:0 0 8px}#unl h4{margin:10px 0 4px}
+#unl .unr{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+#unl .uni{display:flex;flex-direction:column;align-items:center;font-size:.8rem}#unl .uni .ic{width:46px;height:46px}
+#unl ul{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:2px}
+#unl .unr.pk{max-height:46vh;overflow:auto;margin:6px 0}
+#unl .uni.pick{padding:6px 4px;width:84px;border:2px solid transparent;border-radius:14px;background:rgba(255,255,255,.6);cursor:pointer;font:inherit}
+#unl .uni.pick small{font-size:.68rem;opacity:.7}
+#unl .uni.pick.on{border-color:#f6d860;background:#fff7d6}
+#unl .unm{margin:6px 0;font-size:.82rem}
+#unl .unb{display:flex;gap:8px;justify-content:center;margin-top:8px}
+#unl .btn[disabled]{opacity:.45}
 </style>
 </head>
 <body>
@@ -873,6 +890,27 @@ body.pg-open .kcookui{z-index:90;top:calc(58px + env(safe-area-inset-top,0px))}
 <symbol id="i-kaffir" viewBox="0 0 48 48"><path d="M24 5q8 5 8 12-4 3-8 3t-8-3q0-7 8-12z"/><path d="M24 23q7 4 7 10-3 3-7 3t-7-3q0-6 7-10zM24 5v36"/></symbol>
 <symbol id="i-papaya" viewBox="0 0 48 48"><path d="M24 5q-14 6-14 23 0 10 8 14h12q8-4 8-14 0-17-14-23z"/><ellipse cx="24" cy="28" rx="7" ry="10"/><path d="M22 24h1M26 27h1M22 31h1M26 34h1"/></symbol>
 <symbol id="i-lime" viewBox="0 0 48 48"><circle cx="24" cy="26" r="15"/><circle cx="24" cy="26" r="11"/><path d="M24 15v22M13 26h22M16 18l16 16M32 18L16 34"/></symbol>
+<symbol id="i-tofu" viewBox="0 0 48 48"><path d="M8 20h24v18H8zM8 20l8-8h24l-8 8M32 20l8-8v18l-8 8"/></symbol>
+<symbol id="i-longbean" viewBox="0 0 48 48"><path d="M6 40Q30 34 42 8"/><path d="M10 43Q34 38 46 12"/></symbol>
+<symbol id="i-ginger" viewBox="0 0 48 48"><path d="M10 30q0-8 8-8l6-8q6-2 6 4l4 2q8 0 8 8t-8 8H18q-8 0-8-6z"/><path d="M17 26h1M25 30h1"/></symbol>
+<symbol id="i-cucumber" viewBox="0 0 48 48"><rect x="6" y="18" width="36" height="14" rx="7" transform="rotate(-25 24 25)"/><path d="M14 30h1M22 26h1M30 22h1"/></symbol>
+<symbol id="i-eggplant" viewBox="0 0 48 48"><path d="M12 18q-6 14 8 24 14 4 18-10 2-8-6-14l-4-6h-8z"/><path d="M14 12l8 6M22 8v10"/></symbol>
+<symbol id="i-sprout" viewBox="0 0 48 48"><path d="M24 44V22M24 22q-8-2-8-12M24 22q8-2 8-12M18 44V28M30 44V28"/><circle cx="16" cy="9" r="2"/><circle cx="32" cy="9" r="2"/></symbol>
+<symbol id="i-noodle" viewBox="0 0 48 48"><path d="M8 22h32l-4 18H12z"/><path d="M14 22q2-10 8-8t10 8M16 28h16M17 33h14"/></symbol>
+<symbol id="i-chilipaste" viewBox="0 0 48 48"><rect x="12" y="16" width="24" height="24" rx="4"/><path d="M14 16v-5h20v5M18 26q6-4 12 0M18 33h12"/></symbol>
+<symbol id="i-kangkong" viewBox="0 0 48 48"><path d="M24 44V20M24 30q-10 0-12-14 10 0 12 14zM24 26q10 0 12-14-10 0-12 14zM24 20q-5-6-2-12 5 4 2 12z"/></symbol>
+<symbol id="i-sausage" viewBox="0 0 48 48"><rect x="5" y="19" width="38" height="12" rx="6" transform="rotate(-20 24 25)"/><path d="M16 27l2-6M24 24l2-6M32 21l2-6"/></symbol>
+<symbol id="i-vinegar" viewBox="0 0 48 48"><path d="M20 6h8v8l6 8v20H14V22l6-8z"/><path d="M14 30h20"/></symbol>
+<symbol id="i-thaibasil" viewBox="0 0 48 48"><path d="M24 44V26"/><ellipse cx="15" cy="18" rx="8" ry="5" transform="rotate(-30 15 18)"/><ellipse cx="33" cy="18" rx="8" ry="5" transform="rotate(30 33 18)"/><ellipse cx="24" cy="12" rx="5" ry="8"/></symbol>
+<symbol id="i-pumpkin" viewBox="0 0 48 48"><ellipse cx="24" cy="29" rx="18" ry="13"/><path d="M24 16v26M16 18q-5 11 0 22M32 18q5 11 0 22M24 16q0-6 6-8"/></symbol>
+<symbol id="i-corn" viewBox="0 0 48 48"><path d="M24 6q10 6 10 20l-4 14H18l-4-14Q14 12 24 6z"/><path d="M24 8v32M17 20h14M16 28h16M18 35h12"/></symbol>
+<symbol id="i-mackerel" viewBox="0 0 48 48"><path d="M6 24q10-12 24-8l12-8v32l-12-8Q16 36 6 24z"/><circle cx="14" cy="22" r="1.5"/><path d="M22 18v12M28 18v10"/></symbol>
+<symbol id="i-peanut" viewBox="0 0 48 48"><path d="M18 6q10-2 10 8 0 5 5 8 8 8-2 18-8 4-14-4-4-5-4-10Q8 12 18 6z"/><path d="M20 14h1M26 24h1M22 32h1"/></symbol>
+<symbol id="i-crab" viewBox="0 0 48 48"><ellipse cx="24" cy="28" rx="14" ry="10"/><path d="M12 22L6 12l6 2M36 22l6-10-6 2M12 32l-6 6M36 32l6 6M18 36l-2 6M30 36l2 6"/><circle cx="19" cy="24" r="1.5"/><circle cx="29" cy="24" r="1.5"/></symbol>
+<symbol id="i-mint" viewBox="0 0 48 48"><path d="M24 44V20M24 34q-10-2-12-12 10 0 12 12zM24 28q10-2 12-12-10 0-12 12zM24 20q-6-4-4-12 6 4 4 12z"/></symbol>
+<symbol id="i-pandan" viewBox="0 0 48 48"><path d="M8 42Q10 14 28 6M16 42Q18 18 36 12M24 42Q28 24 42 20"/></symbol>
+<symbol id="i-driedchili" viewBox="0 0 48 48"><path d="M10 40Q8 14 28 12q10 0 12 8-14-2-20 8-4 6-10 12z"/><path d="M28 12l2-6"/></symbol>
+
 <symbol id="s-star" viewBox="0 0 48 48"><path d="M24 5l5.5 12 13 1.5-9.5 9 2.5 13L24 34l-11.5 6.5L15 27.5 5.5 18.5l13-1.5z"/></symbol>
 <symbol id="s-heart" viewBox="0 0 48 48"><path d="M24 42C6 28 5 16 13 11q8-3 11 5 3-8 11-5c8 5 7 17-11 31z"/></symbol>
 <symbol id="s-flower" viewBox="0 0 48 48"><circle cx="24" cy="12" r="6"/><circle cx="35" cy="20" r="6"/><circle cx="31" cy="34" r="6"/><circle cx="17" cy="34" r="6"/><circle cx="13" cy="20" r="6"/><circle cx="24" cy="24" r="5" fill="#f2c94c"/></symbol>
@@ -1078,7 +1116,7 @@ body.pg-open .kcookui{z-index:90;top:calc(58px + env(safe-area-inset-top,0px))}
 <div class="wallet"><span class="wc"><svg class="ic" viewBox="0 0 48 48" aria-hidden="true"><use href="#i-coin"/></svg><b id="coin">0</b> เหรียญ</span><span class="note" id="tot"></span><span class="wsp"></span><button class="btn" id="chk">เช็คอินวันนี้ +10</button><button class="btn ghost" id="shopb">ร้านค้า</button><button class="btn ghost" id="bookb">สมุดสูตร</button><button class="btn ghost" id="commb">สูตรชุมชน</button></div>
 </div>
 <div class="kmv" aria-label="เลื่อนห้องครัว"><button data-mv="-1" aria-label="เลื่อนครัวไปทางซ้าย">‹</button><button data-mv="1" aria-label="เลื่อนครัวไปทางขวา">›</button></div>
-<aside class="rec" id="recp" aria-label="แถบเมนูแนะนำ"><button type="button" class="rtl" id="rectg" aria-expanded="true" aria-controls="recl"><span>เมนูแนะนำ</span><i class="rcv" aria-hidden="true"></i></button><div id="recl" class="recl"></div></aside>
+<aside class="rec shut" id="recp" aria-label="แถบเมนูแนะนำ"><button type="button" class="rtl" id="rectg" aria-expanded="false" aria-controls="recl"><span>เมนูแนะนำ</span><i class="rcv" aria-hidden="true"></i></button><div id="recl" class="recl"></div></aside>
 <button class="zout" id="zout" aria-label="ซูมออกดูทั้งห้อง">ซูมออก</button>
 <div class="hud bottom" id="hudBot">
 <div class="fctl" id="fctl">
@@ -1469,8 +1507,10 @@ const touchLocal=()=>{try{localStorage.setItem("fridgeUpdated",String(Date.now()
 const ITEMS=[
 ["fish","น้ำปลา","seas"],["oyster","ซอสหอยนางรม","seas"],["soy","ซีอิ๊วขาว","seas"],["sugar","น้ำตาล","seas"],["salt","เกลือ","seas"],["pepper","พริกไทย","seas"],["oil","น้ำมันพืช","seas"],["coconut","กะทิ","seas"],["plara","น้ำปลาร้า","seas"],
 ["mince","หมูสับ","meat"],["belly","หมูสามชั้น","meat"],["chop","หมูชิ้น","meat"],["egg","ไข่ไก่","meat"],["chicken","เนื้อไก่","meat"],["shrimp","กุ้ง","meat"],["squid","ปลาหมึก","meat"],["rice","ข้าวสวย","meat"],["coriander","ผักชี","herb"],["galangal","ข่า","herb"],["lemongrass","ตะไคร้","herb"],["kaffir","ใบมะกรูด","herb"],["basil","ใบกะเพรา","herb"],
-["tomato","มะเขือเทศ","veg"],["carrot","แครอท","veg"],["onion","หอมใหญ่","veg"],["garlic","กระเทียม","veg"],["chili","พริก","veg"],["cabbage","กะหล่ำปลี","veg"],["scallion","ต้นหอม","veg"],["mushroom","เห็ด","veg"],["papaya","มะละกอ","veg"],["lime","มะนาว","veg"]
+["tomato","มะเขือเทศ","veg"],["carrot","แครอท","veg"],["onion","หอมใหญ่","veg"],["garlic","กระเทียม","veg"],["chili","พริก","veg"],["cabbage","กะหล่ำปลี","veg"],["scallion","ต้นหอม","veg"],["mushroom","เห็ด","veg"],["papaya","มะละกอ","veg"],["lime","มะนาว","veg"],
+["tofu","เต้าหู้","meat"],["mackerel","ปลาทู","meat"],["crab","ปู","meat"],["noodle","เส้นผัดไทย","meat"],["sausage","ไส้กรอก","meat"],["longbean","ถั่วฝักยาว","veg"],["cucumber","แตงกวา","veg"],["eggplant","มะเขือยาว","veg"],["sprout","ถั่วงอก","veg"],["kangkong","ผักบุ้ง","veg"],["pumpkin","ฟักทอง","veg"],["corn","ข้าวโพด","veg"],["ginger","ขิง","veg"],["thaibasil","โหระพา","herb"],["mint","สะระแหน่","herb"],["pandan","ใบเตย","herb"],["driedchili","พริกแห้ง","herb"],["chilipaste","น้ำพริกเผา","seas"],["vinegar","น้ำส้มสายชู","seas"],["peanut","ถั่วลิสง","seas"]
 ];
+const LOCKED_IDS=new Set(["tofu", "longbean", "ginger", "cucumber", "chilipaste", "eggplant", "sprout", "noodle", "kangkong", "sausage", "thaibasil", "vinegar", "pumpkin", "corn", "mackerel", "peanut", "crab", "mint", "pandan", "driedchili"]);
 const CATS=[["seas","ชั้นเครื่องปรุง"],["meat","ชั้นเนื้อสัตว์ ไข่ และข้าว"],["herb","ชั้นสมุนไพร"],["veg","ลิ้นชักผัก"]];
 const nm=id=>ITEMS.find(i=>i[0]===id)[1];
 const idx=id=>ITEMS.findIndex(i=>i[0]===id);
@@ -1478,7 +1518,9 @@ const cat=id=>ITEMS[idx(id)][2],sea=id=>cat(id)==="seas";
 let IMG={};
 const IMG_RE=/^data:image\/(png|jpeg|webp);base64,[A-Za-z0-9+\/=]+$/;
 const TOOLS=[["stove","เตา"],["pan","กระทะ"],["spatula","ตะหลิว"],["pot","หม้อ"],["ladle","ที่ตักซุป"]];
-const DECOR=[["dec-plate","จานในตู้จาน (ชั้นล่าง)"],["dec-cup1","แก้วใบที่ 1 (ชั้นบน)"],["dec-cup2","แก้วใบที่ 2 (ชั้นบน)"],["dec-cup3","แก้วใบที่ 3 (ชั้นบน)"],["dec-cup4","แก้วใบที่ 4 (ชั้นบน)"]];
+const DECOR=[["dec-plate","จานใบที่ 1 (ตู้จาน ชั้นล่าง)"],["dec-plate2","จานใบที่ 2"],["dec-plate3","จานใบที่ 3"],["dec-plate4","จานใบที่ 4"],["dec-cup1","แก้วใบที่ 1 (ชั้นบน)"],["dec-cup2","แก้วใบที่ 2 (ชั้นบน)"],["dec-cup3","แก้วใบที่ 3 (ชั้นบน)"],["dec-cup4","แก้วใบที่ 4 (ชั้นบน)"]];
+const PSLOTS=["dec-plate","dec-plate2","dec-plate3","dec-plate4"];
+function kPimg(i){const a=IMG[PSLOTS[((i%4)+4)%4]];if(a)return a;for(const k of PSLOTS)if(IMG[k])return IMG[k];return""}
 const TOOL_KEYS=TOOLS.map(t=>"tool-"+t[0]).concat(DECOR.map(d=>d[0]));
 const imgLabel=id=>{if(/^dish-\d+$/.test(id)){const r=R[+id.slice(5)];return"เมนู"+(r?r.n:id)}const dc=DECOR.find(d=>d[0]===id);if(dc)return dc[1];const t=TOOLS.find(x=>"tool-"+x[0]===id);return t?t[1]:(ITEMS.find(i=>i[0]===id)||[0,id])[1]};
 function cleanImgs(o){const r={};if(o&&typeof o==="object")for(const k of Object.keys(o)){const v=o[k];if((idx(k)>=0||TOOL_KEYS.includes(k)||/^dish-\d{1,3}$/.test(k))&&typeof v==="string"&&v.length<150000&&IMG_RE.test(v))r[k]=v}return r}
@@ -1506,6 +1548,7 @@ function sanitizeG(g){
   if(g.cooked&&typeof g.cooked==="object")R.forEach(r=>{const v=g.cooked[r.n];if(v)o.cooked[r.n]=Math.floor(num(v,1,100000,1))});
   o.plates=Math.floor(num(g.plates,0,8,4));o.dirty=Math.floor(num(g.dirty,0,8,0));
   o.starter=!!g.starter;
+  o.unlocked=(Array.isArray(g.unlocked)?g.unlocked:[]).filter((id,i,a)=>LOCKED_IDS.has(id)&&a.indexOf(id)===i).slice(0,20);
   o.owned={};
   if(g.owned&&typeof g.owned==="object")Object.keys(g.owned).slice(0,60).forEach(k=>{const c=cleanRecipe(k,g.owned[k]);if(c&&!R.some(r=>!r.comm&&r.n===c.n)){c.own=!!(g.owned[k]&&g.owned[k].own);o.owned[k]=c}});
   Object.keys(o.owned).forEach(k=>{const v=g.cooked&&g.cooked[o.owned[k].n];if(v)o.cooked[o.owned[k].n]=Math.floor(num(v,1,100000,1))});
@@ -1545,7 +1588,28 @@ const R=[
 {n:"กุ้งแช่น้ำปลา",need:["shrimp","fish","lime","garlic","chili"],opt:["sugar","coriander"],d:"กุ้งสดแช่น้ำปลาเปรี้ยวหวานเผ็ดกระเทียม กินแกล้มเย็นๆ",s:["ลวกกุ้งพอสุก แช่น้ำเย็นให้เด้ง","ผสมน้ำปลา มะนาว น้ำตาล กระเทียมและพริกสับ","ราดบนกุ้ง โรยผักชี เสิร์ฟ"]},
 {n:"ปลาร้าทรงเครื่อง",need:["plara","lemongrass","chili"],opt:["onion","lime","kaffir","galangal","coriander","sugar"],d:"น้ำปลาร้าต้มสุกคลุกสมุนไพรสด กินกับผักแนม",s:["ต้มปลาร้าจนสุก หั่นสมุนไพรเป็นฝอย","คลุกปลาร้ากับตะไคร้ ใบมะกรูด หอม พริก","ปรุงด้วยมะนาวและน้ำตาลเล็กน้อย เสิร์ฟกับผักสด"]},
 {n:"กะหล่ำปลีผัดน้ำปลา",need:["cabbage","fish"],opt:["garlic","chili","egg","chop","mince","belly","carrot","oyster"],d:"กะหล่ำปลีผัดไฟแรง หอมกลิ่นกระทะ เค็มนำหวานตาม",s:["เจียวกระเทียมให้หอม","ใส่กะหล่ำปลีผัดไฟแรง","ปรุงด้วยน้ำปลา ตักเสิร์ฟ"]},
-{n:"ไข่ผัดมะเขือเทศ",need:["egg","tomato"],opt:["scallion","sugar","salt","onion"],d:"ไข่นุ่มข้นกับมะเขือเทศสุกเปรี้ยวนิดๆ",s:["ผัดมะเขือเทศให้นิ่ม","ตีไข่ใส่เกลือเล็กน้อย เทลงไป","เขี่ยให้เป็นก้อนนุ่ม โรยต้นหอม"]}
+{n:"ไข่ผัดมะเขือเทศ",need:["egg","tomato"],opt:["scallion","sugar","salt","onion"],d:"ไข่นุ่มข้นกับมะเขือเทศสุกเปรี้ยวนิดๆ",s:["ผัดมะเขือเทศให้นิ่ม","ตีไข่ใส่เกลือเล็กน้อย เทลงไป","เขี่ยให้เป็นก้อนนุ่ม โรยต้นหอม"]},
+{n:"เต้าหู้ผัดหมูสับ",need:["tofu", "mince"],opt:["garlic", "scallion", "chili", "onion", "soy", "tomato"],d:"เต้าหู้นุ่มผัดกับหมูสับ รสกลมกล่อมกินง่าย",s:["ทอดเต้าหู้พอเหลือง พักไว้", "ผัดกระเทียมกับหมูสับจนสุก", "ใส่เต้าหู้ ปรุงด้วยซีอิ๊วและน้ำตาล", "โรยต้นหอม ตักเสิร์ฟ"]},
+{n:"ผัดถั่วฝักยาวหมูสับ",need:["longbean", "mince"],opt:["garlic", "chili", "oyster", "egg", "scallion"],d:"ถั่วฝักยาวกรอบผัดหมูสับ หอมกระเทียมพริก",s:["โขลกกระเทียมกับพริก ผัดให้หอม", "ใส่หมูสับผัดจนสุก", "ใส่ถั่วฝักยาว ปรุงด้วยซอสหอยนางรม", "ผัดไฟแรงให้กรอบ ตักเสิร์ฟ"]},
+{n:"ไก่ผัดขิง",need:["chicken", "ginger"],opt:["onion", "scallion", "chili", "mushroom", "soy", "garlic"],d:"ไก่ผัดขิงอ่อนหอมๆ อุ่นท้อง",s:["เจียวขิงซอยให้หอม", "ใส่เนื้อไก่ผัดจนสุก", "ใส่เห็ดและหอมใหญ่ ปรุงด้วยซีอิ๊วขาว", "โรยต้นหอม ตักเสิร์ฟ"]},
+{n:"ส้มตำแตงกวา",need:["cucumber", "chili"],opt:["lime", "garlic", "tomato", "sugar", "fish", "shrimp", "peanut"],d:"ส้มตำแตงกวากรอบเย็น เปรี้ยวหวานเผ็ดเค็ม",s:["โขลกกระเทียมกับพริกให้พอแหลก", "ปรุงด้วยน้ำปลา น้ำตาล และมะนาว", "ใส่แตงกวาหั่น ตำเบาๆ ให้ช้ำ", "ชิมรส ตักเสิร์ฟ"]},
+{n:"มะเขือยาวผัดน้ำพริกเผา",need:["eggplant", "chilipaste"],opt:["garlic", "chili", "mince", "thaibasil", "oyster"],d:"มะเขือยาวนุ่มผัดน้ำพริกเผา หอมมัน",s:["เจียวกระเทียมให้หอม", "ใส่มะเขือยาวผัดจนนิ่ม", "ใส่น้ำพริกเผาผัดให้เข้ากัน", "ตักเสิร์ฟร้อนๆ"]},
+{n:"ผัดไทยกุ้ง",need:["noodle", "shrimp"],opt:["egg", "sprout", "scallion", "lime", "chili", "tofu", "peanut", "sugar", "fish"],d:"เส้นผัดไทยเหนียวนุ่ม กุ้งสด โรยถั่วป่น",s:["แช่เส้นให้นิ่ม ผัดกุ้งพักไว้", "ผัดเส้นกับซอสให้เข้ากัน", "ใส่ไข่ ถั่วงอก และกุ้งกลับ", "โรยถั่วลิสง บีบมะนาว ตักเสิร์ฟ"]},
+{n:"ผัดซีอิ๊วหมู",need:["noodle", "chop", "soy"],opt:["egg", "cabbage", "carrot", "garlic", "sprout", "oyster"],d:"เส้นผัดซีอิ๊วไหม้หอมกระทะ หมูนุ่ม ผักกรอบ",s:["ผัดกระเทียมกับหมูจนสุก", "ใส่เส้นและซีอิ๊วขาว ผัดไฟแรง", "ใส่ไข่และผัก ผัดให้เข้ากัน", "ตักเสิร์ฟ"]},
+{n:"ผัดผักบุ้งไฟแดง",need:["kangkong", "garlic"],opt:["chili", "oyster", "mince", "soy"],d:"ผักบุ้งกรอบผัดไฟแรง น้ำซอสหอมเค็มมัน",s:["โขลกกระเทียมกับพริก", "ตั้งไฟแรงจัด ผัดกระเทียมให้หอม", "ใส่ผักบุ้ง ปรุงด้วยซอสหอยนางรม", "ผัดเร็วๆ ตักเสิร์ฟทันที"]},
+{n:"ข้าวผัดไส้กรอก",need:["rice", "sausage"],opt:["egg", "scallion", "tomato", "onion", "carrot", "soy"],d:"ข้าวผัดร้อนๆ ไส้กรอกหั่นหวานมัน",s:["ผัดไส้กรอกให้ตัวมัน", "ใส่ข้าวสวย ผัดให้ร่วน", "ใส่ไข่และผัก ปรุงด้วยซีอิ๊ว", "โรยต้นหอม ตักเสิร์ฟ"]},
+{n:"ผัดเผ็ดไก่โหระพา",need:["chicken", "thaibasil", "chili"],opt:["garlic", "longbean", "eggplant", "vinegar", "oyster", "kaffir"],d:"ไก่ผัดเผ็ดจัดจ้าน หอมโหระพา",s:["โขลกพริกกับกระเทียม ผัดให้หอม", "ใส่เนื้อไก่ผัดจนสุก", "ปรุงด้วยซอสหอยนางรม", "ใส่โหระพา ผัดเร็วๆ ตักเสิร์ฟ"]},
+{n:"ต้มฟักทองกะทิหมูสับ",need:["pumpkin", "coconut", "mince"],opt:["onion", "scallion", "pepper", "garlic", "fish"],d:"ซุปฟักทองหวานมันกะทิ กับหมูสับก้อนนุ่ม",s:["ต้มกะทิกับน้ำให้เดือด", "ใส่ฟักทองต้มจนนุ่ม", "ปั้นหมูสับหยอดลงไป ปรุงด้วยน้ำปลา", "โรยต้นหอม ยกลง"]},
+{n:"ปลาทูทอดน้ำพริก",need:["mackerel", "chili"],opt:["garlic", "lime", "cucumber", "longbean", "eggplant", "fish", "sugar"],d:"ปลาทูทอดกรอบ กินกับน้ำพริกและผักสด",s:["ทอดปลาทูให้เหลืองกรอบ", "โขลกพริกกับกระเทียมทำน้ำพริก", "ปรุงรสด้วยน้ำปลาและมะนาว", "จัดจานกับผักสด เสิร์ฟ"]},
+{n:"ไข่เจียวข้าวโพด",need:["egg", "corn"],opt:["scallion", "fish", "pepper", "peanut", "mince"],d:"ไข่เจียวฟูหวานข้าวโพด กรอบนอกนุ่มใน",s:["ตีไข่กับข้าวโพดและน้ำปลา", "ตั้งน้ำมันให้ร้อนจัด เทไข่ลงไป", "ทอดจนเหลืองทั้งสองด้าน", "โรยต้นหอม ตักเสิร์ฟ"]},
+{n:"ปูผัดกระเทียมพริกไทย",need:["crab", "garlic", "pepper"],opt:["chili", "scallion", "egg", "soy"],d:"ปูสดผัดกระเทียมพริกไทย หอมกรุ่น",s:["เจียวกระเทียมกับพริกไทยให้หอม", "ใส่ปูผัดไฟแรงจนสุก", "ปรุงด้วยซีอิ๊วเล็กน้อย", "โรยต้นหอม ตักเสิร์ฟ"]},
+{n:"ไก่ห่อใบเตยทอด",need:["chicken", "pandan"],opt:["pepper", "garlic", "ginger", "soy"],d:"ไก่หมักห่อใบเตย ทอดหอมเตยนุ่มฉ่ำ",s:["หมักไก่กับกระเทียม พริกไทย ซีอิ๊ว", "ห่อไก่ด้วยใบเตย", "ทอดไฟกลางจนสุกเหลือง", "สะเด็ดน้ำมัน ตักเสิร์ฟ"]},
+{n:"ยำหมูย่างสะระแหน่",need:["chop", "mint", "lime"],opt:["chili", "onion", "tomato", "cucumber", "sugar", "fish"],d:"ยำหมูย่างเปรี้ยวเผ็ด หอมสะระแหน่เย็นๆ",s:["ย่างหมูชิ้นให้สุกหอม หั่นบาง", "ปรุงน้ำยำด้วยน้ำปลา มะนาว พริก น้ำตาล", "คลุกหมูกับหอมและมะเขือเทศ", "ใส่สะระแหน่ คลุกเบาๆ เสิร์ฟ"]},
+{n:"หมูผัดพริกแห้ง",need:["chop", "driedchili"],opt:["garlic", "onion", "thaibasil", "scallion", "soy", "sugar"],d:"หมูชิ้นผัดพริกแห้งเผ็ดหอมควัน",s:["คั่วพริกแห้งในกระทะให้หอม", "ผัดกระเทียมกับหมูชิ้นจนสุก", "ปรุงด้วยซีอิ๊วและน้ำตาล", "ใส่พริกแห้ง ผัดให้เข้ากัน ตักเสิร์ฟ"]},
+{n:"ข้าวผัดน้ำพริกเผา",need:["rice", "chilipaste"],opt:["egg", "mince", "scallion", "chili", "onion", "tomato"],d:"ข้าวผัดหอมน้ำพริกเผา เผ็ดมันกำลังดี",s:["ผัดน้ำพริกเผาให้หอม", "ใส่ข้าวสวย ผัดให้ร่วนเข้ากัน", "ใส่ไข่หรือหมูสับตามชอบ", "โรยต้นหอม ตักเสิร์ฟ"]},
+{n:"ผัดถั่วงอกเต้าหู้",need:["sprout", "tofu"],opt:["egg", "chili", "garlic", "scallion", "oyster", "mince"],d:"ถั่วงอกกรอบผัดเต้าหู้ เบาสบายท้อง",s:["ทอดเต้าหู้พอเหลือง", "ผัดกระเทียมให้หอม", "ใส่ถั่วงอกและเต้าหู้ ปรุงด้วยซอสหอยนางรม", "ผัดไฟแรงเร็วๆ ตักเสิร์ฟ"]},
+{n:"ผักดองเปรี้ยวหวาน",need:["vinegar", "cucumber", "carrot"],opt:["sugar", "salt", "chili", "onion"],how:"none",d:"ผักกรอบแช่น้ำส้มสายชู เปรี้ยวหวานเย็นๆ",s:["ต้มน้ำส้มสายชูกับน้ำตาลและเกลือให้ละลาย", "หั่นแตงกวาและแครอทเป็นแท่ง", "ราดน้ำดองลงบนผัก พักให้เย็น", "ตักเสิร์ฟพร้อมพริกซอย"]},
+{n:"หมูสับผัดถั่วลิสง",need:["mince", "peanut"],opt:["garlic", "chili", "scallion", "soy", "sugar", "onion"],d:"หมูสับผัดถั่วลิสงคั่ว หอมมันกรุบกรอบ",s:["คั่วถั่วลิสงให้หอม", "ผัดกระเทียมกับหมูสับจนสุก", "ปรุงด้วยซีอิ๊วและน้ำตาล", "ใส่ถั่วลิสง ผัดให้เข้ากัน ตักเสิร์ฟ"]}
 ];
 
 const M=(n,a,b,d,s,x)=>R.push({n,need:a.split(" "),opt:b.split(" "),d,s:s.split("|"),...x});
@@ -1584,10 +1648,24 @@ function fname(m){
 const sel=[];
 const $=id=>document.getElementById(id);
 const LN='<svg class="ln" viewBox="0 0 100 8" preserveAspectRatio="none" aria-hidden="true"><g filter="url(#r)"><path d="M0 4Q25 1 50 4T100 4"/></g></svg>';
-function buildShelves(){$("shelves").innerHTML=CATS.map(([k,t])=>`<div class="shelf"><h2>${t}</h2><div class="row">${ITEMS.filter(i=>i[2]===k).map(i=>`<button class="it" data-id="${i[0]}" aria-pressed="false">${ic(i[0])}<span>${i[1]}</span></button>`).join("")}</div>${LN}</div>`).join("")}
+
+/* ===== วัตถุดิบล็อก: ทำเมนูไม่ซ้ำครบทุก 3 เมนู ได้สิทธิ์เลือกปลดล็อกวัตถุดิบ 1 อย่าง (ผู้เล่นเลือกเอง) ===== */
+const BASEITEMS=()=>ITEMS.filter(i=>!LOCKED_IDS.has(i[0]));
+const cookedKinds=()=>{const ck=(window.G&&window.G.cooked)||{};return R.filter(r=>!r.weird&&ck[r.n]).length};
+const myUnlocked=()=>(window.G&&window.G.unlocked)||[];
+const earnedNow=()=>Math.min(LOCKED_IDS.size,Math.floor(cookedKinds()/3));
+const pendingNow=()=>Math.max(0,earnedNow()-myUnlocked().length);
+const unlocked=id=>!LOCKED_IDS.has(id)||myUnlocked().includes(id);
+const needFor=()=>(myUnlocked().length+1)*3;
+const rUnlocked=r=>r.need.every(unlocked);
+function unlockInfo(){const p=pendingNow(),k=cookedKinds();
+  if(p>0)return`🔓 มีสิทธิ์เลือกปลดล็อกวัตถุดิบ ${p} อย่าง`;
+  if(myUnlocked().length>=LOCKED_IDS.size)return"ปลดล็อกวัตถุดิบครบทุกอย่างแล้ว";
+  return`ทำเมนูแล้ว ${k} เมนู · ครบ ${needFor()} เมนู เพื่อเลือกปลดล็อกวัตถุดิบ 1 อย่าง`}
+function buildShelves(){$("shelves").innerHTML=CATS.map(([k,t])=>`<div class="shelf"><h2>${t}</h2><div class="row">${ITEMS.filter(i=>i[2]===k).map(i=>unlocked(i[0])?`<button class="it" data-id="${i[0]}" aria-pressed="false">${ic(i[0])}<span>${i[1]}</span></button>`:`<button class="it lock" data-id="${i[0]}" data-lock="1" aria-pressed="false" aria-label="${i[1]} ล็อกอยู่">${ic(i[0])}<span>${i[1]}</span><em class="lk">🔒</em></button>`).join("")}</div>${LN}</div>`).join("")+`<p class="unlp">${unlockInfo()}${pendingNow()>0?' <button type="button" class="btn mini" id="pickBtn">เลือกเลย</button>':""}</p>`}
 buildShelves();
 
-function toggle(id){if(cooking)return;const i=sel.indexOf(id);i<0?sel.push(id):sel.splice(i,1);render()}
+function toggle(id){if(cooking)return;if(!unlocked(id)){if(pendingNow()>0){showPick(id);return}toast("🔒 "+nm(id)+" ล็อกอยู่ ทำเมนูให้ครบ "+needFor()+" เมนูแล้วเลือกปลดล็อก ("+cookedKinds()+"/"+needFor()+")");return}const i=sel.indexOf(id);i<0?sel.push(id):sel.splice(i,1);render()}
 function render(){
   document.querySelectorAll(".it").forEach(b=>{const o=sel.includes(b.dataset.id);b.classList.toggle("out",o);b.setAttribute("aria-pressed",o)});
   const t=$("tray");t.classList.remove("mix");
@@ -1765,7 +1843,7 @@ function commSync(){
   Object.keys(o).forEach(k=>R.push(toR(k,o[k])));
   if(typeof renderRec==="function"&&document.getElementById("recl"))renderRec();
 }
-function pubR(){const ck=window.G.cooked||{};return R.filter(r=>!r.secret||ck[r.n])}
+function pubR(){const ck=window.G.cooked||{};return R.filter(r=>(!r.secret||ck[r.n])&&rUnlocked(r))}
 function rTotal(){return pubR().length}
 function monthEndNote(empty){
   const t=new Date(),last=new Date(t.getFullYear(),t.getMonth()+1,0).getDate(),ck=window.G.cooked||{};
@@ -1787,7 +1865,7 @@ function sugg(S){
 }
 function pick2(sel){
   const S=new Set(sel);let best=null,bs=-1;
-  if(S.size===ITEMS.length&&ITEMS.every(i=>S.has(i[0]))){const w=R.find(r=>r.weird);if(w)return w}
+  if(S.size===BASEITEMS().length&&BASEITEMS().every(i=>S.has(i[0]))){const w=R.find(r=>r.weird);if(w)return w}
   for(const r of R){if(r.weird||!fit(r,S).ok)continue;const s=r.need.length*3+(r.any?3:0)+r.opt.filter(o=>S.has(o)).length;if(s>bs){bs=s;best=r}}
   return best;
 }
@@ -1827,7 +1905,7 @@ function fly(b){
   c.animate([{transform:"translate(0,0) scale(1) rotate(0deg)",opacity:1},{transform:`translate(${dx*.5}px,${dy*.5-40}px) scale(1.3) rotate(160deg)`,opacity:1,offset:.5},{transform:`translate(${dx}px,${dy}px) scale(.7) rotate(360deg)`,opacity:.2}],{duration:550,easing:"cubic-bezier(.4,0,.2,1)"}).onfinish=()=>c.remove();
 }
 
-const PRICE={fish:2,oyster:2,soy:2,sugar:2,salt:2,pepper:2,oil:2,coconut:3,plara:2,mince:3,belly:3,chop:3,egg:2,chicken:3,shrimp:3,squid:3,rice:2,coriander:2,galangal:2,lemongrass:2,kaffir:2,basil:2,tomato:2,carrot:2,onion:2,garlic:2,chili:2,cabbage:2,scallion:2,mushroom:3,papaya:2,lime:2};
+const PRICE={fish:2,oyster:2,soy:2,sugar:2,salt:2,pepper:2,oil:2,coconut:3,plara:2,mince:3,belly:3,chop:3,egg:2,chicken:3,shrimp:3,squid:3,rice:2,coriander:2,galangal:2,lemongrass:2,kaffir:2,basil:2,tomato:2,carrot:2,onion:2,garlic:2,chili:2,cabbage:2,scallion:2,mushroom:3,papaya:2,lime:2,tofu:2,mackerel:3,crab:4,noodle:2,sausage:3,longbean:2,cucumber:2,eggplant:2,sprout:2,kangkong:2,pumpkin:2,corn:2,ginger:2,thaibasil:2,mint:2,pandan:2,driedchili:2,chilipaste:2,vinegar:2,peanut:2};
 const todayStr=()=>new Date().toLocaleDateString("sv-SE");
 const coinIc='<svg class="ic" viewBox="0 0 48 48" aria-hidden="true"><use href="#i-coin"/></svg>';
 
@@ -1842,7 +1920,7 @@ function saveG(){
 
 try{const s=JSON.parse(localStorage.getItem("fridgeSave")||"null");if(s&&typeof s.coins==="number"){window.G=sanitizeG({...G,...s});fresh=false}}catch(e){}
 if(fresh){window.G.log=[{t:Date.now(),d:"โบนัสเริ่มต้นผู้ใช้ใหม่",c:50}]}
-if(!window.G.starter){ITEMS.forEach(i=>{window.G.stock[i[0]]=Math.min(99,(window.G.stock[i[0]]||0)+1)});window.G.starter=true;addLog("รับวัตถุดิบเริ่มต้น อย่างละ 1 ชิ้น",0);window.saveGLocally(true);if(!fresh)setTimeout(()=>toast("ได้รับวัตถุดิบเริ่มต้น อย่างละ 1 ชิ้น"),500)}
+if(!window.G.starter){BASEITEMS().forEach(i=>{window.G.stock[i[0]]=Math.min(99,(window.G.stock[i[0]]||0)+1)});window.G.starter=true;addLog("รับวัตถุดิบเริ่มต้น อย่างละ 1 ชิ้น",0);window.saveGLocally(true);if(!fresh)setTimeout(()=>toast("ได้รับวัตถุดิบเริ่มต้น อย่างละ 1 ชิ้น"),500)}
 
 const st=id=>window.G.stock[id]||0;
 function addLog(d,c){window.G.log.unshift({t:Date.now(),d,c});if(window.G.log.length>60)window.G.log.length=60}
@@ -1881,14 +1959,15 @@ function shopHtml(){
   const c=window.G.coins;
   const rows=CATS.map(([k,t])=>`<tr class="cat"><td colspan="4">${t}</td></tr>`+ITEMS.filter(i=>i[2]===k).map(([id,n])=>{
     const p=PRICE[id];
+    if(!unlocked(id))return`<tr class="z"><td>${ic(id)}${n} 🔒</td><td colspan="3">ยังล็อกอยู่ ทำเมนูให้ครบ ${needFor()} เมนูแล้วเลือกปลดล็อกจากตู้เย็น (${cookedKinds()}/${needFor()})</td></tr>`;
     return`<tr${hlIds.includes(id)?' class="hl"':''}><td>${ic(id)}${n}</td><td>${st(id)}</td><td>${p}</td><td class="buy"><button class="btn mini" data-buy="${id}" data-q="1"${c<p?" disabled":""}>+1</button> <button class="btn mini ghost" data-buy="${id}" data-q="5"${c<p*5?" disabled":""}>+5</button></td></tr>`;
   }).join("")).join("");
   return`<div class="tw shop"><table><thead><tr><th>วัตถุดิบ</th><th>มีอยู่ (ชิ้น)</th><th>ราคา (เหรียญ)</th><th>ซื้อ</th></tr></thead><tbody>${rows}</tbody></table></div>`;
 }
 
 function backHtml(){
-  const ids=ITEMS.map(i=>i[0]),have=ids.filter(i=>st(i)>0).length,cnt=ids.reduce((a,i)=>a+st(i),0),val=ids.reduce((a,i)=>a+st(i)*PRICE[i],0);
-  const rows=ITEMS.map(([id,n])=>{const q=st(id);return`<tr class="${q===0?"z":q===1?"l":""}"><td>${ic(id)} ${n}</td><td>${q}</td><td>${PRICE[id]}</td><td>${q*PRICE[id]}</td><td>${q===0?"หมด":q===1?"ใกล้หมด":"ปกติ"}</td><td><button class="btn mini" data-buy="${id}" data-q="1"${window.G.coins<PRICE[id]?" disabled":""}>เติม +1</button></td></tr>`}).join("");
+  const ids=ITEMS.filter(i=>unlocked(i[0])).map(i=>i[0]),have=ids.filter(i=>st(i)>0).length,cnt=ids.reduce((a,i)=>a+st(i),0),val=ids.reduce((a,i)=>a+st(i)*PRICE[i],0);
+  const rows=ITEMS.filter(i=>unlocked(i[0])).map(([id,n])=>{const q=st(id);return`<tr class="${q===0?"z":q===1?"l":""}"><td>${ic(id)} ${n}</td><td>${q}</td><td>${PRICE[id]}</td><td>${q*PRICE[id]}</td><td>${q===0?"หมด":q===1?"ใกล้หมด":"ปกติ"}</td><td><button class="btn mini" data-buy="${id}" data-q="1"${window.G.coins<PRICE[id]?" disabled":""}>เติม +1</button></td></tr>`}).join("");
   const log=window.G.log.slice(0,15).map(l=>`<li><span>${new Date(l.t).toLocaleString("th-TH",{dateStyle:"short",timeStyle:"short"})}</span> ${esc(l.d)} <b class="${l.c<0?"neg":"pos"}">${l.c>0?"+":""}${l.c}</b></li>`).join("")||"<li>ยังไม่มีรายการ</li>";
   return`<div class="sum"><div><b>${have}/${ids.length}</b><small>ชนิดที่มีของ</small></div><div><b>${cnt}</b><small>ชิ้นรวม</small></div><div><b>${val}</b><small>มูลค่าสต็อก (เหรียญ)</small></div><div><b>${Object.keys(window.G.cooked||{}).length}/${rTotal()}</b><small>เมนูที่เคยทำ</small></div></div><div class="tw"><table><thead><tr><th>วัตถุดิบ</th><th>ในตู้</th><th>ราคา/ชิ้น</th><th>มูลค่า</th><th>สถานะ</th><th></th></tr></thead><tbody>${rows}</tbody></table></div><h3>ประวัติเหรียญ</h3><ul class="log">${log}</ul><button class="btn ghost" id="rst">รีเซ็ตข้อมูลทั้งหมด</button>`;
 }
@@ -1916,6 +1995,7 @@ $("dbody").addEventListener("click",e=>{
   const b=e.target.closest("[data-buy]");
   if(b){
     const id=b.dataset.buy,q=+b.dataset.q;
+    if(!unlocked(id)){toast("วัตถุดิบนี้ยังล็อกอยู่");return}
     const add=Math.min(q,99-st(id));
     if(add<=0){toast("ตู้เย็นเก็บ"+nm(id)+"ได้สูงสุด 99 ชิ้น");return}
     const cost=PRICE[id]*add;if(window.G.coins<cost)return;
@@ -1924,7 +2004,7 @@ $("dbody").addEventListener("click",e=>{
   }
   if(e.target.id==="rst"){
     if(!rstArm){rstArm=true;e.target.textContent="กดอีกครั้งเพื่อยืนยันการรีเซ็ต";return}
-    const s0={};ITEMS.forEach(i=>{s0[i[0]]=1});
+    const s0={};BASEITEMS().forEach(i=>{s0[i[0]]=1});
     window.G={coins:50,stock:s0,last:"",log:[{t:Date.now(),d:"เริ่มใหม่ โบนัสเริ่มต้น",c:50},{t:Date.now(),d:"รับวัตถุดิบเริ่มต้น อย่างละ 1 ชิ้น",c:0}],cooked:{},starter:true};
     saveG();sel.length=0;render();drawDlg();renderUser();
   }
@@ -1967,7 +2047,9 @@ function cookDone(r,S){
   const first=!window.G.cooked[r.n],tot=r.weird?(first?1:0):first?Math.min(10,3*S.length+5):Math.min(3,S.length);
   S.forEach(i=>{window.G.stock[i]=Math.max(0,st(i)-1)});
   window.G.plates=Math.max(0,kPlates()-1);window.G.dirty=Math.min(8,kDirty()+1);
-  window.G.cooked[r.n]=(window.G.cooked[r.n]||0)+1;window.G.coins+=tot;addLog("ทำ "+r.n,tot);saveG();
+  const eb=earnedNow();window.G.cooked[r.n]=(window.G.cooked[r.n]||0)+1;window.G.coins+=tot;addLog("ทำ "+r.n,tot);
+  if(earnedNow()>eb)setTimeout(()=>showPick(),1400);
+  saveG();
   sel.length=0;render();
   const m=$("menu");m.hidden=false;
   if(r.weird){
@@ -2465,7 +2547,7 @@ $("dbody").addEventListener("click",async e=>{
   const ok=window.deleteCloudData?await window.deleteCloudData():true;
   if(!ok){btn.disabled=false;toast("ลบข้อมูลบนคลาวด์ไม่สำเร็จ ลองใหม่อีกครั้ง");return}
   try{["fridgeSave","fridgeStk","fridgeColor","fridgeUpdated"].forEach(k=>localStorage.removeItem(k))}catch(err){}
-  const s0={};ITEMS.forEach(i=>{s0[i[0]]=1});
+  const s0={};BASEITEMS().forEach(i=>{s0[i[0]]=1});
   window.G={coins:50,stock:s0,last:"",log:[{t:Date.now(),d:"เริ่มใหม่ หลังลบข้อมูล",c:50}],cooked:{},starter:true};
   window.saveGLocally(true);
   window.stks=[];window.saveStksLocally(true);selId=null;drawStk();setColor("",true);
@@ -2477,7 +2559,7 @@ $("dbody").addEventListener("click",async e=>{
 const K={cut:false,tool:null,cooked:false,plated:false,busy:false,chops:{},inPan:[],cs:null,tok:0,iv:0};
 const kPlates=()=>window.G.plates==null?4:window.G.plates;
 const kDirty=()=>window.G.dirty||0;
-const NOCUT=new Set(["rice","egg","mince"]);
+const NOCUT=new Set(["rice","egg","mince","noodle","sausage"]);
 const needsCut=()=>sel.some(i=>!sea(i)&&!NOCUT.has(i));
 const kPreview=()=>forceR||pick2(sel);
 function howOf(r){
@@ -2658,7 +2740,7 @@ function kUpdate(){
   $("kLadleS").style.display=pot?"block":"none";
   [["tPan","tSpat"],["tPot","tLadle"]].forEach(([a,b],n)=>{const on=K.tool===(n?"pot":"pan");$(a).classList.toggle("taken",on);$(b).classList.toggle("taken",on)});
   const cp=Math.max(0,kPlates()-(K.plated?1:0));
-  $("kPlates").innerHTML=Array.from({length:cp},(_,i)=>`<i class="pl" style="--i:${i}"></i>`).join("");$("kPlates").style.setProperty("--m",Math.max(cp-1,1));
+  $("kPlates").innerHTML=Array.from({length:cp},(_,i)=>`<i class="pl" style="--i:${i};--pimg:${kPimg(i)?`url(${kPimg(i)})`:"none"}"></i>`).join("");$("kPlates").style.setProperty("--m",Math.max(cp-1,1));
   const dn=Math.min(8,kDirty());
   $("kDirty").innerHTML=Array.from({length:dn},(_,i)=>`<button type="button" class="dplate" data-i="${i}" style="--dirt:${dirtAt(i)}" aria-label="จานสกปรก (ลากฟองน้ำถูหรือแตะเพื่อล้าง)"></button>`).join("");
   sponge.classList.toggle("show",dn>0);
@@ -3089,7 +3171,7 @@ function applyToolImgs(){
     if(k==="stove")im.style.display=u?"block":"none";
   });
   for(let n=1;n<=4;n++){const u=IMG["dec-cup"+n],g=$("kCupG"+n),im=$("kCupI"+n);if(!g||!im)continue;g.style.display=u?"none":"";im.style.display=u?"":"none";if(u)im.setAttribute("href",u);else im.removeAttribute("href")}
-  {const u=IMG["dec-plate"],kp=$("kPlates");kp.classList.toggle("has-img",!!u);if(u)kp.style.setProperty("--pimg",`url("${u}")`);else kp.style.removeProperty("--pimg")}
+  $("kPlates").classList.toggle("has-img",!!kPimg(0));
   $("kSpat").classList.toggle("has-timg",!!IMG["tool-spatula"]);
   $("kLadleS").classList.toggle("has-timg",!!IMG["tool-ladle"]);
   kUpdate();
@@ -3101,7 +3183,7 @@ function kSyncPlate(){
   const wps=[$("kWP"),$("svWP")],scs=[$("kscene"),$("svStage")],each=f=>wps.forEach(f),sc=f=>scs.forEach(f);
   const reset=()=>{each(w=>{w.className=w.classList.contains("svwp")?"kwp svwp":"kwp";w.querySelector(".kwpi").removeAttribute("src")});sc(c=>c.classList.remove("pouring","dished"))};
   if(!K.cooked){kwT.splice(0).forEach(clearTimeout);kwState=0;reset();return}
-  const r=sel.length?kPreview():null,du=r?IMG["dish-"+R.findIndex(x=>x.n===r.n)]:"",pu=IMG["dec-plate"];
+  const r=sel.length?kPreview():null,du=r?IMG["dish-"+R.findIndex(x=>x.n===r.n)]:"",pu=kPimg(kPlates()-1);
   each(w=>{const im=w.querySelector(".kwpi");
     if(pu)w.style.setProperty("--pimg",`url("${pu}")`);else w.style.removeProperty("--pimg");
     w.classList.toggle("hasplate",!!pu);w.classList.toggle("hasdish",!!du);
@@ -3116,6 +3198,33 @@ function kSyncPlate(){
   }
 }
 {const _ku=kUpdate;kUpdate=function(){_ku.apply(this,arguments);kSyncPlate()}}
+{const _r=render;let sg="";render=function(){const n=myUnlocked().join(",")+"|"+pendingNow();if(n!==sg){sg=n;buildShelves()}return _r.apply(this,arguments)}}
+
+function menusFor(id){return R.filter(r=>!r.weird&&r.need.includes(id)&&r.need.every(i=>i===id||unlocked(i)))}
+function closeUnl(){const o=document.getElementById("unl");if(o)o.remove()}
+function showPick(pre){
+  if(pendingNow()<=0){toast(unlockInfo());return}
+  closeUnl();let ch=pre&&LOCKED_IDS.has(pre)&&!unlocked(pre)?pre:"";
+  const d=document.createElement("div");d.id="unl";d.setAttribute("role","dialog");d.setAttribute("aria-label","เลือกวัตถุดิบที่จะปลดล็อก");
+  const draw=()=>{const left=ITEMS.filter(i=>LOCKED_IDS.has(i[0])&&!unlocked(i[0]));
+    d.innerHTML=`<div class="unc"><h3>🔓 เลือกวัตถุดิบที่จะปลดล็อก 1 อย่าง</h3><p class="note">คุณมีสิทธิ์ ${pendingNow()} ครั้ง · ปลดล็อกแล้วได้วัตถุดิบ 2 ชิ้น</p><div class="unr pk">${left.map(([id,n])=>{const m=menusFor(id).length;return`<button type="button" class="uni pick${id===ch?" on":""}" data-pk="${id}">${ic(id)}<b>${n}</b><small>${m?"เมนูใหม่ "+m:"ใช้คู่กับวัตถุดิบอื่น"}</small></button>`}).join("")}</div>${ch?`<div class="unm"><b>${nm(ch)}</b> ทำได้: ${menusFor(ch).map(r=>r.n).join(", ")||"ยังไม่มีเมนูใหม่ทันที (ต้องมีวัตถุดิบอื่นที่ปลดล็อกร่วมด้วย)"}</div>`:""}<div class="unb"><button class="btn ghost" type="button" id="unlater">ไว้ทีหลัง</button><button class="btn" type="button" id="unok"${ch?"":" disabled"}>ปลดล็อก${ch?" "+nm(ch):""}</button></div></div>`;
+    d.querySelectorAll("[data-pk]").forEach(b=>b.onclick=()=>{ch=b.dataset.pk;draw()});
+    d.querySelector("#unlater").onclick=closeUnl;
+    d.querySelector("#unok").onclick=()=>{if(!ch)return;pickUnlock(ch)}};
+  document.body.appendChild(d);draw();
+}
+function pickUnlock(id){
+  if(pendingNow()<=0||unlocked(id)||!LOCKED_IDS.has(id))return;
+  const G=window.G;G.unlocked=(G.unlocked||[]).concat(id);G.stock[id]=Math.min(99,st(id)+2);addLog("ปลดล็อก "+nm(id)+" (ได้ 2 ชิ้น)",0);saveG();
+  showUnlock(id);
+}
+function showUnlock(id){
+  const rs=menusFor(id).filter(r=>rUnlocked(r));closeUnl();
+  const d=document.createElement("div");d.id="unl";d.setAttribute("role","dialog");d.setAttribute("aria-label","ปลดล็อกวัตถุดิบใหม่");
+  d.innerHTML=`<div class="unc"><h3>🔓 ปลดล็อกแล้ว!</h3><div class="unr"><span class="uni">${ic(id)}<b>${nm(id)}</b></span></div><p class="note">ได้ 2 ชิ้น ใส่ในตู้เย็นให้แล้ว</p><h4>เมนูใหม่ที่ทำได้ (${rs.length})</h4><ul>${rs.map(r=>`<li>${r.n}</li>`).join("")||"<li>ยังไม่มี ต้องปลดล็อกวัตถุดิบคู่กันเพิ่ม</li>"}</ul><p class="note">${unlockInfo()}</p><button class="btn" type="button" id="unok2">${pendingNow()>0?"เลือกปลดล็อกต่อ":"ไปทำอาหารต่อ"}</button></div>`;
+  document.body.appendChild(d);document.getElementById("unok2").onclick=()=>{closeUnl();if(pendingNow()>0)showPick()};render();
+}
+document.addEventListener("click",e=>{if(e.target.closest("#pickBtn"))showPick()});
 function zoneHint(z){
   if(cam.zone!==z)return;
   if(false){
